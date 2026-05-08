@@ -1,0 +1,197 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:veteriner_app/view/bildirim_paneli.dart';
+import 'package:veteriner_app/view/giris_ekrani.dart';
+import 'package:veteriner_app/view/hekim_randevular_ekrani.dart';
+import 'package:veteriner_app/view/kullanici_yonetim_ekrani.dart';
+import 'package:veteriner_app/view/profil_ekrani.dart';
+import 'package:veteriner_app/view/tibbikayit_listesi_ekrani.dart';
+import 'package:veteriner_app/view/asi_hayvan_listesi_ekrani.dart';
+import 'package:veteriner_app/view/yaklasan_asilar_ekrani.dart';
+
+class HekimAnaSayfa extends StatefulWidget {
+  const HekimAnaSayfa({super.key});
+
+  @override
+  State<HekimAnaSayfa> createState() => _HekimAnaSayfaState();
+}
+
+class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
+  int _secilenIndex = 0;
+  late final PageController _pageController;
+
+  final List<Widget> _sayfalar = [
+    HekimRandevularEkrani(),
+    TibbikayitListesiEkrani(),
+    AsiHayvanListesiEkrani(),
+    YaklasanAsilarEkrani(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final simdi = DateTime.now();
+    final bugun = DateTime(simdi.year, simdi.month, simdi.day);
+    final yediGunSonra = bugun.add(const Duration(days: 7));
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF7F0),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: Color(0xFF7C2D12)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.pets, color: Colors.white, size: 50),
+                  SizedBox(height: 8),
+                  Text('Veteriner Klinik',
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profilim'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const ProfilEkrani()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.admin_panel_settings),
+              title: const Text('Kullanıcı Yönetimi'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const KullaniciYonetimEkrani()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Çıkış Yap'),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => Giris()));
+              },
+            ),
+          ],
+        ),
+      ),
+      endDrawer: const BildirimPaneli(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        title: const Icon(Icons.pets, color: Colors.white, size: 35),
+        actions: [
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('Asilar')
+                .where('sonrakiAsiTarihi',
+                    isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+                .where('sonrakiAsiTarihi',
+                    isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
+                .snapshots(),
+            builder: (context, snapshot) {
+              final adet = snapshot.data?.docs
+                      .where((d) =>
+                          (d.data() as Map<String, dynamic>)['asiDurumu'] ==
+                          'Bekliyor')
+                      .length ??
+                  0;
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.notifications_outlined,
+                        color: Colors.white, size: 26),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  ),
+                  if (adet > 0)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        width: 16,
+                        height: 16,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            adet > 9 ? '9+' : '$adet',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+          const SizedBox(width: 4),
+        ],
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() => _secilenIndex = index),
+        children: _sayfalar,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _secilenIndex,
+        onTap: (index) {
+          setState(() => _secilenIndex = index);
+          _pageController.animateToPage(index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
+        },
+        selectedItemColor: const Color(0xFF7C2D12),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month), label: 'Randevular'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.medical_services), label: 'Tıbbi Kayıt'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.vaccines), label: 'Aşılar'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notifications), label: 'Yaklaşan'),
+        ],
+      ),
+    );
+  }
+}
