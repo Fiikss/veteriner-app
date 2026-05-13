@@ -146,6 +146,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                         );
                         await _randevuServis.randevuEkle(randevu);
                         await _slotServis.slotDoldur(secilenSlot!.id);
+                        if (!context.mounted) return;
                         Navigator.pop(context);
                       },
                 child: const Text('Randevu Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

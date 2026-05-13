@@ -161,22 +161,20 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                     'rol': secilenRol,
                   });
                   await ikinciBaglanti.delete();
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          '${adSoyadController.text} başarıyla eklendi.',
-                        ),
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        '${adSoyadController.text} başarıyla eklendi.',
                       ),
-                    );
-                  }
+                    ),
+                  );
                 } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Hata: $e')),
-                    );
-                  }
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Hata: $e')),
+                  );
                 }
               },
               child: const Text('Ekle'),

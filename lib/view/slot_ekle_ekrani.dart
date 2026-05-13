@@ -100,6 +100,7 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
                     dolu: false,
                   );
                   await _servis.slotEkle(slot);
+                  if (!context.mounted) return;
                   Navigator.pop(context);
                 },
                 child: const Text('Saat Oluştur', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

@@ -51,6 +51,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                     ),
                     onPressed: () async {
                       await RandevuServis().durumGuncelle(randevu.id, 'Onaylandı');
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.check),
@@ -68,6 +69,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                     ),
                     onPressed: () async {
                       await RandevuServis().durumGuncelle(randevu.id, 'Reddedildi');
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.close),

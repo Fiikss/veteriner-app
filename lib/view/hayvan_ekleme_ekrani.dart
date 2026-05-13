@@ -33,11 +33,10 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
     if (foto != null) {
       final bytes = await foto.readAsBytes();
       if (bytes.length > 900000) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fotoğraf çok büyük, lütfen daha küçük bir fotoğraf seçin.')),
-          );
-        }
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Fotoğraf çok büyük, lütfen daha küçük bir fotoğraf seçin.')),
+        );
         return;
       }
       setState(() {
@@ -161,6 +160,7 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
                     fotoUrl: fotoUrl,
                   );
                   await _servis.hayvanEkle(hayvan);
+                  if (!context.mounted) return;
                   Navigator.pop(context);
                 },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

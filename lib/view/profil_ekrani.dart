@@ -51,11 +51,10 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     if (foto != null) {
       final bytes = await foto.readAsBytes();
       if (bytes.length > 900000) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fotoğraf çok büyük, lütfen daha küçük bir fotoğraf seçin.')),
-          );
-        }
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Fotoğraf çok büyük, lütfen daha küçük bir fotoğraf seçin.')),
+        );
         return;
       }
       setState(() {
@@ -77,15 +76,13 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
         'telefon': telefonController.text,
         'fotoUrl': fotoUrl,
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profil güncellendi')),
-        );
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profil güncellendi')),
+      );
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hata: $e')));
-      }
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Hata: $e')));
     }
   }
 

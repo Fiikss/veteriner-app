@@ -45,11 +45,10 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
     if (foto != null) {
       final bytes = await foto.readAsBytes();
       if (bytes.length > 900000) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fotoğraf çok büyük.')),
-          );
-        }
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Fotoğraf çok büyük.')),
+        );
         return;
       }
       setState(() {
@@ -192,7 +191,8 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                     fotoUrl: fotoUrl,
                   );
                   await _servis.hayvanGuncelle(guncellenmis);
-                  if (mounted) Navigator.pop(context);
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
                 },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),

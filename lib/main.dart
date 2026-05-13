@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:veteriner_app/view/ana_sayfa.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'firebase_options.dart';
 
@@ -25,7 +24,7 @@ class KlinikApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Giris(),
+      home: const Giris(),
       );
   }
 }

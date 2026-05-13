@@ -195,40 +195,35 @@ class _GirisState extends State<Giris> {
                                 .collection('Kullanicilar')
                                 .doc(uid)
                                 .get();
-                            final rol =
-                                (doc.data() as Map<String, dynamic>?)?['rol'] ??
-                                    'musteri';
+                            final rol = doc.data()?['rol'] ?? 'musteri';
 
                             // Sadece müşteriler e-posta doğrulaması yapmak zorunda
                             if (rol == 'musteri' &&
                                 !FirebaseAuth.instance.currentUser!.emailVerified) {
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content:
-                                        Text('Lütfen e-postanızı doğrulayın.'),
-                                  ),
-                                );
-                              }
                               await FirebaseAuth.instance.signOut();
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Lütfen e-postanızı doğrulayın.'),
+                                ),
+                              );
                               return;
                             }
 
                             if (rol != secilenRol) {
-                              if (mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Bu hesap ${roller[secilenRol]!['label']} hesabı değil.',
-                                    ),
-                                  ),
-                                );
-                              }
                               await FirebaseAuth.instance.signOut();
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Bu hesap ${roller[secilenRol]!['label']} hesabı değil.',
+                                  ),
+                                ),
+                              );
                               return;
                             }
 
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             if (rol == 'hekim') {
                               Navigator.pushReplacement(
                                 context,
@@ -252,11 +247,10 @@ class _GirisState extends State<Giris> {
                               );
                             }
                           } catch (e) {
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString())),
-                              );
-                            }
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            );
                           }
                         },
                         child: const Row(

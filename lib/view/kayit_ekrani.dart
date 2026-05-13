@@ -152,22 +152,20 @@ class _KayitState extends State<Kayit> {
                             });
                             await sonuc.user!.sendEmailVerification();
                             await FirebaseAuth.instance.signOut();
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Doğrulama maili gönderildi. E-postanızı onaylayıp giriş yapabilirsiniz.',
-                                  ),
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Doğrulama maili gönderildi. E-postanızı onaylayıp giriş yapabilirsiniz.',
                                 ),
-                              );
-                              Navigator.pop(context);
-                            }
+                              ),
+                            );
+                            Navigator.pop(context);
                           } catch (e) {
-                            if (mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString())),
-                              );
-                            }
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(e.toString())),
+                            );
                           }
                         },
                         child: const Row(

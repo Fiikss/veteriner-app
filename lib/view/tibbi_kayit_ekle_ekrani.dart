@@ -126,6 +126,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                     tarih: secilenTarih ?? DateTime.now(),
                   );
                   await _servis.tibbikayitEkle(kayit);
+                  if (!context.mounted) return;
                   Navigator.pop(context);
                 },
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

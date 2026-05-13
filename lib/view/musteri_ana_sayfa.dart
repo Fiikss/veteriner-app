@@ -66,7 +66,8 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
         title: const Text('Çıkış Yap'),
         onTap: () async {
           await FirebaseAuth.instance.signOut();
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Giris()));
+          if (!context.mounted) return;
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
         },
       ),
     ],

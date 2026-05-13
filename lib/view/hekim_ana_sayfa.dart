@@ -89,8 +89,9 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               title: const Text('Çıkış Yap'),
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
+                if (!context.mounted) return;
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Giris()));
+                    MaterialPageRoute(builder: (context) => const Giris()));
               },
             ),
           ],
