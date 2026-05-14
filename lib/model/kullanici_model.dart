@@ -30,5 +30,4 @@ class Kullanici{
       'rol': rol,
     };
   }
-
 }
