@@ -69,7 +69,7 @@ class BildirimPaneli extends StatelessWidget {
             .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
             .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
             .snapshots(),
-        builder: (context, snapshot) => _asilarIcerik(snapshot, bugun),
+        builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, yediGunSonra),
       );
     }
 
@@ -83,24 +83,26 @@ class BildirimPaneli extends StatelessWidget {
         if (!hayvanSnapshot.hasData) return const Center(child: CircularProgressIndicator());
         final hayvanIDs = hayvanSnapshot.data!;
         if (hayvanIDs.isEmpty) return _bosKart('Kayıtlı hayvan yok');
+        // tarih filtresi client tarafında yapılıyor (composite index gerektirmemek için)
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('Asilar')
               .where('hayvanID', whereIn: hayvanIDs)
-              .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
-              .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
               .snapshots(),
-          builder: (context, snapshot) => _asilarIcerik(snapshot, bugun),
+          builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, yediGunSonra),
         );
       },
     );
   }
 
-  Widget _asilarIcerik(AsyncSnapshot<QuerySnapshot> snapshot, DateTime bugun) {
+  Widget _asilarIcerik(AsyncSnapshot<QuerySnapshot> snapshot, DateTime bugun, DateTime yediGunSonra) {
     if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-    final docs = snapshot.data!.docs
-        .where((d) => (d.data() as Map<String, dynamic>)['asiDurumu'] == 'Bekliyor')
-        .toList();
+    final docs = snapshot.data!.docs.where((d) {
+      final data = d.data() as Map<String, dynamic>;
+      if (data['asiDurumu'] != 'Bekliyor') return false;
+      final tarih = (data['sonrakiAsiTarihi'] as Timestamp).toDate();
+      return !tarih.isBefore(bugun) && !tarih.isAfter(yediGunSonra);
+    }).toList();
     if (docs.isEmpty) return _bosKart('7 gün içinde yaklaşan aşı yok');
     return Column(
       children: docs.map((doc) {
@@ -118,20 +120,28 @@ class BildirimPaneli extends StatelessWidget {
   }
 
   Widget _bugunRandevularWidget(DateTime bugun) {
-    var query = FirebaseFirestore.instance
-        .collection('Randevular')
-        .where('tarih', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
-        .where('tarih', isLessThan: Timestamp.fromDate(bugun.add(const Duration(days: 1))));
+    final yarin = bugun.add(const Duration(days: 1));
 
-    if (musteriID != null) {
-      query = query.where('musteriID', isEqualTo: musteriID);
-    }
+    // musteriID varsa sadece o müşterinin randevularını çek, tarih filtresi client tarafında
+    final stream = musteriID != null
+        ? FirebaseFirestore.instance
+            .collection('Randevular')
+            .where('musteriID', isEqualTo: musteriID)
+            .snapshots()
+        : FirebaseFirestore.instance
+            .collection('Randevular')
+            .where('tarih', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+            .where('tarih', isLessThan: Timestamp.fromDate(yarin))
+            .snapshots();
 
     return StreamBuilder<QuerySnapshot>(
-      stream: query.snapshots(),
+      stream: stream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-        final docs = snapshot.data!.docs;
+        final docs = snapshot.data!.docs.where((d) {
+          final tarih = ((d.data() as Map<String, dynamic>)['tarih'] as Timestamp).toDate();
+          return !tarih.isBefore(bugun) && tarih.isBefore(yarin);
+        }).toList();
         if (docs.isEmpty) return _bosKart('Bugün randevu yok');
         return Column(
           children: docs.map((doc) {
