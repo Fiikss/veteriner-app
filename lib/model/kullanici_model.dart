@@ -31,7 +31,4 @@ class Kullanici{
     };
   }
 
-
-
-
 }
