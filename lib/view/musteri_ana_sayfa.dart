@@ -110,7 +110,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
       )
     : null,
 
-      endDrawer: const BildirimPaneli(),
+      endDrawer: BildirimPaneli(musteriID: FirebaseAuth.instance.currentUser!.uid),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

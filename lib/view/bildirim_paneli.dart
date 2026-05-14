@@ -4,7 +4,8 @@ import 'package:veteriner_app/model/asi_model.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 
 class BildirimPaneli extends StatelessWidget {
-  const BildirimPaneli({super.key});
+  final String? musteriID;
+  const BildirimPaneli({super.key, this.musteriID});
 
   @override
   Widget build(BuildContext context) {
@@ -47,90 +48,104 @@ class BildirimPaneli extends StatelessWidget {
               children: [
                 _baslik('Yaklaşan Aşılar (7 gün)', Icons.vaccines),
                 const SizedBox(height: 8),
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Asilar')
-                      .where('sonrakiAsiTarihi',
-                          isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
-                      .where('sonrakiAsiTarihi',
-                          isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final docs = snapshot.data!.docs
-                        .where((d) =>
-                            (d.data() as Map<String, dynamic>)['asiDurumu'] ==
-                            'Bekliyor')
-                        .toList();
-                    if (docs.isEmpty) {
-                      return _bosKart('7 gün içinde yaklaşan aşı yok');
-                    }
-                    return Column(
-                      children: docs.map((doc) {
-                        final asi = Asi.fromMap(
-                          doc.data() as Map<String, dynamic>,
-                          doc.id,
-                        );
-                        final kacGun = asi.sonrakiAsiTarihi
-                            .difference(bugun)
-                            .inDays;
-                        return _bildirimKarti(
-                          ikon: Icons.vaccines,
-                          renk: kacGun <= 2 ? Colors.red : Colors.orange,
-                          baslik: asi.asiAdi,
-                          altBaslik: asi.hayvanAdi,
-                          sag: kacGun == 0
-                              ? 'Bugün'
-                              : '$kacGun gün sonra',
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
+                _yaklasanAsilarWidget(bugun, yediGunSonra),
                 const SizedBox(height: 16),
                 _baslik('Bugünkü Randevular', Icons.calendar_today),
                 const SizedBox(height: 8),
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('Randevular')
-                      .where('tarih',
-                          isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
-                      .where('tarih',
-                          isLessThan: Timestamp.fromDate(
-                              bugun.add(const Duration(days: 1))))
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final docs = snapshot.data!.docs;
-                    if (docs.isEmpty) {
-                      return _bosKart('Bugün randevu yok');
-                    }
-                    return Column(
-                      children: docs.map((doc) {
-                        final r = Randevu.fromMap(
-                          doc.data() as Map<String, dynamic>,
-                          doc.id,
-                        );
-                        return _bildirimKarti(
-                          ikon: Icons.calendar_month,
-                          renk: const Color(0xFF7C2D12),
-                          baslik: r.sikayet,
-                          altBaslik: r.randevu_tur,
-                          sag: r.saat,
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
+                _bugunRandevularWidget(bugun),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _yaklasanAsilarWidget(DateTime bugun, DateTime yediGunSonra) {
+    if (musteriID == null) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('Asilar')
+            .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+            .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
+            .snapshots(),
+        builder: (context, snapshot) => _asilarIcerik(snapshot, bugun),
+      );
+    }
+
+    return FutureBuilder<List<String>>(
+      future: FirebaseFirestore.instance
+          .collection('Hayvanlar')
+          .where('sahipID', isEqualTo: musteriID)
+          .get()
+          .then((snap) => snap.docs.map((d) => d.id).toList()),
+      builder: (context, hayvanSnapshot) {
+        if (!hayvanSnapshot.hasData) return const Center(child: CircularProgressIndicator());
+        final hayvanIDs = hayvanSnapshot.data!;
+        if (hayvanIDs.isEmpty) return _bosKart('Kayıtlı hayvan yok');
+        return StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('Asilar')
+              .where('hayvanID', whereIn: hayvanIDs)
+              .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+              .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(yediGunSonra))
+              .snapshots(),
+          builder: (context, snapshot) => _asilarIcerik(snapshot, bugun),
+        );
+      },
+    );
+  }
+
+  Widget _asilarIcerik(AsyncSnapshot<QuerySnapshot> snapshot, DateTime bugun) {
+    if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+    final docs = snapshot.data!.docs
+        .where((d) => (d.data() as Map<String, dynamic>)['asiDurumu'] == 'Bekliyor')
+        .toList();
+    if (docs.isEmpty) return _bosKart('7 gün içinde yaklaşan aşı yok');
+    return Column(
+      children: docs.map((doc) {
+        final asi = Asi.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        final kacGun = asi.sonrakiAsiTarihi.difference(bugun).inDays;
+        return _bildirimKarti(
+          ikon: Icons.vaccines,
+          renk: kacGun <= 2 ? Colors.red : Colors.orange,
+          baslik: asi.asiAdi,
+          altBaslik: asi.hayvanAdi,
+          sag: kacGun == 0 ? 'Bugün' : '$kacGun gün sonra',
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _bugunRandevularWidget(DateTime bugun) {
+    var query = FirebaseFirestore.instance
+        .collection('Randevular')
+        .where('tarih', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+        .where('tarih', isLessThan: Timestamp.fromDate(bugun.add(const Duration(days: 1))));
+
+    if (musteriID != null) {
+      query = query.where('musteriID', isEqualTo: musteriID);
+    }
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: query.snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+        final docs = snapshot.data!.docs;
+        if (docs.isEmpty) return _bosKart('Bugün randevu yok');
+        return Column(
+          children: docs.map((doc) {
+            final r = Randevu.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+            return _bildirimKarti(
+              ikon: Icons.calendar_month,
+              renk: const Color(0xFF7C2D12),
+              baslik: r.sikayet,
+              altBaslik: r.randevu_tur,
+              sag: r.saat,
+            );
+          }).toList(),
+        );
+      },
     );
   }
 

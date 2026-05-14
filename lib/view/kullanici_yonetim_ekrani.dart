@@ -49,17 +49,26 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                     ? data['adSoyad']
                     : data['email'] ?? ''),
                 subtitle: Text(data['email'] ?? ''),
-                trailing: Chip(
-                  label: Text(rol == 'hekim' ? 'Hekim' : 'Asistan'),
-                  backgroundColor: rol == 'hekim'
-                      ? const Color(0xFF7C2D12).withValues(alpha: 0.1)
-                      : Colors.orange.withValues(alpha: 0.1),
-                  labelStyle: TextStyle(
-                    color: rol == 'hekim'
-                        ? const Color(0xFF7C2D12)
-                        : Colors.orange,
-                    fontWeight: FontWeight.bold,
-                  ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Chip(
+                      label: Text(rol == 'hekim' ? 'Hekim' : 'Asistan'),
+                      backgroundColor: rol == 'hekim'
+                          ? const Color(0xFF7C2D12).withValues(alpha: 0.1)
+                          : Colors.orange.withValues(alpha: 0.1),
+                      labelStyle: TextStyle(
+                        color: rol == 'hekim'
+                            ? const Color(0xFF7C2D12)
+                            : Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline, color: Colors.red),
+                      onPressed: () => _personelSilDialog(context, personeller[index].id, data['adSoyad'] ?? data['email'] ?? ''),
+                    ),
+                  ],
                 ),
               );
             },
@@ -181,6 +190,47 @@ class KullaniciYonetimEkrani extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _personelSilDialog(BuildContext context, String personelId, String adSoyad) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Personeli Sil'),
+        content: Text('$adSoyad adlı personeli silmek istediğinizden emin misiniz?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('İptal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () async {
+              try {
+                await FirebaseFirestore.instance
+                    .collection('Kullanicilar')
+                    .doc(personelId)
+                    .delete();
+                if (!ctx.mounted) return;
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('$adSoyad silindi.')),
+                );
+              } catch (e) {
+                if (!ctx.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Hata: $e')),
+                );
+              }
+            },
+            child: const Text('Sil'),
+          ),
+        ],
       ),
     );
   }
