@@ -21,8 +21,9 @@ class Hayvan{
     required this.fotoUrl,
 
   });
-
+                        //firestoredan gelen ham veri, dokumanId firestore'daki belge ID
   factory Hayvan.fromMap(Map<String, dynamic> map, String dokumanId){
+    //her seferinde yeni nesne oluşturmamak için factory kullanıyoruz. 
     return Hayvan(id: dokumanId,
     sahipID: map['sahipID']?? '',
     ad: map['ad'] ?? '',
@@ -34,6 +35,7 @@ class Hayvan{
     );
   }
 
+//nesneyi veriye çeviriyoruz firestore a yazarken kullanılır.
   Map <String, dynamic> toMap(){
     return {
       'sahipID': sahipID,
