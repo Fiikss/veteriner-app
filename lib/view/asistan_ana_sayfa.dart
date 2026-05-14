@@ -147,21 +147,21 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
             },
           ),
           // Ödemeler sekmesi
-          StreamBuilder<List<Randevu>>(
-            stream: RandevuServis().tumRandevular(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-              final randevular = snapshot.data!;
-              if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
-              return ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: randevular.length,
-                itemBuilder: (context, index) {
-                  final randevu = randevular[index];
-                  final odemeController = TextEditingController(text: randevu.odeme.toString());
-                  return Card(
-                    elevation: 3,
-                    shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+ StreamBuilder<List<Randevu>>(
+  stream: RandevuServis().tumRandevular(),
+    builder: (context, snapshot) {
+     if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+      final randevular = snapshot.data!;
+       if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
+        return ListView.builder(
+           padding: const EdgeInsets.all(12),
+            itemCount: randevular.length,
+             itemBuilder: (context, index) {
+              final randevu = randevular[index];
+               final odemeController = TextEditingController(text: randevu.odeme.toString());
+                return Card(
+                 elevation: 3,
+                   shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     margin: const EdgeInsets.only(bottom: 10),
                     child: ListTile(
