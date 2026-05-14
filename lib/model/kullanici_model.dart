@@ -1,28 +1,30 @@
 
 class Kullanici{
-  final String id;
-  final String adSoyad;
-  final String email;
-  final String telefon;
-  final String rol;
+String id;
+String adSoyad;
+String email;
+String telefon;
+String rol;
 
-  Kullanici({
-    required this.id,
-    required this.adSoyad,
-    required this.email,
-    required this.telefon,
-    required this.rol,
-  });
+Kullanici({
+  required this.id,
+  required this.adSoyad,
+  required this.email,
+  required this.telefon,
+  required this.rol,
+});
 
 
-  factory Kullanici.fromMap(Map<String, dynamic> map, String dokumanId){
-    return Kullanici(id: dokumanId, adSoyad: map['adSoyad' ] ?? '', 
+static Kullanici fromMap(Map<String, dynamic> map, String dokumanId){
+    return Kullanici(
+    id: dokumanId, 
+    adSoyad: map['adSoyad' ] ?? '', 
     email: map['email' ]?? '', 
     telefon: map['telefon'] ?? '', 
     rol: map['rol'] ?? 'musteri');
-  }
+}
 
-  Map <String, dynamic> toMap(){
+Map <String, dynamic> toMap(){
     return{
       'adSoyad': adSoyad,
       'email': email,

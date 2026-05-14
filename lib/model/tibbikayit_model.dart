@@ -2,28 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class TibbiKayit{
-  final String id;
-  final String HekimID;
-  final String hayvanID;
-  final String kategori;
-  final String teshis;
-  final String tedavi;
-  final String ilaclar;
-  final DateTime tarih;
+  String id;
+  String HekimID;
+  String hayvanID;
+  String kategori;
+  String teshis;
+  String tedavi;
+  String ilaclar;
+  DateTime tarih;
 
 
-  TibbiKayit({
-     required this.id,
-     required this.HekimID,
-     required this.hayvanID,
-     required this.ilaclar,
-     required this.kategori,
-     required this.tedavi,
-     required this.tarih,
-     required this.teshis,
+TibbiKayit({
+  required this.id,
+  required this.HekimID,
+  required this.hayvanID,
+  required this.ilaclar,
+  required this.kategori,
+  required this.tedavi,
+  required this.tarih,
+  required this.teshis,
   });
 
-  factory TibbiKayit.fromMap(Map<String, dynamic> map, String dokumanId){
+  static TibbiKayit fromMap(Map<String, dynamic> map, String dokumanId){
     return TibbiKayit(
       id: dokumanId,
       hayvanID: map['hayvanID'] ?? '',

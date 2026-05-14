@@ -19,7 +19,8 @@ class _GirisState extends State<Giris> {
   String secilenRol = 'musteri';
   bool sifreGizli = true;
 
-  final Map<String, Map<String, dynamic>> roller = {
+  final Map<String, Map<String, dynamic>> 
+  roller = {
     'musteri': {'label': 'Müşteri', 'icon': Icons.person},
     'hekim': {'label': 'Hekim', 'icon': Icons.medical_services},
     'asistan': {'label': 'Asistan', 'icon': Icons.support_agent},

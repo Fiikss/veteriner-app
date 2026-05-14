@@ -2,11 +2,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Slot {
-  final String id;
-  final String hekimID;
-  final DateTime tarih;
-  final String saat;
-  final bool dolu;
+  String id;
+  String hekimID;
+  DateTime tarih;
+  String saat;
+  bool dolu;
 
 
   Slot({
@@ -18,7 +18,7 @@ class Slot {
 
       });
 
-  factory Slot.fromMap(Map<String, dynamic> map, String dokumanId) {
+  static Slot fromMap(Map<String, dynamic> map, String dokumanId) {
     return Slot(
       id: dokumanId,
       hekimID: map['hekimID'] ?? '',

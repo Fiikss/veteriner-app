@@ -4,12 +4,14 @@ import 'package:veteriner_app/model/randevu_model.dart';
 class RandevuServis {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
   Future<void> randevuEkle(Randevu randevu) async {
     await _firestore
         .collection('Randevular')
         .doc(randevu.id)
         .set(randevu.toMap());
   }
+
 
 Stream <List<Randevu>> hayvanRandevulari (String hayvanID){
   return _firestore

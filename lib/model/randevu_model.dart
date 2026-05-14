@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Randevu{
-  final String id;
-  final String musteriID;
-  final String hayvanID;
-  final String HekimID;
-  final String sikayet;
-  final String randevu_tur;
-  final String durum;
-  final double odeme;
-  final String odemeDurumu;
-  final DateTime tarih;
-  final String slotID;
-  final String saat;
+  String id;
+  String musteriID;
+  String hayvanID;
+  String HekimID;
+  String sikayet;
+  String randevu_tur;
+  String durum;
+  double odeme;
+  String odemeDurumu;
+  DateTime tarih;
+  String slotID;
+  String saat;
 
  Randevu({
     required this.id,
@@ -29,8 +29,9 @@ class Randevu{
     required this.saat,
   });
 
-  factory Randevu.fromMap(Map<String, dynamic> map, String dokumanId){
-    return Randevu(id: dokumanId, 
+  static Randevu fromMap(Map<String, dynamic> map, String dokumanId){
+    return Randevu(
+    id: dokumanId, 
     musteriID: map['musteriID'] ?? '', 
     hayvanID: map['hayvanID'] ?? '', 
     HekimID: map['HekimID'] ?? '',  

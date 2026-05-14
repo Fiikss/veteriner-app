@@ -1,13 +1,13 @@
 
 class Hayvan{
-  final String id;
-  final String sahipID;
-  final String ad;
-  final String tur;
-  final String irk;
-  final double yas;
-  final double kilo;
-  final String fotoUrl;
+  String id;
+  String sahipID;
+  String ad;
+  String tur;
+  String irk;
+  double yas;
+  double kilo;
+  String fotoUrl;
 
 
   Hayvan({
@@ -21,10 +21,11 @@ class Hayvan{
     required this.fotoUrl,
 
   });
-                        //firestoredan gelen ham veri, dokumanId firestore'daki belge ID
-  factory Hayvan.fromMap(Map<String, dynamic> map, String dokumanId){
-    //her seferinde yeni nesne oluşturmamak için factory kullanıyoruz. 
-    return Hayvan(id: dokumanId,
+
+//firestoredan gelen ham veri, dokumanId firestore'daki belge ID
+  static Hayvan fromMap(Map<String, dynamic> map, String dokumanId){
+    return Hayvan(
+    id: dokumanId,
     sahipID: map['sahipID']?? '',
     ad: map['ad'] ?? '',
     tur: map['tur'] ?? '',

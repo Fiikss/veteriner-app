@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Asi {
-  final String id;
-  final String hayvanID;
-  final String hayvanAdi;
-  final String asiAdi;
-  final DateTime yapilmaTarihi;
-  final DateTime sonrakiAsiTarihi;
-  final String asiDurumu; 
+String id;
+String hayvanID;
+String hayvanAdi;
+String asiAdi;
+DateTime yapilmaTarihi;
+DateTime sonrakiAsiTarihi;
+String asiDurumu; 
 
-  Asi({
+Asi({
     required this.id,
     required this.hayvanID,
     required this.hayvanAdi,
@@ -21,7 +21,7 @@ class Asi {
 
 
 
-    factory Asi.fromMap(Map<String, dynamic>map, String dokumanId){
+    static Asi fromMap(Map<String, dynamic>map, String dokumanId){
       return Asi(
         id: dokumanId,
         hayvanID: map['hayvanID'] ?? '',
