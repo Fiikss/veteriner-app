@@ -29,10 +29,12 @@ class _GirisState extends State<Giris> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF7C2D12),
-      body: Column(
-        children: [
-          const SizedBox(height: 60),
+backgroundColor: Color.,
+body: Column(
+children: [
+
+const SizedBox(height: 60),
+
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -48,6 +50,7 @@ class _GirisState extends State<Giris> {
             ),
             child: const Icon(Icons.pets, color: Colors.white, size: 50),
           ),
+
           const SizedBox(height: 8),
           const Text(
             'Veteriner Kliniği',
