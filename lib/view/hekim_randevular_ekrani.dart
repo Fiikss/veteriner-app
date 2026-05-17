@@ -46,7 +46,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
         Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -82,7 +82,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                           final renk = _durumRengi(randevu.durum);
                           return Card(
                             elevation: 3,
-                            shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                            shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             margin: const EdgeInsets.only(bottom: 10),
                             child: ListTile(
@@ -90,10 +90,10 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF7C2D12).withValues(alpha: 0.1),
+                                  color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(Icons.calendar_month, color: Color(0xFF7C2D12)),
+                                child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
                               ),
                               title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
                               subtitle: Text('${randevu.randevu_tur} • ${randevu.saat}'),
@@ -125,7 +125,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                           final slot = slotlar[index];
                           return Card(
                             elevation: 3,
-                            shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                            shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             margin: const EdgeInsets.only(bottom: 10),
                             child: ListTile(
@@ -167,7 +167,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                 bottom: 16,
                 right: 16,
                 child: FloatingActionButton(
-                  backgroundColor: const Color(0xFF7C2D12),
+                  backgroundColor: const Color(0xFFB71C1C),
                   foregroundColor: Colors.white,
                   onPressed: () => Navigator.push(
                     context,

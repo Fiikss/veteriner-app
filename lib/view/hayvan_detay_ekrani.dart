@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:veteriner_app/model/hayvan_model.dart';
+import 'package:veteriner_app/servis/foto_servis.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/view/hayvan_asilari_ekrani.dart';
 import 'package:veteriner_app/view/musteri_tibbi_kayitlar_ekrani.dart';
@@ -22,7 +22,6 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
   late final TextEditingController kiloController;
   late final TextEditingController yasController;
   final HayvanServis _servis = HayvanServis();
-  XFile? _secilenFoto;
   Uint8List? _fotoBytes;
 
   @override
@@ -35,35 +34,25 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
     yasController = TextEditingController(text: widget.hayvan.yas.toString());
   }
 
+  // galeriden fotoğraf seç
   Future<void> _fotografSec() async {
-    final foto = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 15,
-      maxWidth: 200,
-      maxHeight: 200,
-    );
-    if (foto != null) {
-      final bytes = await foto.readAsBytes();
-      if (bytes.length > 900000) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fotoğraf çok büyük.')),
-        );
-        return;
+    try {
+      final bytes = await FotoServis().fotografSec();
+      if (bytes != null) {
+        setState(() => _fotoBytes = bytes);
       }
-      setState(() {
-        _secilenFoto = foto;
-        _fotoBytes = bytes;
-      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
   InputDecoration _inputDecoration(String label, IconData ikon) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(ikon, color: const Color(0xFF7C2D12)),
+      prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFF4ED),
+      fillColor: const Color(0xFFFFEBEE),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -74,7 +63,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF7F0),
+      backgroundColor: const Color(0xFFFFEBEE),
       appBar: AppBar(
         title: Text('${widget.hayvan.ad} - Düzenle'),
         foregroundColor: Colors.white,
@@ -83,7 +72,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -127,14 +116,14 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: const Color(0xFFFFEDD5),
+                    backgroundColor: const Color(0xFFFFCDD2),
                     backgroundImage: _fotoBytes != null
                         ? MemoryImage(_fotoBytes!)
                         : widget.hayvan.fotoUrl.isNotEmpty
                             ? MemoryImage(base64Decode(widget.hayvan.fotoUrl))
                             : null,
                     child: (_fotoBytes == null && widget.hayvan.fotoUrl.isEmpty)
-                        ? const Icon(Icons.pets, size: 40, color: Color(0xFF7C2D12))
+                        ? const Icon(Icons.pets, size: 40, color: Color(0xFFB71C1C))
                         : null,
                   ),
                   Positioned(
@@ -143,7 +132,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(
-                        color: Color(0xFF7C2D12),
+                        color: Color(0xFFB71C1C),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
@@ -168,17 +157,16 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C2D12),
+                  backgroundColor: const Color(0xFFB71C1C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 3,
-                  shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.4),
+                  shadowColor: const Color(0xFFC62828).withValues(alpha: 0.4),
                 ),
                 onPressed: () async {
                   String fotoUrl = widget.hayvan.fotoUrl;
-                  if (_secilenFoto != null) {
-                    final bytes = await _secilenFoto!.readAsBytes();
-                    fotoUrl = base64Encode(bytes);
+                  if (_fotoBytes != null) {
+                    fotoUrl = base64Encode(_fotoBytes!);
                   }
                   final guncellenmis = Hayvan(
                     id: widget.hayvan.id,
@@ -190,6 +178,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                     yas: double.tryParse(yasController.text) ?? 0,
                     fotoUrl: fotoUrl,
                   );
+                  // güncellemeyi kaydet ve geri dön
                   await _servis.hayvanGuncelle(guncellenmis);
                   if (!context.mounted) return;
                   Navigator.pop(context);
@@ -204,7 +193,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                   child: OutlinedButton.icon(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: const BorderSide(color: Color(0xFF7C2D12)),
+                      side: const BorderSide(color: Color(0xFFB71C1C)),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     onPressed: () => Navigator.push(
@@ -217,8 +206,8 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                         ),
                       ),
                     ),
-                    icon: const Icon(Icons.vaccines, color: Color(0xFF7C2D12)),
-                    label: const Text('Aşı Geçmişi', style: TextStyle(color: Color(0xFF7C2D12))),
+                    icon: const Icon(Icons.vaccines, color: Color(0xFFB71C1C)),
+                    label: const Text('Aşı Geçmişi', style: TextStyle(color: Color(0xFFB71C1C))),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -226,7 +215,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                   child: OutlinedButton.icon(
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: const BorderSide(color: Color(0xFF7C2D12)),
+                      side: const BorderSide(color: Color(0xFFB71C1C)),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     onPressed: () => Navigator.push(
@@ -238,8 +227,8 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                         ),
                       ),
                     ),
-                    icon: const Icon(Icons.medical_services_outlined, color: Color(0xFF7C2D12)),
-                    label: const Text('Tıbbi Kayıtlar', style: TextStyle(color: Color(0xFF7C2D12))),
+                    icon: const Icon(Icons.medical_services_outlined, color: Color(0xFFB71C1C)),
+                    label: const Text('Tıbbi Kayıtlar', style: TextStyle(color: Color(0xFFB71C1C))),
                   ),
                 ),
               ],

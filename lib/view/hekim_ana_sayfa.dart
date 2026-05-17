@@ -47,13 +47,13 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
     final yediGunSonra = bugun.add(const Duration(days: 7));
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF7F0),
+      backgroundColor: const Color(0xFFFFEBEE),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF7C2D12)),
+              decoration: BoxDecoration(color: Color(0xFFB71C1C)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -88,6 +88,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               leading: const Icon(Icons.logout),
               title: const Text('Çıkış Yap'),
               onTap: () async {
+                // oturumu kapat ve giriş ekranına dön
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
                 Navigator.pushReplacement(context,
@@ -105,7 +106,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -179,7 +180,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut);
         },
-        selectedItemColor: const Color(0xFF7C2D12),
+        selectedItemColor: const Color(0xFFB71C1C),
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const [

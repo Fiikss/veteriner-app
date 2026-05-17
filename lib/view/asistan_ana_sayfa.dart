@@ -33,13 +33,14 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF7F0),
+      backgroundColor: const Color(0xFFFFEBEE),
+      // yan menü
       drawer: Drawer(
-  child: ListView(
-    padding: EdgeInsets.zero,
-    children: [
-      const DrawerHeader(
-        decoration: BoxDecoration(color: Color(0xFF7C2D12)),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+        decoration: BoxDecoration(color: Color(0xFFB71C1C)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -49,26 +50,27 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
           ],
         ),
       ),
-      ListTile(
-        leading: const Icon(Icons.person),
-        title: const Text('Profilim'),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilEkrani()));
-        },
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profilim'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilEkrani()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Çıkış Yap'),
+              onTap: () async {
+                // çıkış yapılıyor
+                await FirebaseAuth.instance.signOut();
+                if (!context.mounted) return;
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
+              },
+            ),
+          ],
+        ),
       ),
-      ListTile(
-        leading: const Icon(Icons.logout),
-        title: const Text('Çıkış Yap'),
-        onTap: () async {
-          await FirebaseAuth.instance.signOut();
-          if (!context.mounted) return;
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
-        },
-      ),
-    ],
-  ),
-),
 
       endDrawer: const BildirimPaneli(),
       appBar: AppBar(
@@ -79,7 +81,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -119,7 +121,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                           : Colors.orange;
                   return Card(
                     elevation: 3,
-                    shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                    shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     margin: const EdgeInsets.only(bottom: 10),
                     child: ListTile(
@@ -127,10 +129,10 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                       leading: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF7C2D12).withValues(alpha: 0.1),
+                          color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.calendar_month, color: Color(0xFF7C2D12)),
+                        child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
                       ),
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text('${randevu.randevu_tur} • ${randevu.saat}'),
@@ -161,7 +163,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                final odemeController = TextEditingController(text: randevu.odeme.toString());
                 return Card(
                  elevation: 3,
-                   shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                   shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     margin: const EdgeInsets.only(bottom: 10),
                     child: ListTile(
@@ -169,10 +171,10 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                       leading: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF7C2D12).withValues(alpha: 0.1),
+                          color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.payment, color: Color(0xFF7C2D12)),
+                        child: const Icon(Icons.payment, color: Color(0xFFB71C1C)),
                       ),
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text('${randevu.randevu_tur} • ${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
@@ -194,7 +196,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                                       decoration: InputDecoration(
                                         labelText: '₺',
                                         filled: true,
-                                        fillColor: const Color(0xFFFFF4ED),
+                                        fillColor: const Color(0xFFFFEBEE),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(8),
                                           borderSide: BorderSide.none,
@@ -232,7 +234,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut);
         },
-        selectedItemColor: const Color(0xFF7C2D12),
+        selectedItemColor: const Color(0xFFB71C1C),
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),

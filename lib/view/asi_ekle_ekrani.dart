@@ -23,7 +23,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Aşı Kayıt'),
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -38,7 +38,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 prefixIcon: const Icon(Icons.info_outline),
                 filled: true,
-                fillColor: const Color(0xFFFFF4ED),
+                fillColor: const Color(0xFFFFEBEE),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -56,7 +56,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                 labelText: 'Aşı Adı',
                 prefixIcon: const Icon(Icons.vaccines),
                 filled: true,
-                fillColor: const Color(0xFFFFF4ED),
+                fillColor: const Color(0xFFFFEBEE),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -70,7 +70,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    side: const BorderSide(color: Color(0xFF7C2D12)),
+                    side: const BorderSide(color: Color(0xFFB71C1C)),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   onPressed: () async {
@@ -82,12 +82,12 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                     );
                     if (tarih != null) setState(() => yapilmaTarihi = tarih);
                   },
-                  icon: const Icon(Icons.calendar_today, color: Color(0xFF7C2D12)),
+                  icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
                   label: Text(
                     yapilmaTarihi == null
                         ? 'Yapılan Aşı Tarihi'
                         : '${yapilmaTarihi!.day}.${yapilmaTarihi!.month}.${yapilmaTarihi!.year}',
-                    style: const TextStyle(color: Color(0xFF7C2D12), fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -98,7 +98,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
-                  side: const BorderSide(color: Color(0xFF7C2D12)),
+                  side: const BorderSide(color: Color(0xFFB71C1C)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () async {
@@ -110,12 +110,12 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                   );
                   if (tarih != null) setState(() => sonrakiAsiTarihi = tarih);
                 },
-                icon: const Icon(Icons.event, color: Color(0xFF7C2D12)),
+                icon: const Icon(Icons.event, color: Color(0xFFB71C1C)),
                 label: Text(
                   sonrakiAsiTarihi == null
                       ? 'Sonraki Aşı Tarihi'
                       : '${sonrakiAsiTarihi!.day}.${sonrakiAsiTarihi!.month}.${sonrakiAsiTarihi!.year}',
-                  style: const TextStyle(color: Color(0xFF7C2D12), fontWeight: FontWeight.bold),
+                  style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -125,7 +125,7 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C2D12),
+                  backgroundColor: const Color(0xFFB71C1C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),

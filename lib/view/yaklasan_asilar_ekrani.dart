@@ -32,7 +32,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
               final renk = kacGun <= 2 ? Colors.red : Colors.orange;
               return Card(
                 elevation: 3,
-                shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 margin: const EdgeInsets.only(bottom: 10),
                 child: ListTile(

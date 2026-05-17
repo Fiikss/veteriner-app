@@ -25,7 +25,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Randevu Al'),
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -39,7 +39,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                 labelText: 'Şikayet',
                 prefixIcon: const Icon(Icons.report_problem_outlined),
                 filled: true,
-                fillColor: const Color(0xFFFFF4ED),
+                fillColor: const Color(0xFFFFEBEE),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -54,7 +54,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 prefixIcon: const Icon(Icons.category_outlined),
                 filled: true,
-                fillColor: const Color(0xFFFFF4ED),
+                fillColor: const Color(0xFFFFEBEE),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -68,7 +68,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
             const SizedBox(height: 16),
             const Text(
               'Uygun Saatler',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF7C2D12)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFFB71C1C)),
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -88,11 +88,11 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                       return Card(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         margin: const EdgeInsets.only(bottom: 8),
-                        color: secili ? const Color(0xFF7C2D12) : Colors.white,
+                        color: secili ? const Color(0xFFB71C1C) : Colors.white,
                         child: ListTile(
                           leading: Icon(
                             Icons.access_time,
-                            color: secili ? Colors.white : const Color(0xFF7C2D12),
+                            color: secili ? Colors.white : const Color(0xFFB71C1C),
                           ),
                           title: Text(
                             '${slot.tarih.day}.${slot.tarih.month}.${slot.tarih.year}',
@@ -122,7 +122,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF7C2D12),
+                  backgroundColor: const Color(0xFFB71C1C),
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   disabledBackgroundColor: Colors.grey.shade300,
@@ -144,6 +144,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                           slotID: secilenSlot!.id,
                           saat: secilenSlot!.saat,
                         );
+                        // randevuyu kaydet ve slotu dolu olarak işaretle
                         await _randevuServis.randevuEkle(randevu);
                         await _slotServis.slotDoldur(secilenSlot!.id);
                         if (!context.mounted) return;

@@ -27,7 +27,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.hayvanAdi} - Aşı Geçmişi'),
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
       body: StreamBuilder<List<Asi>>(
@@ -44,7 +44,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
               final renk = _durumRengi(asi.asiDurumu);
               return Card(
                 elevation: 3,
-                shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+                shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 margin: const EdgeInsets.only(bottom: 10),
                 child: ListTile(
@@ -87,7 +87,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
       ),
       floatingActionButton: widget.canAdd
           ? FloatingActionButton(
-              backgroundColor: const Color(0xFF7C2D12),
+              backgroundColor: const Color(0xFFB71C1C),
               foregroundColor: Colors.white,
               onPressed: () => Navigator.push(
                 context,

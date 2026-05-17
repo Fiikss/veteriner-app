@@ -22,7 +22,7 @@ class BildirimPaneli extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+                colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -148,7 +148,7 @@ class BildirimPaneli extends StatelessWidget {
             final r = Randevu.fromMap(doc.data() as Map<String, dynamic>, doc.id);
             return _bildirimKarti(
               ikon: Icons.calendar_month,
-              renk: const Color(0xFF7C2D12),
+              renk: const Color(0xFFB71C1C),
               baslik: r.sikayet,
               altBaslik: r.randevu_tur,
               sag: r.saat,
@@ -162,14 +162,14 @@ class BildirimPaneli extends StatelessWidget {
   Widget _baslik(String metin, IconData ikon) {
     return Row(
       children: [
-        Icon(ikon, size: 16, color: const Color(0xFF7C2D12)),
+        Icon(ikon, size: 16, color: const Color(0xFFB71C1C)),
         const SizedBox(width: 6),
         Text(
           metin,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 13,
-            color: Color(0xFF7C2D12),
+            color: Color(0xFFB71C1C),
           ),
         ),
       ],

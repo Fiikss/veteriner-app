@@ -12,7 +12,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Personel Yönetimi'),
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -35,7 +35,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
               return ListTile(
                 leading: CircleAvatar(
                   backgroundColor: rol == 'hekim'
-                      ? const Color(0xFF7C2D12)
+                      ? const Color(0xFFB71C1C)
                       : Colors.orange,
                   child: Icon(
                     rol == 'hekim'
@@ -55,11 +55,11 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                     Chip(
                       label: Text(rol == 'hekim' ? 'Hekim' : 'Asistan'),
                       backgroundColor: rol == 'hekim'
-                          ? const Color(0xFF7C2D12).withValues(alpha: 0.1)
+                          ? const Color(0xFFB71C1C).withValues(alpha: 0.1)
                           : Colors.orange.withValues(alpha: 0.1),
                       labelStyle: TextStyle(
                         color: rol == 'hekim'
-                            ? const Color(0xFF7C2D12)
+                            ? const Color(0xFFB71C1C)
                             : Colors.orange,
                         fontWeight: FontWeight.bold,
                       ),
@@ -76,7 +76,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
         icon: const Icon(Icons.person_add),
         label: const Text('Personel Ekle'),
@@ -145,7 +145,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF7C2D12),
+                backgroundColor: const Color(0xFFB71C1C),
                 foregroundColor: Colors.white,
               ),
               onPressed: () async {
@@ -170,6 +170,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                     'rol': secilenRol,
                   });
                   await ikinciBaglanti.delete();
+                  // personel eklendi, dialogu kapat
                   if (!context.mounted) return;
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(

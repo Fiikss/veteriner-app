@@ -32,12 +32,12 @@ class _TibbikayitListesiEkraniState extends State<TibbikayitListesiEkrani> {
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   leading: CircleAvatar(
-                    backgroundColor: const Color(0xFF7C2D12).withValues(alpha: 0.1),
+                    backgroundColor: const Color(0xFFB71C1C).withValues(alpha: 0.1),
                     backgroundImage: hayvan.fotoUrl.isNotEmpty
                         ? MemoryImage(base64Decode(hayvan.fotoUrl))
                         : null,
                     child: hayvan.fotoUrl.isEmpty
-                        ? const Icon(Icons.pets, color: Color(0xFF7C2D12))
+                        ? const Icon(Icons.pets, color: Color(0xFFB71C1C))
                         : null,
                   ),
                   title: Text(hayvan.ad, style: const TextStyle(fontWeight: FontWeight.bold)),

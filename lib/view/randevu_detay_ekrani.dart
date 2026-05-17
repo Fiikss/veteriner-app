@@ -11,7 +11,7 @@ class RandevuDetayEkrani extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Randevu Detayı'),
-        backgroundColor: const Color(0xFF7C2D12),
+        backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -19,6 +19,7 @@ class RandevuDetayEkrani extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // randevu bilgileri kartı
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 2,
@@ -39,6 +40,7 @@ class RandevuDetayEkrani extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 24),
+            // onayla ve reddet butonları
             Row(
               children: [
                 Expanded(
@@ -84,12 +86,13 @@ class RandevuDetayEkrani extends StatelessWidget {
     );
   }
 
+  // bilgi satırı oluşturan yardımcı metot
   Widget _satirOlustur(IconData ikon, String baslik, String deger) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(ikon, color: const Color(0xFF7C2D12), size: 20),
+          Icon(ikon, color: const Color(0xFFB71C1C), size: 20),
           const SizedBox(width: 12),
           Text('$baslik:', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           const SizedBox(width: 8),

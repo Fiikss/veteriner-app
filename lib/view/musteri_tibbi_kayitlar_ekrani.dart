@@ -10,7 +10,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF7F0),
+      backgroundColor: const Color(0xFFFFEBEE),
       appBar: AppBar(
         title: Text('$hayvanAdi - Tıbbi Kayıtlar'),
         foregroundColor: Colors.white,
@@ -19,7 +19,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF7C2D12), Color(0xFFEA580C)],
+              colors: [Color(0xFFB71C1C), Color(0xFFE53935)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -38,7 +38,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.medical_services_outlined, size: 64, color: Color(0xFFEA580C)),
+                  Icon(Icons.medical_services_outlined, size: 64, color: Color(0xFFE53935)),
                   SizedBox(height: 12),
                   Text('Tıbbi kayıt yok', style: TextStyle(fontSize: 16, color: Colors.grey)),
                 ],
@@ -52,7 +52,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
             final kayit = kayitlar[index];
             return Card(
               elevation: 3,
-              shadowColor: const Color(0xFFC2410C).withValues(alpha: 0.18),
+              shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               margin: const EdgeInsets.only(bottom: 10),
               child: Padding(
@@ -65,10 +65,10 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
               Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-              color: const Color(0xFF7C2D12).withValues(alpha: 0.1),
+              color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.medical_services, color: Color(0xFF7C2D12), size: 20),
+              child: const Icon(Icons.medical_services, color: Color(0xFFB71C1C), size: 20),
               ),
               const SizedBox(width: 12),
               Expanded(
