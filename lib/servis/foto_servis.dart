@@ -12,7 +12,9 @@ class FotoServis {
       maxWidth: maxWidth,
       maxHeight: maxHeight,
     );
+
     if (foto == null) return null;
+    
     final bytes = await foto.readAsBytes();
     if (bytes.length > 900000) throw Exception('Fotoğraf çok büyük, lütfen daha küçük bir fotoğraf seçin.');
     return bytes;

@@ -178,6 +178,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                     yas: double.tryParse(yasController.text) ?? 0,
                     fotoUrl: fotoUrl,
                   );
+                  
                   // güncellemeyi kaydet ve geri dön
                   await _servis.hayvanGuncelle(guncellenmis);
                   if (!context.mounted) return;
