@@ -150,16 +150,9 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
                               color: Colors.white,
                               fontSize: 9,
                               fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-          const SizedBox(width: 4),
+                            ),),),),),],);},),
+
+                            const SizedBox(width: 4),
         ],
       ),
       body: PageView(

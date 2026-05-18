@@ -193,54 +193,59 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                 ? Colors.red
                 : Colors.orange;
         return Card(
-          elevation: 3,
-          shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          margin: const EdgeInsets.only(bottom: 10),
-          child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            leading: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
-            ),
-            title: Text(randevu.randevu_tur, style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year} • ${randevu.saat}'),
-            trailing: randevu.durum == 'Bekliyor'
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Chip(
-                        label: const Text('Bekliyor'),
-                        backgroundColor: Colors.orange.withValues(alpha: 0.15),
-                        labelStyle: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 11),
-                        padding: EdgeInsets.zero,
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.cancel_outlined, color: Colors.red),
-                        tooltip: 'İptal Et',
-                        onPressed: () async {
-                          final onay = await showDialog<bool>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: const Text('Randevu İptal'),
-                              content: const Text('Bu randevuyu iptal etmek istiyor musunuz?'),
-                              actions: [
-                                TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Hayır')),
-                                TextButton(
-                                  onPressed: () => Navigator.pop(ctx, true),
-                                  child: const Text('İptal Et', style: TextStyle(color: Colors.red)),),],),);
-                                  if (onay == true) {
-                                  await RandevuServis().randevuSil(randevu.id);}},),],)
-                : Chip(
-                    label: Text(randevu.durum),
-                    backgroundColor: durumRenk.withValues(alpha: 0.15),
-                    labelStyle: TextStyle(color: durumRenk, fontWeight: FontWeight.bold, fontSize: 11),
-                    padding: EdgeInsets.zero,),
-                    ),);},);},),],),
+        elevation: 3,
+        shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        margin: const EdgeInsets.only(bottom: 10),
+        child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+        color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+        child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
+    ),
+        title: Text(randevu.randevu_tur, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text('${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year} • ${randevu.saat}'),
+        trailing: randevu.durum == 'Bekliyor' ?
+
+        Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+        Chip(
+        label: const Text('Bekliyor'),
+        backgroundColor: Colors.orange.withValues(alpha: 0.15),
+        labelStyle: const TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 11),
+        padding: EdgeInsets.zero,
+        ),
+
+        IconButton(
+        icon: const Icon(Icons.cancel_outlined, color: Colors.red),
+        tooltip: 'İptal Et',
+        onPressed: () async {
+        final onay = await showDialog<bool>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+        title: const Text('Randevu İptal'),
+        content: const Text('Bu randevuyu iptal etmek istiyor musunuz?'),
+        actions: [
+        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Hayır')),
+                          
+        TextButton(
+        onPressed: () => Navigator.pop(ctx, true),
+        child: const Text('İptal Et', style: TextStyle(color: Colors.red)),),],),);
+        if (onay == true) {
+        await RandevuServis().randevuSil(randevu.id);}},),],) : 
+
+                                  
+        Chip(
+        label: Text(randevu.durum),
+        backgroundColor: durumRenk.withValues(alpha: 0.15),
+        labelStyle: TextStyle(color: durumRenk, fontWeight: FontWeight.bold, fontSize: 11),
+        padding: EdgeInsets.zero,),
+        ),);},);},),],),
                   
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _secilenIndex,

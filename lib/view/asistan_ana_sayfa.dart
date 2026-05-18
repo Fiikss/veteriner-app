@@ -69,6 +69,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
           ],
         ),
       ),
+
       endDrawer: const BildirimPaneli(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -138,13 +139,8 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                         backgroundColor: durumRenk.withValues(alpha: 0.15),
                         labelStyle: TextStyle(color: durumRenk, fontWeight: FontWeight.bold, fontSize: 11),
                         padding: EdgeInsets.zero,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+                      ),),);},);},),
+
           // ödemeler sekmesi
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
@@ -158,7 +154,46 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                 itemBuilder: (context, index) {
                   final randevu = randevular[index];
                   final odemeController = TextEditingController(text: randevu.odeme.toString());
-                  return Card(
+
+                  Widget trailing;
+                  if (randevu.odemeDurumu == 'Ödendi') {
+                    trailing = Chip(
+                      label: Text('₺${randevu.odeme}'),
+                      backgroundColor: Colors.green.withValues(alpha: 0.15),
+                      labelStyle: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                      padding: EdgeInsets.zero,
+                    );
+                  } else {
+                    trailing = SizedBox(
+                      width: 130,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: odemeController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: '₺',
+                                filled: true,
+                                fillColor: const Color(0xFFFFEBEE),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              ),
+                            ),
+                          ),
+                            IconButton(
+                            icon: const Icon(Icons.check_circle, color: Colors.green),
+                            onPressed: () async {
+                              await RandevuServis().odemeGuncelle(
+                                randevu.id,
+                                double.tryParse(odemeController.text) ?? 0,
+                                'Ödendi',
+                                );},),],),);}
+                                
+                        return Card(
                     elevation: 3,
                     shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -175,69 +210,21 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                       ),
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text('${randevu.randevu_tur} • ${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
-                      trailing: randevu.odemeDurumu == 'Ödendi'
-                          ? Chip(
-                              label: Text('₺${randevu.odeme}'),
-                              backgroundColor: Colors.green.withValues(alpha: 0.15),
-                              labelStyle: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                              padding: EdgeInsets.zero,
-                            )
-                          : SizedBox(
-                              width: 130,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: TextField(
-                                      controller: odemeController,
-                                      keyboardType: TextInputType.number,
-                                      decoration: InputDecoration(
-                                        labelText: '₺',
-                                        filled: true,
-                                        fillColor: const Color(0xFFFFEBEE),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.check_circle, color: Colors.green),
-                                    onPressed: () async {
-                                      await RandevuServis().odemeGuncelle(
-                                        randevu.id,
-                                        double.tryParse(odemeController.text) ?? 0,
-                                        'Ödendi',
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _secilenIndex,
-        onTap: (index) {
-          setState(() => _secilenIndex = index);
-          _pageController.animateToPage(index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut);
-        },
-        selectedItemColor: const Color(0xFFB71C1C),
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),
-          BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Ödemeler'),
-        ],
-      ),
-    );
-  }
-}
+                      trailing: trailing,
+                      ),)
+                      ;},);},),],),
+
+                      bottomNavigationBar: BottomNavigationBar(
+                    currentIndex: _secilenIndex,
+                    onTap: (index) {
+                      setState(() => _secilenIndex = index);
+                      _pageController.animateToPage(index,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
+                    },
+                    selectedItemColor: const Color(0xFFB71C1C),
+                    unselectedItemColor: Colors.grey,
+                    items: const [
+                      BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),
+                      BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Ödemeler'),
+                      ],),);}}

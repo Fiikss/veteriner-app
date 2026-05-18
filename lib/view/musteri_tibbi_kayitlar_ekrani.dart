@@ -91,10 +91,10 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
               _satir('İlaçlar', kayit.ilaclar),
               ],),),);},);},),);}
 
-  Widget _satir(String baslik, String deger) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('$baslik: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-        Expanded(child: Text(deger.isEmpty ? '-' : deger, style: const TextStyle(fontSize: 13))),
-      ],);}}
+              Widget _satir(String baslik, String deger) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('$baslik: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                    Expanded(child: Text(deger.isEmpty ? '-' : deger, style: const TextStyle(fontSize: 13))),
+                  ],);}}

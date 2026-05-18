@@ -153,33 +153,18 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                                 labelStyle: TextStyle(
                                   color: slot.dolu ? Colors.red : Colors.green,
                                   fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: 16,
-                right: 16,
-                child: FloatingActionButton(
-                  backgroundColor: const Color(0xFFB71C1C),
-                  foregroundColor: Colors.white,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SlotEkleEkrani()),
-                  ),
-                  child: const Icon(Icons.add),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
+                                ),),),);},);},),],),
+
+                                Positioned(
+                                  bottom: 16,
+                                  right: 16,
+                                  child: FloatingActionButton(
+                                    backgroundColor: const Color(0xFFB71C1C),
+                                    foregroundColor: Colors.white,
+                                    onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const SlotEkleEkrani()),
+                                    ),
+                                    child: const Icon(Icons.add),
+                                  ),
+                                ),],),),],);}}

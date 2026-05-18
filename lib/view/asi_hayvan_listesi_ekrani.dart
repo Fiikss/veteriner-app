@@ -50,4 +50,5 @@ class _AsiHayvanListesiEkraniState extends State<AsiHayvanListesiEkrani> {
                       builder: (context) => HayvanAsilariEkrani(
                         hayvanID: hayvan.id,
                         hayvanAdi: hayvan.ad,
+                        
                         ),),),),);},);},),);}}

@@ -109,13 +109,8 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                               ? const Icon(Icons.check_circle, color: Colors.white)
                               : null,
                           onTap: () => setState(() => secilenSlot = slot),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+                          ),);},);},),),
+                          
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
@@ -151,11 +146,4 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                         Navigator.pop(context);
                       },
                 child: const Text('Randevu Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+                ),),],),),);}}

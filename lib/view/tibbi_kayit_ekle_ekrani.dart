@@ -131,11 +131,4 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 ),
                 onPressed: _kaydet,
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+                ),),],),),);}}

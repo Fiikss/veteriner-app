@@ -145,15 +145,4 @@ class _KayitState extends State<Kayit> {
                         onPressed: () => Navigator.pop(context),
                         child: const Text('Zaten hesabın var mı? Giriş Yap',
                             style: TextStyle(color: Color(0xFFB71C1C))),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+                      ),),],),),),),],),);}}

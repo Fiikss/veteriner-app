@@ -15,6 +15,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
         backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
+
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Kullanicilar')
@@ -27,11 +28,13 @@ class KullaniciYonetimEkrani extends StatelessWidget {
           if (personeller.isEmpty) {
             return const Center(child: Text('Henüz personel eklenmemiş'));
           }
+
           return ListView.builder(
             itemCount: personeller.length,
             itemBuilder: (context, index) {
               final data = personeller[index].data() as Map<String, dynamic>;
               final rol = data['rol'] ?? '';
+
               return ListTile(
                 leading: CircleAvatar(
                   backgroundColor: rol == 'hekim'
@@ -75,6 +78,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,

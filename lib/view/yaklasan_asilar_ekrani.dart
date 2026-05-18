@@ -49,13 +49,5 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
                     label: Text(kacGun == 0 ? 'Bugün' : '$kacGun gün'),
                     backgroundColor: renk.withValues(alpha: 0.15),
                     labelStyle: TextStyle(color: renk, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+                    
+                    ),),);},);},),);}}

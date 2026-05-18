@@ -29,8 +29,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                   children: [
                     _satirOlustur(Icons.report_problem_outlined, 'Şikayet', randevu.sikayet),
                     _satirOlustur(Icons.category_outlined, 'Tür', randevu.randevu_tur),
-                    _satirOlustur(Icons.calendar_today, 'Tarih',
-                        '${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
+                    _satirOlustur(Icons.calendar_today, 'Tarih', '${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
                     _satirOlustur(Icons.access_time, 'Saat', randevu.saat),
                     _satirOlustur(Icons.info_outline, 'Durum', randevu.durum),
                     _satirOlustur(Icons.payment, 'Ödeme', '₺${randevu.odeme}'),
@@ -75,16 +74,8 @@ class RandevuDetayEkrani extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     icon: const Icon(Icons.close),
-                    label: const Text('Reddet', style: TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+                    label: const Text('Reddet', style: TextStyle(fontWeight: FontWeight.bold)),),
+                    ),],),],),),);}
 
   // bilgi satırı oluşturan yardımcı metot
   Widget _satirOlustur(IconData ikon, String baslik, String deger) {

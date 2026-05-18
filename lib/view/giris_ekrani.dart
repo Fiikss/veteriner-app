@@ -135,17 +135,10 @@ class _GirisState extends State<Giris> {
                                 color: secili ? const Color(0xFFB71C1C) : Colors.white70,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
+                              ),),
+                              ],),),),);}).toList(),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
+                              ),),
           const SizedBox(height: 20),
           // giriş formu
           Expanded(
@@ -226,15 +219,5 @@ class _GirisState extends State<Giris> {
                       child: TextButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Kayit())),
                         child: const Text('Hesabın yok mu? Kayıt Ol', style: TextStyle(color: Color(0xFFB71C1C))),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+                        
+                      ),),],),),),),],),);}}

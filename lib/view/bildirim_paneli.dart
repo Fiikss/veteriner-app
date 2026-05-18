@@ -37,11 +37,8 @@ class BildirimPaneli extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
+                  ),),],),),
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(12),
@@ -53,13 +50,8 @@ class BildirimPaneli extends StatelessWidget {
                 _baslik('Bugünkü Randevular', Icons.calendar_today),
                 const SizedBox(height: 8),
                 _bugunRandevularWidget(bugun),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+                
+              ],),),],),);}
 
   Widget _yaklasanAsilarWidget(DateTime bugun, DateTime yediGunSonra) {
     if (musteriID == null) {

@@ -47,14 +47,4 @@ class _TibbikayitListesiEkraniState extends State<TibbikayitListesiEkrani> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => TibbiKayitEkleEkrani(hayvanID: hayvan.id),
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+                    ),),),);},);},),);}}
