@@ -37,9 +37,4 @@ class AnaSayfa extends StatelessWidget {
             if (rol == 'hekim') return const HekimAnaSayfa();
             if (rol == 'asistan') return const AsistanAnaSayfa();
             return const MusteriAnaSayfa();
-          },
-        );
-      },
-    );
-  }
-}
+            },);},);}}

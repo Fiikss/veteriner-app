@@ -6,7 +6,6 @@ import 'package:veteriner_app/view/bildirim_paneli.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/profil_ekrani.dart';
 
-
 class AsistanAnaSayfa extends StatefulWidget {
   const AsistanAnaSayfa({super.key});
 
@@ -34,22 +33,21 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFEBEE),
-      // yan menü
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
-        decoration: BoxDecoration(color: Color(0xFFB71C1C)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.pets, color: Colors.white, size: 50),
-            SizedBox(height: 8),
-            Text('Veteriner Klinik', style: TextStyle(color: Colors.white, fontSize: 18)),
-          ],
-        ),
-      ),
+              decoration: BoxDecoration(color: Color(0xFFB71C1C)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.pets, color: Colors.white, size: 50),
+                  SizedBox(height: 8),
+                  Text('Veteriner Klinik', style: TextStyle(color: Colors.white, fontSize: 18)),
+                ],
+              ),
+            ),
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text('Profilim'),
@@ -71,7 +69,6 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
           ],
         ),
       ),
-
       endDrawer: const BildirimPaneli(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -102,7 +99,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
         controller: _pageController,
         onPageChanged: (index) => setState(() => _secilenIndex = index),
         children: [
-          // Randevular sekmesi
+          // randevular sekmesi
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
@@ -148,22 +145,22 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
               );
             },
           ),
-          // Ödemeler sekmesi
- StreamBuilder<List<Randevu>>(
-  stream: RandevuServis().tumRandevular(),
-    builder: (context, snapshot) {
-     if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-      final randevular = snapshot.data!;
-       if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
-        return ListView.builder(
-           padding: const EdgeInsets.all(12),
-            itemCount: randevular.length,
-             itemBuilder: (context, index) {
-              final randevu = randevular[index];
-               final odemeController = TextEditingController(text: randevu.odeme.toString());
-                return Card(
-                 elevation: 3,
-                   shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
+          // ödemeler sekmesi
+          StreamBuilder<List<Randevu>>(
+            stream: RandevuServis().tumRandevular(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+              final randevular = snapshot.data!;
+              if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
+              return ListView.builder(
+                padding: const EdgeInsets.all(12),
+                itemCount: randevular.length,
+                itemBuilder: (context, index) {
+                  final randevu = randevular[index];
+                  final odemeController = TextEditingController(text: randevu.odeme.toString());
+                  return Card(
+                    elevation: 3,
+                    shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                     margin: const EdgeInsets.only(bottom: 10),
                     child: ListTile(

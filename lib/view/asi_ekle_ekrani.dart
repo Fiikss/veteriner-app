@@ -144,11 +144,4 @@ class _AsiEkleEkraniState extends State<AsiEkleEkrani> {
                   navigator.pop();
                 },
                 child: const Text('Aşı Ekle', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+                ),),],),),);}}

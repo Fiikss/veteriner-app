@@ -69,8 +69,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               title: const Text('Profilim'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const ProfilEkrani()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilEkrani()));
               },
             ),
             ListTile(
@@ -78,10 +77,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               title: const Text('Kullanıcı Yönetimi'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const KullaniciYonetimEkrani()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const KullaniciYonetimEkrani()));
               },
             ),
             ListTile(
@@ -91,8 +87,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
                 // oturumu kapat ve giriş ekranına dön
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const Giris()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
               },
             ),
           ],
@@ -184,14 +179,10 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month), label: 'Randevular'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.medical_services), label: 'Tıbbi Kayıt'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.vaccines), label: 'Aşılar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Yaklaşan'),
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),
+          BottomNavigationBarItem(icon: Icon(Icons.medical_services), label: 'Tıbbi Kayıt'),
+          BottomNavigationBarItem(icon: Icon(Icons.vaccines), label: 'Aşılar'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Yaklaşan'),
         ],
       ),
     );

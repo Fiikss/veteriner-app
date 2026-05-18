@@ -69,11 +69,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           await FirebaseAuth.instance.signOut();
           if (!context.mounted) return;
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
-        },
-      ),
-    ],
-  ),
-),
+          },),],),),
 
       floatingActionButton: _secilenIndex == 1
     ? FloatingActionButton(
@@ -98,15 +94,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                         Navigator.pop(context);
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => RandevuEkleEkrani(hayvanID: hayvan.id),
-                        ));
-                      },
-                    );
-                  },
-                );
-              },
-            ),
-          );
-        },
+                        ));},);},);},),);},
         child: const Icon(Icons.add),
       )
     : null,
@@ -160,10 +148,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HayvanEkleEkran())),
               icon: const Icon(Icons.add),
               label: const Text('Evcil Hayvan Ekle', style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-          ),
-        ),
-
+              ),),),
 
       Expanded(
         child: StreamBuilder(
@@ -189,14 +174,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           ),
         title: Text(hayvan.ad),
         subtitle: Text('${hayvan.tur} - ${hayvan.irk}'),
-            );
-          },
-        );
-      },
-    ),
-  ),
-],
-),
+        );},);},),),],),
 
           StreamBuilder<List<Randevu>>(
   stream: RandevuServis().musteriRandevulari(FirebaseAuth.instance.currentUser!.uid),
@@ -254,33 +232,16 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                                 TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Hayır')),
                                 TextButton(
                                   onPressed: () => Navigator.pop(ctx, true),
-                                  child: const Text('İptal Et', style: TextStyle(color: Colors.red)),
-                                ),
-                              ],
-                            ),
-                          );
-                          if (onay == true) {
-                            await RandevuServis().randevuSil(randevu.id);
-                          }
-                        },
-                      ),
-                    ],
-                  )
+                                  child: const Text('İptal Et', style: TextStyle(color: Colors.red)),),],),);
+                                  if (onay == true) {
+                                  await RandevuServis().randevuSil(randevu.id);}},),],)
                 : Chip(
                     label: Text(randevu.durum),
                     backgroundColor: durumRenk.withValues(alpha: 0.15),
                     labelStyle: TextStyle(color: durumRenk, fontWeight: FontWeight.bold, fontSize: 11),
-                    padding: EdgeInsets.zero,
-                  ),
-          ),
-        );
-      },
-    );
-  },
-),
-
-        ],
-      ),
+                    padding: EdgeInsets.zero,),
+                    ),);},);},),],),
+                  
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _secilenIndex,
         onTap: (index) {
@@ -294,8 +255,4 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Hayvanlarım'),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevularım'),
-        ],
-      ),
-    );
-  }
-}
+          ],),);}}

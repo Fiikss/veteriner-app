@@ -26,9 +26,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
             itemCount: asilar.length,
             itemBuilder: (context, index) {
               final asi = asilar[index];
-              final kacGun = asi.sonrakiAsiTarihi
-                  .difference(DateTime.now())
-                  .inDays;
+              final kacGun = asi.sonrakiAsiTarihi.difference(DateTime.now()).inDays;
               final renk = kacGun <= 2 ? Colors.red : Colors.orange;
               return Card(
                 elevation: 3,

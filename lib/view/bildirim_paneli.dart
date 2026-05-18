@@ -221,20 +221,12 @@ class BildirimPaneli extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(baslik,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13)),
-                Text(altBaslik,
-                    style:
-                        TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+                Text(baslik, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                Text(altBaslik, style: TextStyle(color: Colors.grey.shade600, fontSize: 12)),
               ],
             ),
           ),
-          Text(
-            sag,
-            style: TextStyle(
-                color: renk, fontWeight: FontWeight.bold, fontSize: 12),
-          ),
+          Text(sag, style: TextStyle(color: renk, fontWeight: FontWeight.bold, fontSize: 12)),
         ],
       ),
     );
