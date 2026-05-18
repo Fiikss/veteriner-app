@@ -6,33 +6,45 @@ import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/hekim_ana_sayfa.dart';
 import 'package:veteriner_app/view/musteri_ana_sayfa.dart';
 
+//yönlendirici 
+
 class AnaSayfa extends StatelessWidget {
   const AnaSayfa({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //kullanıcı giriş ya da çıkış yaptığında otomatik tetiklenir. firebase oturum durumunu dinler.
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
+        //cevap gelmediğinde dönen yükleme 
         if (snapshot.connectionState == ConnectionState.waiting) {
+
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
+        //giris yapılmadıysa giriş ekranını açar
         if (snapshot.data == null) {
           return Giris();
+
         }
+
+//kullanıcı giriş yaptıysa  firestoredaki rol kısmını kontrol et
         return FutureBuilder<DocumentSnapshot>(
+
           future: FirebaseFirestore.instance
               .collection('Kullanicilar')
               .doc(snapshot.data!.uid)
               .get(),
+
           builder: (context, rolSnapshot) {
             if (!rolSnapshot.hasData) {
               return const Scaffold(
                 body: Center(child: CircularProgressIndicator()),
               );
             }
+            //role göre kullanıcıya panelini açar
             final rol = (rolSnapshot.data!.data() as Map<String, dynamic>?)?['rol'] ?? 'musteri';
             if (rol == 'hekim') return const HekimAnaSayfa();
             if (rol == 'asistan') return const AsistanAnaSayfa();
