@@ -63,6 +63,7 @@ class _GirisState extends State<Giris> {
       if (!mounted) return;
 
       // role göre ilgili sayfaya yönlendir
+      
       if (rol == 'hekim') {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HekimAnaSayfa()));
       } else if (rol == 'asistan') {
