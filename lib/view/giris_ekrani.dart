@@ -19,14 +19,12 @@ class _GirisState extends State<Giris> {
   String secilenRol = 'musteri';
   bool sifreGizli = true;
 
-  // her rolün ekrandaki ismi ve ikonu
   final roller = {
     'musteri': {'label': 'Müşteri', 'icon': Icons.person},
     'hekim': {'label': 'Hekim', 'icon': Icons.medical_services},
     'asistan': {'label': 'Asistan', 'icon': Icons.support_agent},
   };
 
-  // giriş butonuna basılınca çalışan fonksiyon
   Future<void> _girisYap() async {
     try {
       // firebase ile giriş yap
@@ -35,12 +33,10 @@ class _GirisState extends State<Giris> {
         password: sifreController.text,
       );
 
-      // firestore'dan kullanıcı rolünü al
       final uid = FirebaseAuth.instance.currentUser!.uid;
       final doc = await FirebaseFirestore.instance.collection('Kullanicilar').doc(uid).get();
       final rol = doc.data()?['rol'] ?? 'musteri';
 
-      // müşteri ise e-posta doğrulaması kontrol et
       if (rol == 'musteri' && !FirebaseAuth.instance.currentUser!.emailVerified) {
         await FirebaseAuth.instance.signOut();
         if (!mounted) return;

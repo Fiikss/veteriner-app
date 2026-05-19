@@ -15,7 +15,6 @@ class _KayitState extends State<Kayit> {
   final adSoyadController = TextEditingController();
   bool sifreGizli = true;
 
-  // kayıt butonuna basılınca çalışan fonksiyon
   Future<void> _kayitOl() async {
     try {
       // firebase ile yeni kullanıcı oluştur
@@ -24,7 +23,6 @@ class _KayitState extends State<Kayit> {
         password: sifreController.text,
       );
 
-      // kullanıcı bilgilerini firestore'a kaydet
       await FirebaseFirestore.instance.collection('Kullanicilar').doc(sonuc.user!.uid).set({
         'email': emailController.text,
         'adSoyad': adSoyadController.text,
@@ -32,7 +30,6 @@ class _KayitState extends State<Kayit> {
         'rol': 'musteri',
       });
 
-      // doğrulama maili gönder ve çıkış yap
       await sonuc.user!.sendEmailVerification();
       await FirebaseAuth.instance.signOut();
 

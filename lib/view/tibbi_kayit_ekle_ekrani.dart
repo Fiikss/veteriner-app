@@ -19,7 +19,6 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
   final ilacController = TextEditingController();
   final TibbikayitServis _servis = TibbikayitServis();
 
-  // takvimden tarih seç
   Future<void> _tarihSec() async {
     final tarih = await showDatePicker(
       context: context,
@@ -30,7 +29,6 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
     if (tarih != null) setState(() => secilenTarih = tarih);
   }
 
-  // tıbbi kaydı kaydet
   Future<void> _kaydet() async {
     final kayit = TibbiKayit(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
@@ -47,17 +45,13 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
     Navigator.pop(context);
   }
 
-  // text field dekorasyonu
   InputDecoration _inputDecoration(String label, IconData ikon) {
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(ikon),
       filled: true,
       fillColor: const Color(0xFFFFEBEE),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
     );
   }
 
@@ -74,7 +68,6 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // kategori seçimi
             DropdownButtonFormField<String>(
               initialValue: kategori,
               decoration: InputDecoration(
@@ -82,12 +75,9 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 prefixIcon: const Icon(Icons.category_outlined),
                 filled: true,
                 fillColor: const Color(0xFFFFEBEE),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               ),
-              items: ['Muayene', 'Aşı', 'Operasyon', 'İlaç Tedavisi']
+              items: ['Muayene', 'Operasyon', 'İlaç Tedavisi']
                   .map((k) => DropdownMenuItem(value: k, child: Text(k)))
                   .toList(),
               onChanged: (value) => setState(() => kategori = value!),
@@ -99,7 +89,6 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
             const SizedBox(height: 12),
             TextField(controller: ilacController, decoration: _inputDecoration('İlaçlar', Icons.medication_outlined)),
             const SizedBox(height: 16),
-            // tarih seçim butonu
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -111,15 +100,12 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 onPressed: _tarihSec,
                 icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
                 label: Text(
-                  secilenTarih == null
-                      ? 'Tarih Seç'
-                      : '${secilenTarih!.day}.${secilenTarih!.month}.${secilenTarih!.year}',
+                  secilenTarih == null ? 'Tarih Seç' : '${secilenTarih!.day}.${secilenTarih!.month}.${secilenTarih!.year}',
                   style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             const SizedBox(height: 24),
-            // kaydet butonu
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -131,4 +117,37 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 ),
                 onPressed: _kaydet,
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),),],),),);}}
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text('Geçmiş Kayıtlar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFFB71C1C))),
+            const SizedBox(height: 8),
+            StreamBuilder<List<TibbiKayit>>(
+              stream: _servis.hayvanTibbiKayit(widget.hayvanID),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+                final kayitlar = snapshot.data!.where((k) => k.kategori != 'Aşı').toList();
+                if (kayitlar.isEmpty) return const Text('Henüz kayıt yok.', style: TextStyle(color: Colors.grey));
+                return Column(
+                  children: kayitlar.map((kayit) => Card(
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: ListTile(
+                      leading: const Icon(Icons.medical_services, color: Color(0xFFB71C1C)),
+                      title: Text(kayit.kategori, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(
+                        '${kayit.tarih.day}.${kayit.tarih.month}.${kayit.tarih.year}\nTeşhis: ${kayit.teshis}\nTedavi: ${kayit.tedavi}',
+                      ),
+                      isThreeLine: true,
+                    ),
+                  )).toList(),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
