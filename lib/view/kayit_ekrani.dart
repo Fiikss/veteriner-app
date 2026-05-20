@@ -17,22 +17,18 @@ class _KayitState extends State<Kayit> {
 
   Future<void> _kayitOl() async {
     try {
-      // firebase ile yeni kullanıcı oluştur
       final sonuc = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: sifreController.text,
       );
-
       await FirebaseFirestore.instance.collection('Kullanicilar').doc(sonuc.user!.uid).set({
         'email': emailController.text,
         'adSoyad': adSoyadController.text,
         'telefon': '',
         'rol': 'musteri',
       });
-
       await sonuc.user!.sendEmailVerification();
       await FirebaseAuth.instance.signOut();
-
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Doğrulama maili gönderildi. E-postanızı onaylayıp giriş yapabilirsiniz.')),
@@ -44,7 +40,6 @@ class _KayitState extends State<Kayit> {
     }
   }
 
-  // metin alanı dekorasyonu
   InputDecoration _inputDecoration(String hint, IconData ikon) {
     return InputDecoration(
       prefixIcon: Icon(ikon),
@@ -65,7 +60,6 @@ class _KayitState extends State<Kayit> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          // logo alanı
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -81,7 +75,6 @@ class _KayitState extends State<Kayit> {
           const Text('Veteriner Kliniği', style: TextStyle(color: Colors.white70, fontSize: 15)),
           const Text('VetApp', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
           const SizedBox(height: 30),
-          // kayıt formu
           Expanded(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
@@ -104,7 +97,6 @@ class _KayitState extends State<Kayit> {
                       decoration: _inputDecoration('E-Posta', Icons.email_outlined),
                     ),
                     const SizedBox(height: 16),
-                    // şifre alanı - göster/gizle butonu var
                     TextField(
                       controller: sifreController,
                       obscureText: sifreGizli,
@@ -116,7 +108,6 @@ class _KayitState extends State<Kayit> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // kayıt ol butonu
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -142,4 +133,15 @@ class _KayitState extends State<Kayit> {
                         onPressed: () => Navigator.pop(context),
                         child: const Text('Zaten hesabın var mı? Giriş Yap',
                             style: TextStyle(color: Color(0xFFB71C1C))),
-                      ),),],),),),),],),);}}
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

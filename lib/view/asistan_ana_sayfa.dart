@@ -53,23 +53,21 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
               title: const Text('Profilim'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProfilEkrani()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilEkrani()));
               },
             ),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Çıkış Yap'),
               onTap: () async {
-                // çıkış yapılıyor
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Giris()));
               },
             ),
           ],
         ),
       ),
-
       endDrawer: const BildirimPaneli(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -100,7 +98,6 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
         controller: _pageController,
         onPageChanged: (index) => setState(() => _secilenIndex = index),
         children: [
-          // randevular sekmesi
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
@@ -112,7 +109,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                 itemCount: randevular.length,
                 itemBuilder: (context, index) {
                   final randevu = randevular[index];
-                  Color durumRenk = randevu.durum == 'Onaylandı'
+                  final durumRenk = randevu.durum == 'Onaylandı'
                       ? Colors.green
                       : randevu.durum == 'Reddedildi'
                           ? Colors.red
@@ -139,9 +136,13 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                         backgroundColor: durumRenk.withValues(alpha: 0.15),
                         labelStyle: TextStyle(color: durumRenk, fontWeight: FontWeight.bold, fontSize: 11),
                         padding: EdgeInsets.zero,
-                      ),),);},);},),
-
-          // ödemeler sekmesi
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
@@ -184,16 +185,22 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                               ),
                             ),
                           ),
-                            IconButton(
+                          IconButton(
                             icon: const Icon(Icons.check_circle, color: Colors.green),
                             onPressed: () async {
                               await RandevuServis().odemeGuncelle(
                                 randevu.id,
                                 double.tryParse(odemeController.text) ?? 0,
                                 'Ödendi',
-                                );},),],),);}
-                                
-                        return Card(
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Card(
                     elevation: 3,
                     shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -211,20 +218,29 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text('${randevu.randevu_tur} • ${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
                       trailing: trailing,
-                      ),)
-                      ;},);},),],),
-
-                      bottomNavigationBar: BottomNavigationBar(
-                    currentIndex: _secilenIndex,
-                    onTap: (index) {
-                      setState(() => _secilenIndex = index);
-                      _pageController.animateToPage(index,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut);
-                    },
-                    selectedItemColor: const Color(0xFFB71C1C),
-                    unselectedItemColor: Colors.grey,
-                    items: const [
-                      BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),
-                      BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Ödemeler'),
-                      ],),);}}
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _secilenIndex,
+        onTap: (index) {
+          setState(() => _secilenIndex = index);
+          _pageController.animateToPage(index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut);
+        },
+        selectedItemColor: const Color(0xFFB71C1C),
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevular'),
+          BottomNavigationBarItem(icon: Icon(Icons.payment), label: 'Ödemeler'),
+        ],
+      ),
+    );
+  }
+}

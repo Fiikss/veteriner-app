@@ -15,13 +15,11 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
   String secilenSaat = '09:00';
   final SlotServis _servis = SlotServis();
 
-  // uygun saat seçenekleri
   final List<String> saatler = [
     '09:00', '10:00', '11:00', '12:00',
     '13:00', '14:00', '15:00', '16:00', '17:00',
   ];
 
-  // takvimden tarih seç
   Future<void> _tarihSec() async {
     final tarih = await showDatePicker(
       context: context,
@@ -32,7 +30,6 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
     if (tarih != null) setState(() => secilenTarih = tarih);
   }
 
-  // slotu kaydet
   Future<void> _slotKaydet() async {
     if (secilenTarih == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,7 +62,6 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // tarih seçim butonu
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
@@ -85,7 +81,6 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
               ),
             ),
             const SizedBox(height: 16),
-            // saat seçimi
             DropdownButtonFormField<String>(
               initialValue: secilenSaat,
               decoration: InputDecoration(
@@ -102,7 +97,6 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
               onChanged: (value) => setState(() => secilenSaat = value!),
             ),
             const SizedBox(height: 24),
-            // kaydet butonu
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -114,4 +108,11 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
                 ),
                 onPressed: _slotKaydet,
                 child: const Text('Saat Oluştur', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),),],),),);}}
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

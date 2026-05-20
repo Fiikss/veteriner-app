@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/view/hayvan_asilari_ekrani.dart';
 
@@ -47,8 +47,18 @@ class _AsiHayvanListesiEkraniState extends State<AsiHayvanListesiEkrani> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HayvanAsilariEkrani(
+                      builder: (_) => HayvanAsilariEkrani(
                         hayvanID: hayvan.id,
                         hayvanAdi: hayvan.ad,
-                        
-                        ),),),),);},);},),);}}
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

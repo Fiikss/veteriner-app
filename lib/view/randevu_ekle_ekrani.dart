@@ -77,9 +77,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                   final slotlar = snapshot.data!;
-                  if (slotlar.isEmpty) {
-                    return const Center(child: Text('Uygun saat yok'));
-                  }
+                  if (slotlar.isEmpty) return const Center(child: Text('Uygun saat yok'));
                   return ListView.builder(
                     itemCount: slotlar.length,
                     itemBuilder: (context, index) {
@@ -105,12 +103,15 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                             slot.saat,
                             style: TextStyle(color: secili ? Colors.white70 : Colors.grey),
                           ),
-                          trailing: secili
-                              ? const Icon(Icons.check_circle, color: Colors.white)
-                              : null,
+                          trailing: secili ? const Icon(Icons.check_circle, color: Colors.white) : null,
                           onTap: () => setState(() => secilenSlot = slot),
-                          ),);},);},),),
-                          
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
@@ -139,11 +140,17 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                           slotID: secilenSlot!.id,
                           saat: secilenSlot!.saat,
                         );
-                        // randevuyu kaydet ve slotu dolu olarak işaretle
                         await _randevuServis.randevuEkle(randevu);
                         await _slotServis.slotDoldur(secilenSlot!.id);
                         if (!context.mounted) return;
                         Navigator.pop(context);
                       },
                 child: const Text('Randevu Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),),],),),);}}
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

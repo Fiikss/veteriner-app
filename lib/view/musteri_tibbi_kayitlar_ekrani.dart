@@ -29,9 +29,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
       body: StreamBuilder<List<TibbiKayit>>(
         stream: TibbikayitServis().hayvanTibbiKayit(hayvanID),
         builder: (context, snapshot) {
-
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-
           final kayitlar = snapshot.data!;
           if (kayitlar.isEmpty) {
             return const Center(
@@ -45,56 +43,68 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
               ),
             );
           }
-      return ListView.builder(
-      padding: const EdgeInsets.all(12),
-        itemCount: kayitlar.length,
-          itemBuilder: (context, index) {
-            final kayit = kayitlar[index];
-            return Card(
-              elevation: 3,
-              shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-              margin: const EdgeInsets.only(bottom: 10),
-              child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              Row(
-              children: [
-              Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-              color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Icon(Icons.medical_services, color: Color(0xFFB71C1C), size: 20),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-              child: Text(
-              kayit.kategori,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              ),
-            ),
-              Text(
-              '${kayit.tarih.day}.${kayit.tarih.month}.${kayit.tarih.year}',
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-              ],
-              ),
-              const Divider(height: 20),
-              _satir('Teşhis', kayit.teshis),
-              const SizedBox(height: 6),
-              _satir('Tedavi', kayit.tedavi),
-              const SizedBox(height: 6),
-              _satir('İlaçlar', kayit.ilaclar),
-              ],),),);},);},),);}
+          return ListView.builder(
+            padding: const EdgeInsets.all(12),
+            itemCount: kayitlar.length,
+            itemBuilder: (context, index) {
+              final kayit = kayitlar[index];
+              return Card(
+                elevation: 3,
+                shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFB71C1C).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.medical_services, color: Color(0xFFB71C1C), size: 20),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              kayit.kategori,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                          ),
+                          Text(
+                            '${kayit.tarih.day}.${kayit.tarih.month}.${kayit.tarih.year}',
+                            style: const TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      const Divider(height: 20),
+                      _satir('Teşhis', kayit.teshis),
+                      const SizedBox(height: 6),
+                      _satir('Tedavi', kayit.tedavi),
+                      const SizedBox(height: 6),
+                      _satir('İlaçlar', kayit.ilaclar),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
 
-              Widget _satir(String baslik, String deger) {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('$baslik: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                    Expanded(child: Text(deger.isEmpty ? '-' : deger, style: const TextStyle(fontSize: 13))),
-                  ],);}}
+  Widget _satir(String baslik, String deger) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('$baslik: ', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+        Expanded(child: Text(deger.isEmpty ? '-' : deger, style: const TextStyle(fontSize: 13))),
+      ],
+    );
+  }
+}

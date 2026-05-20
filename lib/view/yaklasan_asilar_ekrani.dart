@@ -18,9 +18,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
           final asilar = snapshot.data!;
-          if (asilar.isEmpty) {
-            return const Center(child: Text('Yaklaşan aşı yok'));
-          }
+          if (asilar.isEmpty) return const Center(child: Text('Yaklaşan aşı yok'));
           return ListView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: asilar.length,
@@ -49,5 +47,13 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
                     label: Text(kacGun == 0 ? 'Bugün' : '$kacGun gün'),
                     backgroundColor: renk.withValues(alpha: 0.15),
                     labelStyle: TextStyle(color: renk, fontWeight: FontWeight.bold),
-                    
-                    ),),);},);},),);}}
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

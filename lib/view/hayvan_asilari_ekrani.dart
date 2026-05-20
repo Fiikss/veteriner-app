@@ -21,9 +21,12 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
 
   Color _durumRengi(String durum) {
     switch (durum) {
-      case 'Yapıldı': return Colors.green;
-      case 'İptal': return Colors.red;
-      default: return Colors.orange;
+      case 'Yapıldı':
+        return Colors.green;
+      case 'İptal':
+        return Colors.red;
+      default:
+        return Colors.orange;
     }
   }
 
@@ -35,133 +38,152 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
         backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // aşı ekleme formu - sadece hekim görebilir
-            if (widget.canAdd) ...[
-              DropdownButtonFormField<String>(
-                initialValue: asiDurumu,
-                decoration: InputDecoration(
-                  labelText: 'Aşı Durumu',
-                  prefixIcon: const Icon(Icons.info_outline),
-                  filled: true,
-                  fillColor: const Color(0xFFFFEBEE),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                ),
-                items: ['Bekliyor', 'Yapıldı', 'İptal']
-                    .map((d) => DropdownMenuItem(value: d, child: Text(d)))
-                    .toList(),
-                onChanged: (value) => setState(() => asiDurumu = value!),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: asiAdiController,
-                decoration: InputDecoration(
-                  labelText: 'Aşı Adı',
-                  prefixIcon: const Icon(Icons.vaccines),
-                  filled: true,
-                  fillColor: const Color(0xFFFFEBEE),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (asiDurumu == 'Yapıldı') ...[
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      side: const BorderSide(color: Color(0xFFB71C1C)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (widget.canAdd)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DropdownButtonFormField<String>(
+                    initialValue: asiDurumu,
+                    decoration: InputDecoration(
+                      labelText: 'Aşı Durumu',
+                      prefixIcon: const Icon(Icons.info_outline),
+                      filled: true,
+                      fillColor: const Color(0xFFFFEBEE),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
-                    onPressed: () async {
-                      final tarih = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                      );
-                      if (tarih != null) setState(() => yapilmaTarihi = tarih);
-                    },
-                    icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
-                    label: Text(
-                      yapilmaTarihi == null ? 'Yapılan Aşı Tarihi' : '${yapilmaTarihi!.day}.${yapilmaTarihi!.month}.${yapilmaTarihi!.year}',
-                      style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
+                    items: ['Bekliyor', 'Yapıldı', 'İptal']
+                        .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                        .toList(),
+                    onChanged: (value) => setState(() => asiDurumu = value!),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: asiAdiController,
+                    decoration: InputDecoration(
+                      labelText: 'Aşı Adı',
+                      prefixIcon: const Icon(Icons.vaccines),
+                      filled: true,
+                      fillColor: const Color(0xFFFFEBEE),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                   ),
-                ),
-                const SizedBox(height: 12),
-              ],
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    side: const BorderSide(color: Color(0xFFB71C1C)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  const SizedBox(height: 12),
+                  if (asiDurumu == 'Yapıldı') ...[
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          side: const BorderSide(color: Color(0xFFB71C1C)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: () async {
+                          final tarih = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now().add(const Duration(days: 365)),
+                          );
+                          if (tarih != null) setState(() => yapilmaTarihi = tarih);
+                        },
+                        icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
+                        label: Text(
+                          yapilmaTarihi == null
+                              ? 'Yapılan Aşı Tarihi'
+                              : '${yapilmaTarihi!.day}.${yapilmaTarihi!.month}.${yapilmaTarihi!.year}',
+                          style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        side: const BorderSide(color: Color(0xFFB71C1C)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () async {
+                        final tarih = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
+                        );
+                        if (tarih != null) setState(() => sonrakiAsiTarihi = tarih);
+                      },
+                      icon: const Icon(Icons.event, color: Color(0xFFB71C1C)),
+                      label: Text(
+                        sonrakiAsiTarihi == null
+                            ? 'Sonraki Aşı Tarihi'
+                            : '${sonrakiAsiTarihi!.day}.${sonrakiAsiTarihi!.month}.${sonrakiAsiTarihi!.year}',
+                        style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
-                  onPressed: () async {
-                    final tarih = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
-                    );
-                    if (tarih != null) setState(() => sonrakiAsiTarihi = tarih);
-                  },
-                  icon: const Icon(Icons.event, color: Color(0xFFB71C1C)),
-                  label: Text(
-                    sonrakiAsiTarihi == null ? 'Sonraki Aşı Tarihi' : '${sonrakiAsiTarihi!.day}.${sonrakiAsiTarihi!.month}.${sonrakiAsiTarihi!.year}',
-                    style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFB71C1C),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () async {
+                        final asi = Asi(
+                          id: DateTime.now().microsecondsSinceEpoch.toString(),
+                          hayvanID: widget.hayvanID,
+                          hayvanAdi: widget.hayvanAdi,
+                          asiAdi: asiAdiController.text,
+                          asiDurumu: asiDurumu,
+                          yapilmaTarihi: yapilmaTarihi ?? DateTime.now(),
+                          sonrakiAsiTarihi: sonrakiAsiTarihi ?? DateTime.now(),
+                        );
+                        await _servis.asiEkle(asi);
+                        asiAdiController.clear();
+                        setState(() {
+                          asiDurumu = 'Bekliyor';
+                          yapilmaTarihi = null;
+                          sonrakiAsiTarihi = null;
+                        });
+                      },
+                      child: const Text('Aşı Ekle', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  const Text('Aşı Geçmişi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFFB71C1C))),
+                ],
               ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFB71C1C),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () async {
-                    final asi = Asi(
-                      id: DateTime.now().microsecondsSinceEpoch.toString(),
-                      hayvanID: widget.hayvanID,
-                      hayvanAdi: widget.hayvanAdi,
-                      asiAdi: asiAdiController.text,
-                      asiDurumu: asiDurumu,
-                      yapilmaTarihi: yapilmaTarihi ?? DateTime.now(),
-                      sonrakiAsiTarihi: sonrakiAsiTarihi ?? DateTime.now(),
-                    );
-                    await _servis.asiEkle(asi);
-                    asiAdiController.clear();
-                    setState(() {
-                      asiDurumu = 'Bekliyor';
-                      yapilmaTarihi = null;
-                      sonrakiAsiTarihi = null;
-                    });
-                  },
-                  child: const Text('Aşı Ekle', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text('Aşı Geçmişi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFFB71C1C))),
-              const SizedBox(height: 8),
-            ],
-            // aşı geçmişi listesi
-            StreamBuilder<List<Asi>>(
+            ),
+          Expanded(
+            child: StreamBuilder<List<Asi>>(
               stream: _servis.hayvanAsilari(widget.hayvanID),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                 final asilar = snapshot.data!;
-                if (asilar.isEmpty) return const Text('Aşı kaydı yok.', style: TextStyle(color: Colors.grey));
-                return Column(
+                if (asilar.isEmpty) {
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.vaccines, size: 64, color: Color(0xFFE53935)),
+                        SizedBox(height: 12),
+                        Text('Aşı kaydı yok', style: TextStyle(fontSize: 16, color: Colors.grey)),
+                      ],
+                    ),
+                  );
+                }
+                return ListView(
+                  padding: const EdgeInsets.all(16),
                   children: asilar.map((asi) {
                     final renk = _durumRengi(asi.asiDurumu);
                     return Card(
@@ -180,7 +202,9 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                           child: Icon(Icons.vaccines, color: renk),
                         ),
                         title: Text(asi.asiAdi, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text('Sonraki: ${asi.sonrakiAsiTarihi.day}.${asi.sonrakiAsiTarihi.month}.${asi.sonrakiAsiTarihi.year}'),
+                        subtitle: Text(
+                          'Sonraki: ${asi.sonrakiAsiTarihi.day}.${asi.sonrakiAsiTarihi.month}.${asi.sonrakiAsiTarihi.year}',
+                        ),
                         trailing: asi.asiDurumu == 'Bekliyor'
                             ? PopupMenuButton<String>(
                                 onSelected: (value) => _servis.asiGuncelle(asi.id, value),
@@ -205,8 +229,8 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                 );
               },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

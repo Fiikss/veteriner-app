@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:veteriner_app/model/hayvan_model.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/view/tibbi_kayit_ekle_ekrani.dart';
@@ -45,6 +45,14 @@ class _TibbikayitListesiEkraniState extends State<TibbikayitListesiEkrani> {
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => TibbiKayitEkleEkrani(hayvanID: hayvan.id),
-                    ),),),);},);},),);}}
+                    MaterialPageRoute(builder: (_) => TibbiKayitEkleEkrani(hayvanID: hayvan.id)),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}

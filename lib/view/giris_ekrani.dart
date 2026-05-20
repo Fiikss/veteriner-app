@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:veteriner_app/view/asistan_ana_sayfa.dart';
 import 'package:veteriner_app/view/hekim_ana_sayfa.dart';
 import 'package:veteriner_app/view/kayit_ekrani.dart';
@@ -18,6 +19,26 @@ class _GirisState extends State<Giris> {
   final sifreController = TextEditingController();
   String secilenRol = 'musteri';
   bool sifreGizli = true;
+  bool _beniHatirla = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _kayitliEmailiYukle();
+  }
+
+  Future<void> _kayitliEmailiYukle() async {
+    final prefs = await SharedPreferences.getInstance();
+    final kayitliEmail = prefs.getString('kayitli_email');
+    final kayitliSifre = prefs.getString('kayitli_sifre');
+    if (kayitliEmail != null) {
+      setState(() {
+        emailController.text = kayitliEmail;
+        sifreController.text = kayitliSifre ?? '';
+        _beniHatirla = true;
+      });
+    }
+  }
 
   final roller = {
     'musteri': {'label': 'Müşteri', 'icon': Icons.person},
@@ -25,13 +46,78 @@ class _GirisState extends State<Giris> {
     'asistan': {'label': 'Asistan', 'icon': Icons.support_agent},
   };
 
+  void _hataGoster(String mesaj) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(mesaj)));
+  }
+
+  Future<void> _sifremiUnuttum() async {
+    final emailController2 = TextEditingController(text: emailController.text.trim());
+    await showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Şifremi Unuttum'),
+        content: TextField(
+          controller: emailController2,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'E-posta adresiniz',
+            prefixIcon: const Icon(Icons.email_outlined),
+            filled: true,
+            fillColor: const Color(0xFFFFEBEE),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('İptal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFB71C1C),
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () async {
+              final email = emailController2.text.trim();
+              if (email.isEmpty) return;
+              try {
+                await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                if (!ctx.mounted) return;
+                Navigator.pop(ctx);
+                _hataGoster('Şifre sıfırlama e-postası gönderildi.');
+              } on FirebaseAuthException {
+                if (!ctx.mounted) return;
+                Navigator.pop(ctx);
+                _hataGoster('Bu e-posta adresi kayıtlı değil.');
+              }
+            },
+            child: const Text('Gönder'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _girisYap() async {
+    final email = emailController.text.trim();
+    final sifre = sifreController.text;
+
+    if (email.isEmpty || sifre.isEmpty) {
+      _hataGoster('E-posta ve şifre boş bırakılamaz.');
+      return;
+    }
+
     try {
-      // firebase ile giriş yap
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: sifreController.text,
-      );
+      final prefs = await SharedPreferences.getInstance();
+      if (_beniHatirla) {
+        await prefs.setString('kayitli_email', email);
+        await prefs.setString('kayitli_sifre', sifre);
+      } else {
+        await prefs.remove('kayitli_email');
+        await prefs.remove('kayitli_sifre');
+      }
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: sifre);
 
       final uid = FirebaseAuth.instance.currentUser!.uid;
       final doc = await FirebaseFirestore.instance.collection('Kullanicilar').doc(uid).get();
@@ -40,26 +126,19 @@ class _GirisState extends State<Giris> {
       if (rol == 'musteri' && !FirebaseAuth.instance.currentUser!.emailVerified) {
         await FirebaseAuth.instance.signOut();
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Lütfen e-postanızı doğrulayın.')),
-        );
+        _hataGoster('Lütfen e-postanızı doğrulayın.');
         return;
       }
 
-      // seçilen rol ile hesabın rolü uyuşmuyor
       if (rol != secilenRol) {
         await FirebaseAuth.instance.signOut();
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Bu hesap ${roller[secilenRol]!['label']} hesabı değil.')),
-        );
+        _hataGoster('Bu hesap ${roller[secilenRol]!['label']} hesabı değil.');
         return;
       }
 
       if (!mounted) return;
 
-      // role göre ilgili sayfaya yönlendir
-      
       if (rol == 'hekim') {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HekimAnaSayfa()));
       } else if (rol == 'asistan') {
@@ -67,9 +146,18 @@ class _GirisState extends State<Giris> {
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MusteriAnaSayfa()));
       }
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      const hatalar = {
+        'invalid-email': 'Geçersiz e-posta adresi.',
+        'user-not-found': 'E-posta veya şifre hatalı.',
+        'wrong-password': 'E-posta veya şifre hatalı.',
+        'invalid-credential': 'E-posta veya şifre hatalı.',
+        'user-disabled': 'Bu hesap devre dışı bırakılmış.',
+        'too-many-requests': 'Çok fazla hatalı deneme. Lütfen bekleyin.',
+        'network-request-failed': 'İnternet bağlantısı kontrol edin.',
+      };
+      _hataGoster(hatalar[e.code] ?? 'Giriş başarısız. Lütfen tekrar deneyin.');
     }
   }
 
@@ -80,7 +168,6 @@ class _GirisState extends State<Giris> {
       body: Column(
         children: [
           const SizedBox(height: 60),
-          // logo
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -96,7 +183,6 @@ class _GirisState extends State<Giris> {
           const Text('Veteriner Kliniği', style: TextStyle(color: Colors.white70, fontSize: 15)),
           const Text('VetApp', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
           const SizedBox(height: 30),
-          // rol seçim barı
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Container(
@@ -132,12 +218,18 @@ class _GirisState extends State<Giris> {
                                 color: secili ? const Color(0xFFB71C1C) : Colors.white70,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                              ),),
-                              ],),),),);}).toList(),
                               ),
-                              ),),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
-          // giriş formu
           Expanded(
             child: Container(
               padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
@@ -154,7 +246,6 @@ class _GirisState extends State<Giris> {
                       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFB71C1C)),
                     ),
                     const SizedBox(height: 25),
-                    // email alanı
                     TextField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -170,7 +261,6 @@ class _GirisState extends State<Giris> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // şifre alanı
                     TextField(
                       controller: sifreController,
                       obscureText: sifreGizli,
@@ -189,8 +279,26 @@ class _GirisState extends State<Giris> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    // giriş butonu
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _beniHatirla,
+                              onChanged: (val) => setState(() => _beniHatirla = val!),
+                              activeColor: const Color(0xFFB71C1C),
+                            ),
+                            const Text('Beni hatırla', style: TextStyle(fontSize: 13, color: Color(0xFFB71C1C))),
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: _sifremiUnuttum,
+                          child: const Text('Şifremi unuttum', style: TextStyle(color: Color(0xFFB71C1C), fontSize: 12)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
                     SizedBox(
                       width: double.infinity,
                       height: 54,
@@ -211,10 +319,19 @@ class _GirisState extends State<Giris> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // kayıt sayfasına yönlendir
                     Center(
                       child: TextButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => Kayit())),
                         child: const Text('Hesabın yok mu? Kayıt Ol', style: TextStyle(color: Color(0xFFB71C1C))),
-                        
-                      ),),],),),),),],),);}}
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

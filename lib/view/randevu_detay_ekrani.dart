@@ -19,7 +19,6 @@ class RandevuDetayEkrani extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // randevu bilgileri kartı
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 2,
@@ -38,46 +37,54 @@ class RandevuDetayEkrani extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            // onayla ve reddet butonları
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            if (randevu.durum == 'Bekliyor') ...[
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () async {
+                        await RandevuServis().durumGuncelle(randevu.id, 'Onaylandı');
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.check),
+                      label: const Text('Onayla', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () async {
-                      await RandevuServis().durumGuncelle(randevu.id, 'Onaylandı');
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.check),
-                    label: const Text('Onayla', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      onPressed: () async {
+                        await RandevuServis().durumGuncelle(randevu.id, 'Reddedildi');
+                        if (!context.mounted) return;
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close),
+                      label: const Text('Reddet', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                    onPressed: () async {
-                      await RandevuServis().durumGuncelle(randevu.id, 'Reddedildi');
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.close),
-                    label: const Text('Reddet', style: TextStyle(fontWeight: FontWeight.bold)),),
-                    ),],),],),),);}
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
 
-  // bilgi satırı oluşturan yardımcı metot
   Widget _satirOlustur(IconData ikon, String baslik, String deger) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
