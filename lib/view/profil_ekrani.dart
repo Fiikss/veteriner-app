@@ -27,7 +27,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     _verileriYukle();
   }
 
-  // firestore'dan kullanıcı bilgilerini yükle
   Future<void> _verileriYukle() async {
     if (uid.isEmpty) return;
     final doc = await FirebaseFirestore.instance.collection('Kullanicilar').doc(uid).get();
@@ -41,7 +40,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     });
   }
 
-  // galeriden fotoğraf seç
   Future<void> _fotografSec() async {
     try {
       final bytes = await FotoServis().fotografSec(maxWidth: 100, maxHeight: 100);
@@ -54,7 +52,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     }
   }
 
-  // değişiklikleri kaydet
   Future<void> _kaydet() async {
     if (uid.isEmpty) return;
     try {

@@ -23,6 +23,7 @@ class Hayvan{
   });
 
 //firestoredan gelen ham veri, dokumanId firestore'daki belge ID
+
   static Hayvan fromMap(Map<String, dynamic> map, String dokumanId){
     return Hayvan(
     id: dokumanId,
@@ -37,6 +38,7 @@ class Hayvan{
   }
 
 //nesneyi veriye çeviriyoruz firestore a yazarken kullanılır.
+
   Map <String, dynamic> toMap(){
     return {
       'sahipID': sahipID,

@@ -5,10 +5,8 @@ import 'package:veteriner_app/model/hayvan_model.dart';
 class HayvanServis{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-//yeni hayvan eklemek için kullandıgımız alan
    Future <void> hayvanEkle(Hayvan hayvan) async {
-    await _firestore
-    .collection('Hayvanlar')
+    await _firestore.collection('Hayvanlar')
     .doc(hayvan.id)
     .set(hayvan.toMap());
    }
