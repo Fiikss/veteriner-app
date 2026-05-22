@@ -41,6 +41,7 @@ class RandevuDetayEkrani extends StatelessWidget {
               const SizedBox(height: 24),
               Row(
                 children: [
+                  
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -59,6 +60,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
+
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
