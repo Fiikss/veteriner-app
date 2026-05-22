@@ -17,7 +17,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
         stream: AsiServis().yaklasanAsilar(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-          final asilar = snapshot.data!;
+          final asilar = snapshot.data!.where((a) => a.asiDurumu == 'Bekliyor').toList();
           if (asilar.isEmpty) return const Center(child: Text('Yaklaşan aşı yok'));
           return ListView.builder(
             padding: const EdgeInsets.all(12),

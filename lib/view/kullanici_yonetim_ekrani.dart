@@ -154,7 +154,6 @@ class KullaniciYonetimEkrani extends StatelessWidget {
               ),
               onPressed: () async {
                 try {
-                  // İkinci Firebase bağlantısıyla mevcut oturumu kapatmadan hesap oluştur
                   final ikinciBaglanti = await Firebase.initializeApp(
                     name: 'personelKayit',
                     options: DefaultFirebaseOptions.currentPlatform,
@@ -174,7 +173,6 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                     'rol': secilenRol,
                   });
                   await ikinciBaglanti.delete();
-                  // personel eklendi, dialogu kapat
                   if (!context.mounted) return;
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(

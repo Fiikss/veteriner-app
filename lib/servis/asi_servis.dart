@@ -22,11 +22,12 @@ class AsiServis {
   }
 
  //hekimin/asistanın tüm hayvanların yaklasan aşılarını görmek icin
-Stream <List<Asi>> yaklasanAsilar (){ //tüm hayvan oldugu icin parametresi yok
-
+Stream <List<Asi>> yaklasanAsilar (){
+  final ucaysonra = DateTime.now().add(const Duration(days: 90));
   return _firestore
   .collection('Asilar')
   .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: DateTime.now())
+  .where('sonrakiAsiTarihi', isLessThanOrEqualTo: ucaysonra)
   .snapshots()
   .map((snapshot) => snapshot.docs .map((doc) => Asi.fromMap(doc.data(), doc.id))
   .toList());
