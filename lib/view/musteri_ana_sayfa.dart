@@ -49,7 +49,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                 children: [
                   Icon(Icons.pets, color: Colors.white, size: 50),
                   SizedBox(height: 8),
-                  Text('Veteriner Klinik', style: TextStyle(color: Colors.white, fontSize: 18)),
+                  Text('VeterinerApp', style: TextStyle(color: Colors.white, fontSize: 18)),
                 ],
               ),
             ),
