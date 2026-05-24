@@ -5,7 +5,8 @@ import 'package:veteriner_app/servis/tibbikayit_servis.dart';
 
 class TibbiKayitEkleEkrani extends StatefulWidget {
   final String hayvanID;
-  const TibbiKayitEkleEkrani({super.key, required this.hayvanID});
+  final String hayvanAdi;
+  const TibbiKayitEkleEkrani({super.key, required this.hayvanID, required this.hayvanAdi});
 
   @override
   State<TibbiKayitEkleEkrani> createState() => _TibbiKayitEkleEkraniState();
@@ -59,7 +60,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tıbbi Kayıt Girişi'),
+        title: Text('${widget.hayvanAdi} - Tıbbi Kayıt'),
         backgroundColor: const Color(0xFFB71C1C),
         foregroundColor: Colors.white,
       ),

@@ -75,7 +75,11 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                     stream: RandevuServis().tumRandevular(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-                      final randevular = snapshot.data!;
+                      final bugunR = DateTime.now();
+                      final randevular = snapshot.data!.where((r) {
+                        final gecti = r.tarih.isBefore(DateTime(bugunR.year, bugunR.month, bugunR.day));
+                        return !gecti || r.durum == 'Onaylandı';
+                      }).toList();
                       if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
                       return ListView.builder(
                         padding: const EdgeInsets.all(12),
@@ -119,7 +123,8 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                     stream: SlotServis().hekimSlotlari(hekimID),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-                      final slotlar = snapshot.data!;
+                      final bugun = DateTime.now();
+                      final slotlar = snapshot.data!.where((s) => !s.tarih.isBefore(DateTime(bugun.year, bugun.month, bugun.day))).toList();
                       if (slotlar.isEmpty) return const Center(child: Text('Saat eklenmemiş'));
                       return ListView.builder(
                         padding: const EdgeInsets.all(12),

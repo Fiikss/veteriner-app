@@ -102,7 +102,11 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-              final randevular = snapshot.data!;
+              final bugunA = DateTime.now();
+              final randevular = snapshot.data!.where((r) {
+                final gecti = r.tarih.isBefore(DateTime(bugunA.year, bugunA.month, bugunA.day));
+                return !gecti || r.durum == 'Onaylandı';
+              }).toList();
               if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
               return ListView.builder(
                 padding: const EdgeInsets.all(12),
@@ -147,8 +151,8 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-              final randevular = snapshot.data!;
-              if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
+              final randevular = snapshot.data!.where((r) => r.durum == 'Onaylandı').toList();
+              if (randevular.isEmpty) return const Center(child: Text('Onaylanmış randevu yok'));
               return ListView.builder(
                 padding: const EdgeInsets.all(12),
                 itemCount: randevular.length,

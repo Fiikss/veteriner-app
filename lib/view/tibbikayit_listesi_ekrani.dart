@@ -4,6 +4,8 @@ import 'package:veteriner_app/model/hayvan_model.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/view/tibbi_kayit_ekle_ekrani.dart';
 
+
+
 class TibbikayitListesiEkrani extends StatefulWidget {
   const TibbikayitListesiEkrani({super.key});
 
@@ -42,10 +44,35 @@ class _TibbikayitListesiEkraniState extends State<TibbikayitListesiEkrani> {
                   ),
                   title: Text(hayvan.ad, style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('${hayvan.tur} • ${hayvan.irk}'),
-                  trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline, color: Colors.red),
+                        onPressed: () async {
+                          final onay = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('Hayvanı Sil'),
+                              content: Text('${hayvan.ad} silinsin mi?'),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('İptal')),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  child: const Text('Sil', style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (onay == true) await HayvanServis().hayvanSil(hayvan.id);
+                        },
+                      ),
+                    ],
+                  ),
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => TibbiKayitEkleEkrani(hayvanID: hayvan.id)),
+                    MaterialPageRoute(builder: (_) => TibbiKayitEkleEkrani(hayvanID: hayvan.id, hayvanAdi: hayvan.ad)),
                   ),
                 ),
               );

@@ -37,6 +37,7 @@ Stream<List<Slot>> hekimSlotlari(String hekimID) {
   return _firestore
       .collection('Slotlar')
       .where('hekimID', isEqualTo: hekimID)
+      .where('dolu', isEqualTo: false)
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map((doc) => Slot.fromMap(doc.data(), doc.id))

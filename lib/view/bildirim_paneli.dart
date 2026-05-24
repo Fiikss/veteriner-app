@@ -130,8 +130,10 @@ class BildirimPaneli extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
         final docs = snapshot.data!.docs.where((d) {
-          final tarih = ((d.data() as Map<String, dynamic>)['tarih'] as Timestamp).toDate();
-          return !tarih.isBefore(bugun) && tarih.isBefore(ikiHaftaSonra);
+          final data = d.data() as Map<String, dynamic>;
+          final tarih = (data['tarih'] as Timestamp).toDate();
+          final durum = data['durum'] as String? ?? '';
+          return durum == 'Onaylandı' && !tarih.isBefore(bugun) && tarih.isBefore(ikiHaftaSonra);
         }).toList();
         if (docs.isEmpty) return _bosKart('2 hafta içinde randevu yok');
         return Column(
