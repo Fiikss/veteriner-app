@@ -63,7 +63,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFEBEE),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: Text('${widget.hayvan.ad} - Düzenle'),
         foregroundColor: Colors.white,
@@ -116,7 +116,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: const Color(0xFFFFCDD2),
+                    backgroundColor: const Color(0xFFFFEBEE),
                     backgroundImage: _fotoBytes != null
                         ? MemoryImage(_fotoBytes!)
                         : widget.hayvan.fotoUrl.isNotEmpty

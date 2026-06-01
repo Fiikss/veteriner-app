@@ -79,7 +79,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
       labelText: label,
       prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFEBEE),
+      fillColor: const Color(0xFFFFFFFF),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
     );
   }
@@ -87,7 +87,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFEBEE),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Text('Profilim'),
         foregroundColor: Colors.white,
@@ -105,7 +105,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
                 children: [
                   CircleAvatar(
                     radius: 60,
-                    backgroundColor: const Color(0xFFFFCDD2),
+                    backgroundColor: const Color(0xFFFFFFFF),
                     backgroundImage: _fotoBytes != null
                         ? MemoryImage(_fotoBytes!)
                         : _mevcutFotoUrl.isNotEmpty

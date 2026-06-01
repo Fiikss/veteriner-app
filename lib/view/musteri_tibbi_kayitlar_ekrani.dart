@@ -10,7 +10,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFEBEE),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: Text('$hayvanAdi - Tıbbi Kayıtlar'),
         foregroundColor: Colors.white,

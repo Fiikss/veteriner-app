@@ -86,7 +86,7 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
                 labelText: 'Saat',
                 prefixIcon: const Icon(Icons.access_time),
                 filled: true,
-                fillColor: const Color(0xFFFFEBEE),
+                fillColor: const Color(0xFFFFFFFF),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,

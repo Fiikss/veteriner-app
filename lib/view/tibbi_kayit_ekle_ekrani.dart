@@ -51,7 +51,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
       labelText: label,
       prefixIcon: Icon(ikon),
       filled: true,
-      fillColor: const Color(0xFFFFEBEE),
+      fillColor: const Color(0xFFFFFFFF),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
     );
   }
@@ -75,7 +75,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 labelText: 'Kategori',
                 prefixIcon: const Icon(Icons.category_outlined),
                 filled: true,
-                fillColor: const Color(0xFFFFEBEE),
+                fillColor: const Color(0xFFFFFFFF),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               ),
               items: ['Muayene', 'Operasyon', 'İlaç Tedavisi']

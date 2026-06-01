@@ -40,7 +40,7 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
       labelText: label,
       prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFEBEE),
+      fillColor: const Color(0xFFFFFFFF),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -73,7 +73,7 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFEBEE),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
 
         title: const Text('Hayvan Ekle'),
@@ -106,7 +106,7 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
                 height: 120,
                 width: 120,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFCDD2),
+                  color: const Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: const Color(0xFFE53935), width: 2),
                   boxShadow: [
