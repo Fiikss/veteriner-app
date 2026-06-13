@@ -32,7 +32,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFFEBEE),
+      backgroundColor: const Color(0xFFFFFFFF),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
