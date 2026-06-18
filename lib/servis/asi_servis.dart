@@ -17,8 +17,11 @@ class AsiServis {
     .collection('Asilar')
     .where('hayvanID', isEqualTo: hayvanID)
     .snapshots()
-    .map((snapshot) => snapshot.docs .map((doc) => Asi.fromMap(doc.data(), doc.id))
-    .toList());
+    .map((snapshot) {
+      final liste = snapshot.docs.map((doc) => Asi.fromMap(doc.data(), doc.id)).toList();
+      liste.sort((a, b) => b.yapilmaTarihi.compareTo(a.yapilmaTarihi));
+      return liste;
+    });
   }
 
  //hekimin/asistanın tüm hayvanların yaklasan aşılarını görmek icin
@@ -29,8 +32,11 @@ Stream <List<Asi>> yaklasanAsilar (){
   .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: DateTime.now())
   .where('sonrakiAsiTarihi', isLessThanOrEqualTo: ucaysonra)
   .snapshots()
-  .map((snapshot) => snapshot.docs .map((doc) => Asi.fromMap(doc.data(), doc.id))
-  .toList());
+  .map((snapshot) {
+    final liste = snapshot.docs.map((doc) => Asi.fromMap(doc.data(), doc.id)).toList();
+    liste.sort((a, b) => a.sonrakiAsiTarihi.compareTo(b.sonrakiAsiTarihi));
+    return liste;
+  });
 }
 
 

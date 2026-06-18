@@ -24,13 +24,19 @@ Future<void> slotEkle(Slot slot) async{
     );
 
   }
-
-
+  
   Future<void> slotDoldur(String slotID) async{
     await _firestore
     .collection('Slotlar')
     .doc(slotID)
     .update({'dolu': true});
+  }
+
+  Future<void> slotBosalt(String slotID) async {
+    await _firestore
+    .collection('Slotlar')
+    .doc(slotID)
+    .update({'dolu': false});
   }
 
 Stream<List<Slot>> hekimSlotlari(String hekimID) {

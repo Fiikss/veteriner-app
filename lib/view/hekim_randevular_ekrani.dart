@@ -18,12 +18,14 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+//tabcontroller ile randevular ve saatlerim sekmelerini yönetiyor
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
 
+//widget ekrandan kaldırıldığında çalışır. dispose() ile tabcontroller bellekten temizlenir
   @override
   void dispose() {
     _tabController.dispose();
@@ -69,25 +71,34 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
           child: Stack(
             children: [
               TabBarView(
+                
                 controller: _tabController,
                 children: [
+
                   StreamBuilder<List<Randevu>>(
                     stream: RandevuServis().tumRandevular(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+
                       final bugunR = DateTime.now();
-                      final randevular = snapshot.data!.where((r) {
-                        final gecti = r.tarih.isBefore(DateTime(bugunR.year, bugunR.month, bugunR.day));
-                        return !gecti || r.durum == 'Onaylandı';
-                      }).toList();
-                      if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
-                      return ListView.builder(
+
+                      final randevular = snapshot.data!.where((r) {                       
+                      final gecti = r.tarih.isBefore(DateTime(bugunR.year, bugunR.month, bugunR.day));                    
+                      return !gecti || r.durum == 'Onaylandı'; }
+
+                      ).toList();
+
+                      if (randevular.isEmpty) return const ColoredBox(color: Colors.white, child: Center(child: Text('Randevu yok')));
+                      return ColoredBox(
+                        color: Colors.white,
+                        child: ListView.builder(
                         padding: const EdgeInsets.all(12),
                         itemCount: randevular.length,
                         itemBuilder: (context, index) {
                           final randevu = randevular[index];
                           final renk = _durumRengi(randevu.durum);
                           return Card(
+                            color: const Color.fromARGB(255, 229, 226, 226),
                             elevation: 3,
                             shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -116,22 +127,26 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                             ),
                           );
                         },
-                      );
+                      ));
                     },
                   ),
+
                   StreamBuilder<List<Slot>>(
                     stream: SlotServis().hekimSlotlari(hekimID),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                       final bugun = DateTime.now();
                       final slotlar = snapshot.data!.where((s) => !s.tarih.isBefore(DateTime(bugun.year, bugun.month, bugun.day))).toList();
-                      if (slotlar.isEmpty) return const Center(child: Text('Saat eklenmemiş'));
-                      return ListView.builder(
+                      if (slotlar.isEmpty) return const ColoredBox(color: Colors.white, child: Center(child: Text('Saat eklenmemiş')));
+                      return ColoredBox(
+                        color: Colors.white,
+                        child: ListView.builder(
                         padding: const EdgeInsets.all(12),
                         itemCount: slotlar.length,
                         itemBuilder: (context, index) {
                           final slot = slotlar[index];
                           return Card(
+                            color: const Color.fromARGB(255, 229, 226, 226),
                             elevation: 3,
                             shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -166,7 +181,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                             ),
                           );
                         },
-                      );
+                      ));
                     },
                   ),
                 ],

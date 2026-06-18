@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 import 'package:veteriner_app/servis/randevu_servis.dart';
+import 'package:veteriner_app/servis/slot_servis.dart';
 
 class RandevuDetayEkrani extends StatelessWidget {
   final Randevu randevu;
   const RandevuDetayEkrani({super.key, required this.randevu});
-
+//hekimin randevuları yönetme ekranı
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +21,7 @@ class RandevuDetayEkrani extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
+              color: const Color.fromARGB(255, 229, 226, 226),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               elevation: 2,
               child: Padding(
@@ -71,6 +73,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                       ),
                       onPressed: () async {
                         await RandevuServis().durumGuncelle(randevu.id, 'Reddedildi');
+                        await SlotServis().slotBosalt(randevu.slotID);
                         if (!context.mounted) return;
                         Navigator.pop(context);
                       },

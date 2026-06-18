@@ -52,7 +52,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
       labelText: label,
       prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFEBEE),
+      fillColor:const Color.fromARGB(255, 229, 226, 226),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -110,35 +110,32 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
         child: Column(
           children: [
             const SizedBox(height: 8),
-            GestureDetector(
+          GestureDetector(
               onTap: _fotografSec,
-              child: Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: const Color(0xFFFFEBEE),
-                    backgroundImage: _fotoBytes != null
-                        ? MemoryImage(_fotoBytes!)
-                        : widget.hayvan.fotoUrl.isNotEmpty
-                            ? MemoryImage(base64Decode(widget.hayvan.fotoUrl))
-                            : null,
-                    child: (_fotoBytes == null && widget.hayvan.fotoUrl.isEmpty)
-                        ? const Icon(Icons.pets, size: 40, color: Color(0xFFB71C1C))
-                        : null,
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFB71C1C),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(60),
+                  border: Border.all(color: const Color(0xFFE53935), width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFC62828).withValues(alpha: 0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
-                ],
+                  ],
+                  image: _fotoBytes != null
+                      ? DecorationImage(
+                          image: MemoryImage(_fotoBytes!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: _fotoBytes == null
+                    ? const Icon(Icons.add_a_photo, color: Color(0xFFB71C1C), size: 36)
+                    : null,
               ),
             ),
             const SizedBox(height: 20),
@@ -148,7 +145,7 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
             const SizedBox(height: 12),
             TextField(controller: irkController, decoration: _inputDecoration('Irkı', Icons.blur_on)),
             const SizedBox(height: 12),
-            TextField(controller: kiloController, decoration: _inputDecoration('Kilosu (kg)', Icons.monitor_weight_outlined), keyboardType: TextInputType.number),
+            TextField(controller: kiloController, decoration: _inputDecoration('Kilosu', Icons.monitor_weight_outlined), keyboardType: TextInputType.number),
             const SizedBox(height: 12),
             TextField(controller: yasController, decoration: _inputDecoration('Yaşı', Icons.cake_outlined), keyboardType: TextInputType.number),
             const SizedBox(height: 24),

@@ -21,11 +21,25 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
 
   Future<void> _tarihSec() async {
     final tarih = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+  context: context,
+  initialDate: DateTime.now(),
+  firstDate: DateTime.now(),
+  lastDate: DateTime.now().add(const Duration(days: 365)),
+  builder: (context, child) {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFFB71C1C),
+          onPrimary: Colors.white,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
+      ),
+      child: child!,
     );
+  },
+);
+
     if (tarih != null) setState(() => secilenTarih = tarih);
   }
 
@@ -68,6 +82,7 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   side: const BorderSide(color: Color(0xFFB71C1C)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  overlayColor: const Color(0xFFB71C1C),
                 ),
                 onPressed: _tarihSec,
                 icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
@@ -81,9 +96,9 @@ class _SlotEkleEkraniState extends State<SlotEkleEkrani> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              initialValue: secilenSaat,
+              dropdownColor: Colors.white,
               decoration: InputDecoration(
-                labelText: 'Saat',
+                labelText: 'Saat Seçiniz',
                 prefixIcon: const Icon(Icons.access_time),
                 filled: true,
                 fillColor: const Color(0xFFFFFFFF),

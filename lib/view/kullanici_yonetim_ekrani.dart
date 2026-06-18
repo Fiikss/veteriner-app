@@ -57,9 +57,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                   children: [
                     Chip(
                       label: Text(rol == 'hekim' ? 'Hekim' : 'Asistan'),
-                      backgroundColor: rol == 'hekim'
-                          ? const Color(0xFFB71C1C).withValues(alpha: 0.1)
-                          : Colors.orange.withValues(alpha: 0.1),
+                      backgroundColor: Colors.white,
                       labelStyle: TextStyle(
                         color: rol == 'hekim'
                             ? const Color(0xFFB71C1C)
@@ -98,7 +96,9 @@ class KullaniciYonetimEkrani extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => StatefulBuilder(
-        builder: (context, setState) => AlertDialog(
+        builder: (context, setState) => 
+        AlertDialog(
+          backgroundColor: Colors.white,
           title: const Text('Yeni Personel Ekle'),
           content: SingleChildScrollView(
             child: Column(
@@ -144,6 +144,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
           ),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(foregroundColor: const Color(0xFFB71C1C)),
               onPressed: () => Navigator.pop(context),
               child: const Text('İptal'),
             ),

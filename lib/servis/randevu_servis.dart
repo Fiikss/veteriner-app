@@ -16,15 +16,22 @@ Stream <List<Randevu>> hayvanRandevulari (String hayvanID){
   return _firestore.collection('Randevular')
   .where('hayvanID', isEqualTo: hayvanID)
   .snapshots()
-  .map((snapshot) => snapshot.docs .map((doc) => Randevu.fromMap(doc.data(), doc.id))
-  .toList());
+  .map((snapshot) {
+    final liste = snapshot.docs.map((doc) => Randevu.fromMap(doc.data(), doc.id)).toList();
+    liste.sort((a, b) => b.tarih.compareTo(a.tarih));
+    return liste;
+  });
 }
 
 
 Stream <List<Randevu>> tumRandevular(){
   return _firestore.collection('Randevular')
   .snapshots()
-  .map((snapshot) => snapshot.docs .map((doc) => Randevu.fromMap(doc.data(), doc.id)) .toList());
+  .map((snapshot) {
+    final liste = snapshot.docs.map((doc) => Randevu.fromMap(doc.data(), doc.id)).toList();
+    liste.sort((a, b) => b.tarih.compareTo(a.tarih));
+    return liste;
+  });
 }
 
 Future<void> durumGuncelle(String randevuId, String yeniDurum) async {
@@ -37,8 +44,11 @@ Stream<List<Randevu>> musteriRandevulari (String musteriID){
   return _firestore.collection('Randevular')
   .where('musteriID', isEqualTo: musteriID)
   .snapshots()
-  .map((snapshot) => snapshot.docs .map((doc) => Randevu.fromMap(doc.data(),doc.id))
-  .toList());
+  .map((snapshot) {
+    final liste = snapshot.docs.map((doc) => Randevu.fromMap(doc.data(), doc.id)).toList();
+    liste.sort((a, b) => b.tarih.compareTo(a.tarih));
+    return liste;
+  });
 }
 
   Future<void> odemeGuncelle(String randevuId, double odeme, String odemeDurumu) async {

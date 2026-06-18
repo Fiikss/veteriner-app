@@ -49,6 +49,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFEBEE),
       drawer: Drawer(
+        backgroundColor: Colors.white,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -161,6 +162,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
         children: _sayfalar,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 226, 223, 223),
         currentIndex: _secilenIndex,
         onTap: (index) {
           setState(() => _secilenIndex = index);

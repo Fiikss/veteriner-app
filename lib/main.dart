@@ -5,14 +5,14 @@ import 'firebase_options.dart';
 
 
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() async { //iş tamamlanmadan uygulama başlatılmaz
+  WidgetsFlutterBinding.ensureInitialized(); //motor erkenden calisir
 
-await Firebase.initializeApp(
+await Firebase.initializeApp( //bekleme islemi yapar
 options:  DefaultFirebaseOptions.currentPlatform,
 );
 
-runApp(const KlinikApp());
+runApp(const KlinikApp()); 
 
 }
 
@@ -22,9 +22,13 @@ class KlinikApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-      ),
+theme: ThemeData(
+  scaffoldBackgroundColor: Colors.white,
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: Color(0xFFB71C1C),
+  ),
+),
+
       home: const Giris(),
       );
   }

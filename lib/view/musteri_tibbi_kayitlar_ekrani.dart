@@ -49,6 +49,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
             itemBuilder: (context, index) {
               final kayit = kayitlar[index];
               return Card(
+                color: const Color.fromARGB(255, 229, 226, 226),
                 elevation: 3,
                 shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

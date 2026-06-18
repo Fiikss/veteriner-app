@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+//kullanıcı kaydı ekranı
 class Kayit extends StatefulWidget {
   const Kayit({super.key});
 
@@ -27,8 +27,8 @@ class _KayitState extends State<Kayit> {
         'telefon': '',
         'rol': 'musteri',
       });
-      await sonuc.user!.sendEmailVerification();
-      await FirebaseAuth.instance.signOut();
+      await sonuc.user!.sendEmailVerification(); // kullanıcı mailine doğrulama linki gönderiyor
+      await FirebaseAuth.instance.signOut(); //doğrulama yapılmadan giriş yapmasın diye çıkış yapıyoruz await ile bekliyoruz
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Doğrulama maili gönderildi. E-postanızı onaylayıp giriş yapabilirsiniz.')),
@@ -45,7 +45,7 @@ class _KayitState extends State<Kayit> {
       prefixIcon: Icon(ikon),
       hintText: hint,
       filled: true,
-      fillColor: const Color(0xFFFFEBEE),
+      fillColor: Color.fromARGB(255, 229, 226, 226),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
@@ -90,12 +90,14 @@ class _KayitState extends State<Kayit> {
                         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFB71C1C))),
                     const SizedBox(height: 25),
                     TextField(controller: adSoyadController, decoration: _inputDecoration('Ad Soyad', Icons.person_outline)),
+                    
                     const SizedBox(height: 16),
                     TextField(
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: _inputDecoration('E-Posta', Icons.email_outlined),
                     ),
+                    
                     const SizedBox(height: 16),
                     TextField(
                       controller: sifreController,

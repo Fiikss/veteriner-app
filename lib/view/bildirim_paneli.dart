@@ -15,6 +15,7 @@ class BildirimPaneli extends StatelessWidget {
 
     return Drawer(
       width: 320,
+      backgroundColor: Colors.white,
       child: Column(
         children: [
           Container(
@@ -91,7 +92,6 @@ class BildirimPaneli extends StatelessWidget {
     if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
     final docs = snapshot.data!.docs.where((d) {
       final data = d.data() as Map<String, dynamic>;
-      if (data['asiDurumu'] != 'Bekliyor') return false;
       final tarih = (data['sonrakiAsiTarihi'] as Timestamp).toDate();
       return !tarih.isBefore(bugun) && !tarih.isAfter(ucaysonra);
     }).toList();

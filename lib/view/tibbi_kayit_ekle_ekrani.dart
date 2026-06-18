@@ -26,6 +26,19 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFFB71C1C),
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (tarih != null) setState(() => secilenTarih = tarih);
   }
@@ -53,6 +66,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
       filled: true,
       fillColor: const Color(0xFFFFFFFF),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
+      floatingLabelStyle: const TextStyle(color: Color(0xFFB71C1C)),
     );
   }
 
@@ -70,7 +84,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DropdownButtonFormField<String>(
-              initialValue: kategori,
+              dropdownColor: Colors.white,
               decoration: InputDecoration(
                 labelText: 'Kategori',
                 prefixIcon: const Icon(Icons.category_outlined),
@@ -97,6 +111,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   side: const BorderSide(color: Color(0xFFB71C1C)),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  overlayColor: const Color(0xFFB71C1C),
                 ),
                 onPressed: _tarihSec,
                 icon: const Icon(Icons.calendar_today, color: Color(0xFFB71C1C)),
@@ -131,6 +146,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
                 if (kayitlar.isEmpty) return const Text('Henüz kayıt yok.', style: TextStyle(color: Colors.grey));
                 return Column(
                   children: kayitlar.map((kayit) => Card(
+                    color: const Color.fromARGB(255, 229, 226, 226),
                     elevation: 2,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     margin: const EdgeInsets.only(bottom: 10),

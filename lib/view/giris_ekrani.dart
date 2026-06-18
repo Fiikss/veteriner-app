@@ -55,6 +55,7 @@ class _GirisState extends State<Giris> {
     await showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text('Şifremi Unuttum'),
         content: TextField(
           controller: emailController2,
@@ -63,12 +64,13 @@ class _GirisState extends State<Giris> {
             hintText: 'E-posta adresiniz',
             prefixIcon: const Icon(Icons.email_outlined),
             filled: true,
-            fillColor: const Color(0xFFFFEBEE),
+            fillColor: Color.fromARGB(255, 229, 226, 226),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
           ),
         ),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(foregroundColor: const Color(0xFFB71C1C)),
             onPressed: () => Navigator.pop(ctx),
             child: const Text('İptal'),
           ),
@@ -253,7 +255,7 @@ class _GirisState extends State<Giris> {
                         prefixIcon: const Icon(Icons.email_outlined),
                         hintText: 'E-Posta',
                         filled: true,
-                        fillColor: const Color(0xFFFFEBEE),
+                        fillColor:Color.fromARGB(255, 229, 226, 226),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                           borderSide: BorderSide.none,
@@ -268,7 +270,7 @@ class _GirisState extends State<Giris> {
                         prefixIcon: const Icon(Icons.lock_outline),
                         hintText: 'Şifre',
                         filled: true,
-                        fillColor: const Color(0xFFFFEBEE),
+                        fillColor: Color.fromARGB(255, 229, 226, 226),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
                           borderSide: BorderSide.none,
