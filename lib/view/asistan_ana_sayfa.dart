@@ -34,6 +34,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       drawer: Drawer(
+        backgroundColor: Colors.white,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -119,6 +120,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                           ? Colors.red
                           : Colors.orange;
                   return Card(
+                    color: const Color.fromARGB(255, 229, 226, 226),
                     elevation: 3,
                     shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -205,6 +207,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                   }
 
                   return Card(
+                    color: const Color.fromARGB(255, 229, 226, 226),
                     elevation: 3,
                     shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -238,6 +241,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut);
         },
+        backgroundColor: const Color.fromARGB(255, 229, 226, 226),
         selectedItemColor: const Color(0xFFB71C1C),
         unselectedItemColor: Colors.grey,
         items: const [

@@ -23,12 +23,15 @@ class _TibbikayitListesiEkraniState extends State<TibbikayitListesiEkrani> {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
           final hayvanlar = snapshot.data!;
           if (hayvanlar.isEmpty) return const Center(child: Text('Kayıtlı hayvan yok'));
+
           return ListView.builder(
             padding: const EdgeInsets.all(12),
             itemCount: hayvanlar.length,
             itemBuilder: (context, index) {
               final hayvan = hayvanlar[index];
+              
               return Card(
+                color: const Color.fromARGB(255, 224, 222, 222),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                 margin: const EdgeInsets.only(bottom: 10),
                 child: ListTile(

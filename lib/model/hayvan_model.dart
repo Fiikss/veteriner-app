@@ -22,8 +22,7 @@ class Hayvan{
 
   });
 
-//firestoredan gelen ham veri, dokumanId firestore'daki belge ID
-
+//veriyi nesneye çeviriyoruz firestore dan okurken kullanılır.
   static Hayvan fromMap(Map<String, dynamic> map, String dokumanId){
     return Hayvan(
     id: dokumanId,

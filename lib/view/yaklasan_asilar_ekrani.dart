@@ -17,7 +17,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
         stream: AsiServis().yaklasanAsilar(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-          final asilar = snapshot.data!.where((a) => a.asiDurumu == 'Bekliyor').toList();
+          final asilar = snapshot.data!;
           if (asilar.isEmpty) return const Center(child: Text('Yaklaşan aşı yok'));
           return ListView.builder(
             padding: const EdgeInsets.all(12),
@@ -27,6 +27,7 @@ class _YaklasanAsilarEkraniState extends State<YaklasanAsilarEkrani> {
               final kacGun = asi.sonrakiAsiTarihi.difference(DateTime.now()).inDays;
               final renk = kacGun <= 2 ? Colors.red : Colors.orange;
               return Card(
+                color: const Color.fromARGB(255, 229, 226, 226),
                 elevation: 3,
                 shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

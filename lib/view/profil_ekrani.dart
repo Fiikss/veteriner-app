@@ -79,7 +79,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
       labelText: label,
       prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFFFFF),
+      fillColor: const Color.fromARGB(255, 229, 226, 226),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
     );
   }
@@ -121,7 +121,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(color: Color(0xFFB71C1C), shape: BoxShape.circle),
-                      child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+                      child: const Icon(Icons.camera_alt, color:  Color(0xFFFFFFFF), size: 16),
                     ),
                   ),
                 ],
@@ -130,6 +130,7 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
             const SizedBox(height: 20),
             // e-posta ve rol bilgileri
             Card(
+              color: const Color.fromARGB(255, 229, 226, 226),
               elevation: 3,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(

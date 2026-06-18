@@ -39,7 +39,8 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                 labelText: 'Şikayet',
                 prefixIcon: const Icon(Icons.report_problem_outlined),
                 filled: true,
-                fillColor: const Color(0xFFFFEBEE),
+                fillColor: const Color.fromARGB(255, 229, 226, 226),
+                floatingLabelStyle: const TextStyle(color: Color(0xFFB71C1C)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -48,20 +49,20 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              initialValue: secilenTur,
+              dropdownColor: const Color.fromARGB(255, 229, 226, 226),
               decoration: InputDecoration(
                 labelText: 'Randevu Türü',
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 prefixIcon: const Icon(Icons.category_outlined),
                 filled: true,
-                fillColor: const Color(0xFFFFEBEE),
+                fillColor: const Color.fromARGB(255, 229, 226, 226),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
                 ),
               ),
               items: ['Muayene', 'Aşı', 'Tırnak Kesimi', 'Tüy Bakımı']
-                  .map((tur) => DropdownMenuItem(value: tur, child: Text(tur)))
+                  .map((tur) => DropdownMenuItem(value: tur, child: Text(tur), ))
                   .toList(),
               onChanged: (value) => setState(() => secilenTur = value!),
             ),
@@ -71,6 +72,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFFB71C1C)),
             ),
             const SizedBox(height: 8),
+            
             Expanded(
               child: StreamBuilder<List<Slot>>(
                 stream: _slotServis.bosSlotlar(),

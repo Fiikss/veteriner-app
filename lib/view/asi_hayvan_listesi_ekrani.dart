@@ -25,7 +25,9 @@ class _AsiHayvanListesiEkraniState extends State<AsiHayvanListesiEkrani> {
             itemCount: hayvanlar.length,
             itemBuilder: (context, index) {
               final hayvan = hayvanlar[index];
+
               return Card(
+                color: const Color.fromARGB(255, 224, 222, 222),
                 elevation: 3,
                 shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),

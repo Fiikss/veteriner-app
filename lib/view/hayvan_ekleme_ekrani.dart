@@ -40,7 +40,7 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
       labelText: label,
       prefixIcon: Icon(ikon, color: const Color(0xFFB71C1C)),
       filled: true,
-      fillColor: const Color(0xFFFFFFFF),
+      fillColor: const Color.fromARGB(255, 229, 226, 226),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -98,8 +98,6 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
           children: [
 
             const SizedBox(height: 8),
-
-
             GestureDetector(
               onTap: _fotografSec,
               child: Container(
@@ -110,15 +108,11 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
                   borderRadius: BorderRadius.circular(60),
                   border: Border.all(color: const Color(0xFFE53935), width: 2),
                   boxShadow: [
-
-
                     BoxShadow(
                       color: const Color(0xFFC62828).withValues(alpha: 0.2),
                       blurRadius: 12,
                       offset: const Offset(0, 4),
                     ),
-
-
                   ],
                   image: _fotoBytes != null
                       ? DecorationImage(
@@ -133,36 +127,27 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
               ),
             ),
             const SizedBox(height: 8),
-
-
             Text(
               _fotoBytes == null ? 'Fotoğraf ekle' : 'Fotoğraf seçildi ✓',
               style: TextStyle(
-                color: _fotoBytes == null ? Colors.grey : const Color(0xFFB71C1C),
+                color: _fotoBytes == null ? const Color.fromARGB(255, 209, 206, 206) : const Color(0xFFB71C1C),
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
               ),
             ),
-
-
             const SizedBox(height: 20),
-
             TextField(controller: adController, decoration: _inputDecoration('Adı', Icons.pets)),
 
             const SizedBox(height: 12),
-
             TextField(controller: turController, decoration: _inputDecoration('Türü', Icons.category_outlined)),
 
             const SizedBox(height: 12),
-
             TextField(controller: irkController, decoration: _inputDecoration('Irkı', Icons.blur_on)),
 
             const SizedBox(height: 12),
-
-            TextField(controller: kiloController, decoration: _inputDecoration('Kilosu (kg)', Icons.monitor_weight_outlined), keyboardType: TextInputType.number),
+            TextField(controller: kiloController, decoration: _inputDecoration('Kilosu kg/g', Icons.monitor_weight_outlined), keyboardType: TextInputType.number),
 
             const SizedBox(height: 12),
-
             TextField(controller: yasController, decoration: _inputDecoration('Yaşı', Icons.cake_outlined), keyboardType: TextInputType.number),
 
             const SizedBox(height: 24),
@@ -178,13 +163,10 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
                   elevation: 3,
                   shadowColor: const Color(0xFFC62828).withValues(alpha: 0.4),
                 ),
-
-
                 onPressed: _kaydet,
                 child: const Text('Kaydet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
-
             const SizedBox(height: 16),
           ],
         ),

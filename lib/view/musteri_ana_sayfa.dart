@@ -39,6 +39,8 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       drawer: Drawer(
+        
+        backgroundColor: Colors.white,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -73,6 +75,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           ],
         ),
       ),
+      //secilen hayvana göre randevu alma bloğu
       floatingActionButton: _secilenIndex == 1
           ? FloatingActionButton(
               backgroundColor: const Color(0xFFB71C1C),
@@ -85,21 +88,50 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const CircularProgressIndicator();
                       final hayvanlar = snapshot.data!;
-                      return ListView.builder(
-                        itemCount: hayvanlar.length,
-                        itemBuilder: (context, index) {
-                          final hayvan = hayvanlar[index];
-                          return ListTile(
-                            title: Text(hayvan.ad),
-                            subtitle: Text(hayvan.tur),
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (_) => RandevuEkleEkrani(hayvanID: hayvan.id),
-                              ));
-                            },
-                          );
-                        },
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFB71C1C),
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.pets, color: Colors.white, size: 20),
+                                SizedBox(width: 8),
+                                Text('Hayvanlarım', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                              ],
+                            ),
+                          ),
+                          Flexible(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: hayvanlar.length,
+                              itemBuilder: (context, index) {
+                                final hayvan = hayvanlar[index];
+                                return ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage: hayvan.fotoUrl.isNotEmpty
+                                        ? MemoryImage(base64Decode(hayvan.fotoUrl))
+                                        : null,
+                                    backgroundColor: const Color(0xFFFFEBEE),
+                                    child: hayvan.fotoUrl.isEmpty ? const Icon(Icons.pets, color: Color(0xFFB71C1C)) : null,
+                                  ),
+                                  title: Text(hayvan.ad, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  subtitle: Text(hayvan.tur),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (_) => RandevuEkleEkrani(hayvanID: hayvan.id),
+                                    ));
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -107,7 +139,9 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
               },
               child: const Icon(Icons.add),
             )
+
           : null,
+          //bildirim paneli ikonu
       endDrawer: BildirimPaneli(musteriID: FirebaseAuth.instance.currentUser!.uid),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -134,6 +168,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           const SizedBox(width: 4),
         ],
       ),
+    //evcil hayvan ekle butonu
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) => setState(() => _secilenIndex = index),
@@ -159,12 +194,15 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                   ),
                 ),
               ),
+              //ana ekranda bulunan kullanıcının hayvanlarının kod bloğu
               Expanded(
                 child: StreamBuilder(
                   stream: HayvanServis().musteriHayvanlari(FirebaseAuth.instance.currentUser!.uid),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) return const CircularProgressIndicator();
+
                     final hayvanlar = snapshot.data!;
+
                     return ListView.builder(
                       itemCount: hayvanlar.length,
                       itemBuilder: (context, index) {
@@ -189,6 +227,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
               ),
             ],
           ),
+          //randevularım ekranında bulunan tüm elemanlar
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().musteriRandevulari(FirebaseAuth.instance.currentUser!.uid),
             builder: (context, snapshot) {
@@ -250,6 +289,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                   }
 
                   return Card(
+                    color: const Color.fromARGB(255, 229, 226, 226),
                     elevation: 3,
                     shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -285,6 +325,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
         },
         selectedItemColor: const Color(0xFFB71C1C),
         unselectedItemColor: Colors.grey,
+        backgroundColor: const Color.fromARGB(255, 229, 226, 226),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.pets), label: 'Hayvanlarım'),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_month), label: 'Randevularım'),

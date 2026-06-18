@@ -49,11 +49,13 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                 children: [
                   DropdownButtonFormField<String>(
                     initialValue: asiDurumu,
+                    dropdownColor: Colors.white,
                     decoration: InputDecoration(
                       labelText: 'Aşı Durumu',
                       prefixIcon: const Icon(Icons.info_outline),
                       filled: true,
-                      fillColor: const Color(0xFFFFEBEE),
+                      fillColor: const Color.fromARGB(255, 209, 206, 206) ,
+                     floatingLabelStyle: const TextStyle(color: Color(0xFFB71C1C)),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                     items: ['Bekliyor', 'Yapıldı', 'İptal']
@@ -68,7 +70,8 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                       labelText: 'Aşı Adı',
                       prefixIcon: const Icon(Icons.vaccines),
                       filled: true,
-                      fillColor: const Color(0xFFFFEBEE),
+                      fillColor: const Color.fromARGB(255, 209, 206, 206) ,
+                      floatingLabelStyle: const TextStyle(color: Color(0xFFB71C1C)),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
                     ),
                   ),
@@ -81,6 +84,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           side: const BorderSide(color: Color(0xFFB71C1C)),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          overlayColor: const Color(0xFFB71C1C),
                         ),
                         onPressed: () async {
                           final tarih = await showDatePicker(
@@ -88,6 +92,17 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: DateTime.now().add(const Duration(days: 365)),
+                            builder: (context, child) => Theme(
+                              data: Theme.of(context).copyWith(
+                                colorScheme: const ColorScheme.light(
+                                  primary: Color(0xFFB71C1C),
+                                  onPrimary: Colors.white,
+                                  surface: Colors.white,
+                                  onSurface: Colors.black,
+                                ),
+                              ),
+                              child: child!,
+                            ),
                           );
                           if (tarih != null) setState(() => yapilmaTarihi = tarih);
                         },
@@ -108,6 +123,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         side: const BorderSide(color: Color(0xFFB71C1C)),
+                        overlayColor: const Color(0xFFB71C1C),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: () async {
@@ -116,6 +132,17 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
                           lastDate: DateTime.now().add(const Duration(days: 365)),
+                          builder: (context, child) => Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: const ColorScheme.light(
+                                primary: Color(0xFFB71C1C),
+                                onPrimary: Colors.white,
+                                surface: Colors.white,
+                                onSurface: Colors.black,
+                              ),
+                            ),
+                            child: child!,
+                          ),
                         );
                         if (tarih != null) setState(() => sonrakiAsiTarihi = tarih);
                       },
@@ -124,7 +151,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                         sonrakiAsiTarihi == null
                             ? 'Sonraki Aşı Tarihi'
                             : '${sonrakiAsiTarihi!.day}.${sonrakiAsiTarihi!.month}.${sonrakiAsiTarihi!.year}',
-                        style: const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold),
+                        style:  const TextStyle(color: Color(0xFFB71C1C), fontWeight: FontWeight.bold), 
                       ),
                     ),
                   ),
@@ -136,6 +163,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFB71C1C),
                         foregroundColor: Colors.white,
+                        overlayColor: const Color(0xFFB71C1C),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                       onPressed: () async {
@@ -178,6 +206,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                         Icon(Icons.vaccines, size: 64, color: Color(0xFFE53935)),
                         SizedBox(height: 12),
                         Text('Aşı kaydı yok', style: TextStyle(fontSize: 16, color: Colors.grey)),
+                        
                       ],
                     ),
                   );
@@ -187,6 +216,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
                   children: asilar.map((asi) {
                     final renk = _durumRengi(asi.asiDurumu);
                     return Card(
+                      color: const Color.fromARGB(255, 229, 226, 226),
                       elevation: 3,
                       shadowColor: const Color(0xFFC62828).withValues(alpha: 0.18),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
