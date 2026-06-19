@@ -85,7 +85,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               leading: const Icon(Icons.logout),
               title: const Text('Çıkış Yap'),
               onTap: () async {
-                // oturumu kapat ve giriş ekranına dön
+
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));

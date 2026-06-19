@@ -75,7 +75,6 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           ],
         ),
       ),
-      //secilen hayvana göre randevu alma bloğu
       floatingActionButton: _secilenIndex == 1
           ? FloatingActionButton(
               backgroundColor: const Color(0xFFB71C1C),
@@ -141,7 +140,6 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
             )
 
           : null,
-          //bildirim paneli ikonu
       endDrawer: BildirimPaneli(musteriID: FirebaseAuth.instance.currentUser!.uid),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -194,7 +192,6 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                   ),
                 ),
               ),
-              //ana ekranda bulunan kullanıcının hayvanlarının kod bloğu
               Expanded(
                 child: StreamBuilder(
                   stream: HayvanServis().musteriHayvanlari(FirebaseAuth.instance.currentUser!.uid),
@@ -227,7 +224,6 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
               ),
             ],
           ),
-          //randevularım ekranında bulunan tüm elemanlar
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().musteriRandevulari(FirebaseAuth.instance.currentUser!.uid),
             builder: (context, snapshot) {

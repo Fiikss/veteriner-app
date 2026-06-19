@@ -76,7 +76,6 @@ class BildirimPaneli extends StatelessWidget {
         if (!hayvanSnapshot.hasData) return const Center(child: CircularProgressIndicator());
         final hayvanIDs = hayvanSnapshot.data!;
         if (hayvanIDs.isEmpty) return _bosKart('Kayıtlı hayvan yok');
-        // tarih filtresi client tarafında yapılıyor (composite index gerektirmemek için)
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection('Asilar')

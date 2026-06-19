@@ -6,7 +6,6 @@ import 'package:veteriner_app/servis/slot_servis.dart';
 class RandevuDetayEkrani extends StatelessWidget {
   final Randevu randevu;
   const RandevuDetayEkrani({super.key, required this.randevu});
-//hekimin randevuları yönetme ekranı
   @override
   Widget build(BuildContext context) {
     return Scaffold(

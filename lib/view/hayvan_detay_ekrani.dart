@@ -34,7 +34,6 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
     yasController = TextEditingController(text: widget.hayvan.yas.toString());
   }
 
-  // galeriden fotoğraf seç
   Future<void> _fotografSec() async {
     try {
       final bytes = await FotoServis().fotografSec();
@@ -176,7 +175,6 @@ class _HayvanDetayEkraniState extends State<HayvanDetayEkrani> {
                     fotoUrl: fotoUrl,
                   );
                   
-                  // güncellemeyi kaydet ve geri dön
                   await _servis.hayvanGuncelle(guncellenmis);
                   if (!context.mounted) return;
                   Navigator.pop(context);

@@ -22,7 +22,6 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
   final HayvanServis _servis = HayvanServis();
   Uint8List? _fotoBytes;
 
-  // fotoğraf seçme işlemi FotoServis üzerinden yapılıyor
   Future<void> _fotografSec() async {
     try {
       final bytes = await FotoServis().fotografSec();
@@ -48,7 +47,6 @@ class _HayvanEkleEkranState extends State<HayvanEkleEkran> {
     );
   }
 
-  // hayvanı firestore'a kaydet
   Future<void> _kaydet() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     String fotoUrl = '';
