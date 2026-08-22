@@ -24,7 +24,6 @@ class AsiServis {
     });
   }
 
- //hekimin/asistanın tüm hayvanların yaklasan aşılarını görmek icin
 Stream <List<Asi>> yaklasanAsilar (){
   final ucaysonra = DateTime.now().add(const Duration(days: 90));
   return _firestore
@@ -40,7 +39,6 @@ Stream <List<Asi>> yaklasanAsilar (){
 }
 
 
-//kullanıcının kendi hayvanlarının yaklasan asilarini görmek için
 Stream <List<Asi>> hayvanYaklasanAsilar (String hayvanID){
 
   return _firestore

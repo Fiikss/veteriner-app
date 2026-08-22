@@ -6,7 +6,7 @@ class FotoServis {
   Future<Uint8List?> fotografSec({double maxWidth = 200, double maxHeight = 200}) async {
     final foto = await ImagePicker().pickImage(
       source: ImageSource.gallery,
-      imageQuality: 70,
+      imageQuality: 90,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
     );

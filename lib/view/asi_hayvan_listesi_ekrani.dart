@@ -57,6 +57,7 @@ class _AsiHayvanListesiEkraniState extends State<AsiHayvanListesiEkrani> {
                   ),
                 ),
               );
+              
             },
           );
         },

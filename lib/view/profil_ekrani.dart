@@ -73,7 +73,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
     }
   }
 
-  // text field için ortak dekorasyon
   InputDecoration _inputDecoration(String label, IconData ikon) {
     return InputDecoration(
       labelText: label,
@@ -98,7 +97,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
         child: Column(
           children: [
             const SizedBox(height: 8),
-            // profil fotoğrafı - tıklanınca galeriye gider
             GestureDetector(
               onTap: _fotografSec,
               child: Stack(
@@ -128,7 +126,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
               ),
             ),
             const SizedBox(height: 20),
-            // e-posta ve rol bilgileri
             Card(
               color: const Color.fromARGB(255, 229, 226, 226),
               elevation: 3,
@@ -152,7 +149,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
               ),
             ),
             const SizedBox(height: 16),
-            // düzenlenebilir alanlar
             TextField(controller: adSoyadController, decoration: _inputDecoration('Ad Soyad', Icons.person)),
             const SizedBox(height: 12),
             TextField(
@@ -161,7 +157,6 @@ class _ProfilEkraniState extends State<ProfilEkrani> {
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 24),
-            // kaydet butonu
             SizedBox(
               width: double.infinity,
               height: 50,

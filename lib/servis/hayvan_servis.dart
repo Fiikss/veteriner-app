@@ -11,7 +11,6 @@ class HayvanServis{
     .set(hayvan.toMap());
    }
 
-//müşterinin hayvanını getirir
   Stream <List<Hayvan>> musteriHayvanlari (String sahipID){
     return _firestore
     .collection('Hayvanlar')
@@ -22,7 +21,6 @@ class HayvanServis{
     .toList());
   }
 
-//uygulamadan girilen tüm hayvanların görüldüğü koleksiyon
   Stream <List<Hayvan>> tumHayvanlar(){
     return _firestore
     .collection('Hayvanlar')
@@ -31,14 +29,12 @@ class HayvanServis{
     .toList());
   }
   
-  //hayvan düzenleme kısmından yapılan değişlikler için
   Future<void> hayvanGuncelle(Hayvan hayvan) async {
     await _firestore
         .collection('Hayvanlar')
         .doc(hayvan.id)
         .update(hayvan.toMap());
   }
-//sçeilen hayvanı silmek için
   Future<void> hayvanSil(String hayvanID) async {
     await _firestore.collection('Hayvanlar').doc(hayvanID).delete();
   }

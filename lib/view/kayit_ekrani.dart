@@ -27,8 +27,8 @@ class _KayitState extends State<Kayit> {
         'telefon': '',
         'rol': 'musteri',
       });
-      await sonuc.user!.sendEmailVerification(); // kullanıcı mailine doğrulama linki gönderiyor
-      await FirebaseAuth.instance.signOut(); //doğrulama yapılmadan giriş yapmasın diye çıkış yapıyoruz await ile bekliyoruz
+      await sonuc.user!.sendEmailVerification(); 
+      await FirebaseAuth.instance.signOut(); 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Doğrulama maili gönderildi. E-postanızı onaylayıp giriş yapabilirsiniz.')),

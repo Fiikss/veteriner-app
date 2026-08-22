@@ -6,14 +6,13 @@ import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/hekim_ana_sayfa.dart';
 import 'package:veteriner_app/view/musteri_ana_sayfa.dart';
 
-//rol bazlı yönlendirme
 
 class AnaSayfa extends StatelessWidget {
   const AnaSayfa({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>( //oturum dinliyor
+    return StreamBuilder<User?>( 
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -23,7 +22,7 @@ class AnaSayfa extends StatelessWidget {
           return Giris();
         }
 
-        return FutureBuilder<DocumentSnapshot>( //giriş yapan kullanıcının rolüne göre yönlendirme yapoyor
+        return FutureBuilder<DocumentSnapshot>( 
           future: FirebaseFirestore.instance
               .collection('Kullanicilar')
               .doc(snapshot.data!.uid)

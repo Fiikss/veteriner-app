@@ -18,14 +18,12 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-//tabcontroller ile randevular ve saatlerim sekmelerini yönetiyor
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
 
-//widget ekrandan kaldırıldığında çalışır. dispose() ile tabcontroller bellekten temizlenir
   @override
   void dispose() {
     _tabController.dispose();
