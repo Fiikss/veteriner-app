@@ -1,4 +1,4 @@
- 🐾 Veteriner Kliniği Randevu Uygulaması
+Veteriner Kliniği Randevu Uygulaması
 
 Evcil hayvan sahiplerinin veteriner kliniklerinden çevrim içi randevu almasını sağlayan mobil uygulama.
 Haliç Üniversitesi Bilgisayar Programcılığı bitirme projesi olarak geliştirilmiş ve akademik tez ile belgelenmiştir.
