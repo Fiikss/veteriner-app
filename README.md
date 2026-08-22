@@ -66,7 +66,7 @@ test/         # Test dosyaları
 
 ## Geliştirici
 
-**Melike Gül Keser**
+**Melikegül Keser**
 Bilgisayar Programcılığı — Haliç Üniversitesi
 [LinkedIn](https://www.linkedin.com/in/melikeg%C3%BCl-keser-94aa87330/) · melikeglkeser@gmail.com
 
