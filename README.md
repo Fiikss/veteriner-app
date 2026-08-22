@@ -48,9 +48,11 @@ flutter run
 <!-- Uygulamayı çalıştırıp 3-4 ekranın görüntüsünü alın, repoya bir screenshots/ klasörü açıp yükleyin
      ve aşağıdaki satırları düzenleyin. Bu bölüm, projeye bakan kişinin ilk dikkatini çeken yerdir. -->
 
-| Giriş Ekranı | Randevu Oluşturma | Randevularım |
-|---|---|---|
-| _eklenecek_ | _eklenecek_ | _eklenecek_ |
+<p align="center">
+  <img src="screenshots/giris.png" width="230">
+  <img src="screenshots/randevu.png" width="230">
+  <img src="screenshots/randevularim.png" width="230">
+</p>
 
 ## Proje Yapısı
 
@@ -68,4 +70,3 @@ test/         # Test dosyaları
 Bilgisayar Programcılığı — Haliç Üniversitesi
 [LinkedIn](https://www.linkedin.com/in/melikeg%C3%BCl-keser-94aa87330/) · melikeglkeser@gmail.com
 
-samples, guidance on mobile development, and a full API reference.
