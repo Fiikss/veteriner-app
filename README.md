@@ -71,5 +71,5 @@ test/         # Test dosyaları
 
 **Melikegül Keser**
 Bilgisayar Programcılığı — Haliç Üniversitesi
-[LinkedIn](https://www.linkedin.com/in/melikeg%C3%BCl-keser-94aa87330/) · melikeglkeser@gmail.com
+[LinkedIn] (https://www.linkedin.com/in/melikeg%C3%BCl-k-94aa87330/) · melikeglkeser@gmail.com
 
