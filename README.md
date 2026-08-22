@@ -13,6 +13,9 @@ Veteriner kliniklerinde randevu süreçleri çoğunlukla telefonla ve manuel ola
 - **Randevu oluşturma** — tarih ve saat seçerek yeni randevu alma
 - **Randevularım** — mevcut randevuları listeleme
 - **Randevu iptali** — alınan randevuyu iptal etme
+- **Evcil hayvanın özellikleri** — Sahip olunan evcil hayvanın yaşını, ırkını, türünü görebilme
+- **Yaklaşan Aşı** — Evcil hayvanınıza bir aşı alındığınızda bunun tarihini görebilme
+- **Veteriner Hekim Slot Sistemi** — Slot sistemi sayesinde hekim kendine uygun saatleri açarak evcil hayvan sahiplerinni randevu almasını sağlar.
 - **Çoklu platform** — Flutter'ın tek kod tabanı sayesinde Android, iOS ve web desteği
 
 ## Kullanılan Teknolojiler
