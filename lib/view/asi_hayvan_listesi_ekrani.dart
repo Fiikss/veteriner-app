@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/view/hayvan_asilari_ekrani.dart';
 
@@ -17,6 +18,7 @@ class _AsiHayvanListesiEkraniState extends State<AsiHayvanListesiEkrani> {
       body: StreamBuilder(
         stream: HayvanServis().tumHayvanlar(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
           final hayvanlar = snapshot.data!;
           if (hayvanlar.isEmpty) return const Center(child: Text('Kayıtlı hayvan yok'));

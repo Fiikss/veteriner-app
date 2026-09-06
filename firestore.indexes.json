@@ -1,0 +1,133 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Asilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sonrakiAsiTarihi",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Asilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hayvanID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sonrakiAsiTarihi",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Asilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hatirlatildi",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sonrakiAsiTarihi",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Randevular",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "tarih",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Kullanicilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "rol",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Asilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hayvanID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sahipID",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "TibbiKayitlar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "hayvanID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sahipID",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Asilar",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "klinikID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sahipID",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -43,3 +43,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase servis hesabi anahtarlari - asla depoya girmemeli
+serviceAccountKey.json
+*-firebase-adminsdk-*.json
+node_modules/
+
+# Cowork/Claude ciktilari - depoya girmemeli
+Claude outputs/
+flutter_*.log

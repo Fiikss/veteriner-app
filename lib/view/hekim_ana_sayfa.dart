@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:veteriner_app/view/bildirim_paneli.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/hekim_randevular_ekrani.dart';
 import 'package:veteriner_app/view/kullanici_yonetim_ekrani.dart';
@@ -86,6 +87,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
               title: const Text('Çıkış Yap'),
               onTap: () async {
 
+                Oturum.temizle();
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Giris()));
@@ -113,6 +115,7 @@ class _HekimAnaSayfaState extends State<HekimAnaSayfa> {
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('Asilar')
+                .where('klinikID', isEqualTo: Oturum.klinikID)
                 .where('sonrakiAsiTarihi',
                     isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
                 .where('sonrakiAsiTarihi',

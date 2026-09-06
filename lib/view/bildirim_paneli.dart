@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/model/asi_model.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 
 class BildirimPaneli extends StatelessWidget {
   final String? musteriID;
@@ -55,39 +57,30 @@ class BildirimPaneli extends StatelessWidget {
               ],),),],),);}
 
   Widget _yaklasanAsilarWidget(DateTime bugun, DateTime ucaysonra) {
-    if (musteriID == null) {
-      return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('Asilar')
-            .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
-            .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(ucaysonra))
-            .snapshots(),
-        builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, ucaysonra),
-      );
+    Query<Map<String, dynamic>> sorgu = FirebaseFirestore.instance
+        .collection('Asilar')
+        .where('klinikID', isEqualTo: Oturum.klinikID);
+
+    if (musteriID != null) {
+      // Once hayvan listesi cekilip whereIn ile sorulmasi iki sorun uretiyordu:
+      // whereIn 30 degerle sinirli, ve sorgu sahiplik iddiasi tasimadigi icin
+      // guvenlik kurallari onu reddederdi. Dogrudan sahipID ile sormak ikisini de cozer.
+      sorgu = sorgu.where('sahipID', isEqualTo: musteriID);
+    } else {
+      sorgu = sorgu
+          .where('sonrakiAsiTarihi', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
+          .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(ucaysonra));
     }
 
-    return FutureBuilder<List<String>>(
-      future: FirebaseFirestore.instance
-          .collection('Hayvanlar')
-          .where('sahipID', isEqualTo: musteriID)
-          .get()
-          .then((snap) => snap.docs.map((d) => d.id).toList()),
-      builder: (context, hayvanSnapshot) {
-        if (!hayvanSnapshot.hasData) return const Center(child: CircularProgressIndicator());
-        final hayvanIDs = hayvanSnapshot.data!;
-        if (hayvanIDs.isEmpty) return _bosKart('Kayıtlı hayvan yok');
-        return StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('Asilar')
-              .where('hayvanID', whereIn: hayvanIDs)
-              .snapshots(),
-          builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, ucaysonra),
-        );
-      },
+    // Tarih araligi zaten _asilarIcerik icinde de suzuluyor.
+    return StreamBuilder<QuerySnapshot>(
+      stream: sorgu.snapshots(),
+      builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, ucaysonra),
     );
   }
 
   Widget _asilarIcerik(AsyncSnapshot<QuerySnapshot> snapshot, DateTime bugun, DateTime ucaysonra) {
+    if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
     if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
     final docs = snapshot.data!.docs.where((d) {
       final data = d.data() as Map<String, dynamic>;
@@ -116,10 +109,12 @@ class BildirimPaneli extends StatelessWidget {
     final stream = musteriID != null
         ? FirebaseFirestore.instance
             .collection('Randevular')
+            .where('klinikID', isEqualTo: Oturum.klinikID)
             .where('musteriID', isEqualTo: musteriID)
             .snapshots()
         : FirebaseFirestore.instance
             .collection('Randevular')
+            .where('klinikID', isEqualTo: Oturum.klinikID)
             .where('tarih', isGreaterThanOrEqualTo: Timestamp.fromDate(bugun))
             .where('tarih', isLessThan: Timestamp.fromDate(ikiHaftaSonra))
             .snapshots();
@@ -127,6 +122,7 @@ class BildirimPaneli extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: stream,
       builder: (context, snapshot) {
+        if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
         final docs = snapshot.data!.docs.where((d) {
           final data = d.data() as Map<String, dynamic>;
@@ -144,7 +140,7 @@ class BildirimPaneli extends StatelessWidget {
               ikon: Icons.calendar_month,
               renk: const Color(0xFFB71C1C),
               baslik: r.sikayet,
-              altBaslik: r.randevu_tur,
+              altBaslik: r.randevuTur,
               sag: sagYazi,
             );
           }).toList(),

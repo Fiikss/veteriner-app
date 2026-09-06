@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 import 'package:veteriner_app/servis/hayvan_servis.dart';
 import 'package:veteriner_app/servis/randevu_servis.dart';
 import 'package:veteriner_app/view/bildirim_paneli.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/hayvan_detay_ekrani.dart';
 import 'package:veteriner_app/view/hayvan_ekleme_ekrani.dart';
@@ -67,6 +69,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
               leading: const Icon(Icons.logout),
               title: const Text('Çıkış Yap'),
               onTap: () async {
+                Oturum.temizle();
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Giris()));
@@ -85,6 +88,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                   builder: (_) => StreamBuilder(
                     stream: HayvanServis().musteriHayvanlari(FirebaseAuth.instance.currentUser!.uid),
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                       if (!snapshot.hasData) return const CircularProgressIndicator();
                       final hayvanlar = snapshot.data!;
                       return Column(
@@ -196,6 +200,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                 child: StreamBuilder(
                   stream: HayvanServis().musteriHayvanlari(FirebaseAuth.instance.currentUser!.uid),
                   builder: (context, snapshot) {
+                    if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                     if (!snapshot.hasData) return const CircularProgressIndicator();
 
                     final hayvanlar = snapshot.data!;
@@ -227,6 +232,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().musteriRandevulari(FirebaseAuth.instance.currentUser!.uid),
             builder: (context, snapshot) {
+              if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
               if (!snapshot.hasData) return const CircularProgressIndicator();
               final randevular = snapshot.data!;
               if (randevular.isEmpty) return const Center(child: Text('Randevu yok'));
@@ -300,7 +306,7 @@ class _MusteriAnaSayfaState extends State<MusteriAnaSayfa> {
                         ),
                         child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
                       ),
-                      title: Text(randevu.randevu_tur, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      title: Text(randevu.randevuTur, style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text('${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year} • ${randevu.saat}'),
                       trailing: trailing,
                     ),

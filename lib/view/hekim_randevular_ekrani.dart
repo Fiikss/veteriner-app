@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 import 'package:veteriner_app/model/slot_model.dart';
 import 'package:veteriner_app/servis/randevu_servis.dart';
@@ -76,6 +77,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                   StreamBuilder<List<Randevu>>(
                     stream: RandevuServis().tumRandevular(),
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
 
                       final bugunR = DateTime.now();
@@ -112,7 +114,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                                 child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
                               ),
                               title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text('${randevu.randevu_tur} • ${randevu.saat}'),
+                              subtitle: Text('${randevu.randevuTur} • ${randevu.saat}'),
                               trailing: Chip(
                                 label: Text(randevu.durum),
                                 backgroundColor: renk.withValues(alpha: 0.15),
@@ -132,6 +134,7 @@ class _HekimRandevularEkraniState extends State<HekimRandevularEkrani>
                   StreamBuilder<List<Slot>>(
                     stream: SlotServis().hekimSlotlari(hekimID),
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                       if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                       final bugun = DateTime.now();
                       final slotlar = snapshot.data!.where((s) => !s.tarih.isBefore(DateTime(bugun.year, bugun.month, bugun.day))).toList();

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
@@ -11,6 +13,16 @@ void main() async { //iş tamamlanmadan uygulama başlatılmaz
 await Firebase.initializeApp( //bekleme islemi yapar
 options:  DefaultFirebaseOptions.currentPlatform,
 );
+
+// Firestore'un web SDK'sinda bilinen bir kusur var: WebChannel akisi
+// "INTERNAL ASSERTION FAILED: Unexpected state" ile patlayinca butun
+// dinleyiciler dusuyor ve her ekran sonsuz donmeye basliyor.
+// Uzun yoklama (long polling) o yolu devre disi birakir.
+if (kIsWeb) {
+  FirebaseFirestore.instance.settings = const Settings(
+    webExperimentalForceLongPolling: true,
+  );
+}
 
 runApp(const KlinikApp()); 
 

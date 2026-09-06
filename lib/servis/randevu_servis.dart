@@ -1,19 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 
 class RandevuServis {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
   Future<void> randevuEkle(Randevu randevu) async {
+    final veri = randevu.toMap()..['klinikID'] = Oturum.klinikID;
     await _firestore.collection('Randevular')
         .doc(randevu.id)
-        .set(randevu.toMap());
+        .set(veri);
   }
 
 
 Stream <List<Randevu>> hayvanRandevulari (String hayvanID){
   return _firestore.collection('Randevular')
+  .where('klinikID', isEqualTo: Oturum.klinikID)
   .where('hayvanID', isEqualTo: hayvanID)
   .snapshots()
   .map((snapshot) {
@@ -26,6 +29,7 @@ Stream <List<Randevu>> hayvanRandevulari (String hayvanID){
 
 Stream <List<Randevu>> tumRandevular(){
   return _firestore.collection('Randevular')
+  .where('klinikID', isEqualTo: Oturum.klinikID)
   .snapshots()
   .map((snapshot) {
     final liste = snapshot.docs.map((doc) => Randevu.fromMap(doc.data(), doc.id)).toList();
@@ -42,6 +46,7 @@ Future<void> durumGuncelle(String randevuId, String yeniDurum) async {
 
 Stream<List<Randevu>> musteriRandevulari (String musteriID){
   return _firestore.collection('Randevular')
+  .where('klinikID', isEqualTo: Oturum.klinikID)
   .where('musteriID', isEqualTo: musteriID)
   .snapshots()
   .map((snapshot) {
@@ -62,4 +67,4 @@ Stream<List<Randevu>> musteriRandevulari (String musteriID){
     .doc(randevuId)
     .delete();
   }
-} 
+}

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/firebase_options.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 
 class KullaniciYonetimEkrani extends StatelessWidget {
   const KullaniciYonetimEkrani({super.key});
@@ -19,8 +21,10 @@ class KullaniciYonetimEkrani extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('Kullanicilar')
+            .where('klinikID', isEqualTo: Oturum.klinikID)
             .where('rol', whereIn: ['asistan', 'hekim']).snapshots(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -168,6 +172,7 @@ class KullaniciYonetimEkrani extends StatelessWidget {
                       .collection('Kullanicilar')
                       .doc(sonuc.user!.uid)
                       .set({
+                    'klinikID': Oturum.klinikID,
                     'email': emailController.text.trim(),
                     'adSoyad': adSoyadController.text.trim(),
                     'telefon': '',

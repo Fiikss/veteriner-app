@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 import 'package:veteriner_app/model/slot_model.dart';
 import 'package:veteriner_app/servis/randevu_servis.dart';
@@ -77,6 +78,7 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
               child: StreamBuilder<List<Slot>>(
                 stream: _slotServis.bosSlotlar(),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                   if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                   final slotlar = snapshot.data!;
                   if (slotlar.isEmpty) return const Center(child: Text('Uygun saat yok'));
@@ -132,9 +134,9 @@ class _RandevuEkleEkraniState extends State<RandevuEkleEkrani> {
                           id: DateTime.now().microsecondsSinceEpoch.toString(),
                           musteriID: FirebaseAuth.instance.currentUser!.uid,
                           hayvanID: widget.hayvanID,
-                          HekimID: secilenSlot!.hekimID,
+                          hekimID: secilenSlot!.hekimID,
                           sikayet: sikayetController.text,
-                          randevu_tur: secilenTur,
+                          randevuTur: secilenTur,
                           durum: 'Bekliyor',
                           odeme: 0.0,
                           odemeDurumu: 'Bekliyor',

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:veteriner_app/model/randevu_model.dart';
 import 'package:veteriner_app/servis/randevu_servis.dart';
 import 'package:veteriner_app/view/bildirim_paneli.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 import 'package:veteriner_app/view/giris_ekrani.dart';
 import 'package:veteriner_app/view/profil_ekrani.dart';
 
@@ -61,6 +63,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
               leading: const Icon(Icons.logout),
               title: const Text('Çıkış Yap'),
               onTap: () async {
+                Oturum.temizle();
                 await FirebaseAuth.instance.signOut();
                 if (!context.mounted) return;
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const Giris()));
@@ -102,6 +105,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
+              if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
               if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
               final bugunA = DateTime.now();
               final randevular = snapshot.data!.where((r) {
@@ -136,7 +140,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                         child: const Icon(Icons.calendar_month, color: Color(0xFFB71C1C)),
                       ),
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text('${randevu.randevu_tur} • ${randevu.saat}'),
+                      subtitle: Text('${randevu.randevuTur} • ${randevu.saat}'),
                       trailing: Chip(
                         label: Text(randevu.durum),
                         backgroundColor: durumRenk.withValues(alpha: 0.15),
@@ -152,6 +156,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
           StreamBuilder<List<Randevu>>(
             stream: RandevuServis().tumRandevular(),
             builder: (context, snapshot) {
+              if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
               if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
               final randevular = snapshot.data!.where((r) => r.durum == 'Onaylandı').toList();
               if (randevular.isEmpty) return const Center(child: Text('Onaylanmış randevu yok'));
@@ -223,7 +228,7 @@ class _AsistanAnaSayfaState extends State<AsistanAnaSayfa> {
                         child: const Icon(Icons.payment, color: Color(0xFFB71C1C)),
                       ),
                       title: Text(randevu.sikayet, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text('${randevu.randevu_tur} • ${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
+                      subtitle: Text('${randevu.randevuTur} • ${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
                       trailing: trailing,
                     ),
                   );

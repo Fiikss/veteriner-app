@@ -1,8 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Slot {
   String id;
+  String klinikID;
   String hekimID;
   DateTime tarih;
   String saat;
@@ -15,12 +15,13 @@ class Slot {
     required this.tarih,
     required this.saat,
     required this.dolu,
-
+    this.klinikID = '',
       });
 
   static Slot fromMap(Map<String, dynamic> map, String dokumanId) {
     return Slot(
       id: dokumanId,
+      klinikID: map['klinikID'] ?? '',
       hekimID: map['hekimID'] ?? '',
       tarih: (map['tarih'] as Timestamp).toDate(),
       saat: map['saat'] ?? '',
@@ -31,6 +32,7 @@ class Slot {
 
     Map<String, dynamic> toMap() {
       return {
+        'klinikID': klinikID,
         'hekimID': hekimID,
         'tarih': tarih,
         'saat':saat,

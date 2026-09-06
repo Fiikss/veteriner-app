@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:veteriner_app/model/klinik_model.dart';
+import 'package:veteriner_app/servis/klinik_servis.dart';
 //kullanıcı kaydı ekranı
 class Kayit extends StatefulWidget {
   const Kayit({super.key});
@@ -15,13 +17,50 @@ class _KayitState extends State<Kayit> {
   final adSoyadController = TextEditingController();
   bool sifreGizli = true;
 
+  // Hesap bir klinige bagli olmak zorunda: klinik kimligi olmayan
+  // kullanici hicbir kaydi goremez.
+  final KlinikServis _klinikServis = KlinikServis();
+  List<Klinik> _klinikler = [];
+  Klinik? _secilenKlinik;
+  bool _kliniklerYukleniyor = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _klinikleriYukle();
+  }
+
+  Future<void> _klinikleriYukle() async {
+    try {
+      final liste = await _klinikServis.aktifKlinikler();
+      if (!mounted) return;
+      setState(() {
+        _klinikler = liste;
+        _kliniklerYukleniyor = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _kliniklerYukleniyor = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Klinik listesi yüklenemedi.')),
+      );
+    }
+  }
+
   Future<void> _kayitOl() async {
+    if (_secilenKlinik == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lütfen kayıt olacağınız kliniği seçin.')),
+      );
+      return;
+    }
     try {
       final sonuc = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: sifreController.text,
       );
       await FirebaseFirestore.instance.collection('Kullanicilar').doc(sonuc.user!.uid).set({
+        'klinikID': _secilenKlinik!.id,
         'email': emailController.text,
         'adSoyad': adSoyadController.text,
         'telefon': '',
@@ -90,7 +129,39 @@ class _KayitState extends State<Kayit> {
                         style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFB71C1C))),
                     const SizedBox(height: 25),
                     TextField(controller: adSoyadController, decoration: _inputDecoration('Ad Soyad', Icons.person_outline)),
-                    
+
+                    const SizedBox(height: 16),
+                    if (_kliniklerYukleniyor)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 14),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    else if (_klinikler.isEmpty)
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 229, 226, 226),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: const Text(
+                          'Kayıtlı klinik bulunamadı. Kliniğinizle iletişime geçin.',
+                          style: TextStyle(fontSize: 13),
+                        ),
+                      )
+                    else
+                      DropdownButtonFormField<Klinik>(
+                        isExpanded: true,
+                        decoration: _inputDecoration('Klinik Seçin', Icons.local_hospital_outlined),
+                        dropdownColor: const Color.fromARGB(255, 229, 226, 226),
+                        items: _klinikler
+                            .map((klinik) => DropdownMenuItem(
+                                  value: klinik,
+                                  child: Text(klinik.ad, overflow: TextOverflow.ellipsis),
+                                ))
+                            .toList(),
+                        onChanged: (deger) => setState(() => _secilenKlinik = deger),
+                      ),
+
                     const SizedBox(height: 16),
                     TextField(
                       controller: emailController,

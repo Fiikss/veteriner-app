@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/model/asi_model.dart';
 import 'package:veteriner_app/servis/asi_servis.dart';
 
@@ -196,6 +197,7 @@ class _HayvanAsilariEkraniState extends State<HayvanAsilariEkrani> {
             child: StreamBuilder<List<Asi>>(
               stream: _servis.hayvanAsilari(widget.hayvanID),
               builder: (context, snapshot) {
+                if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                 if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                 final asilar = snapshot.data!;
                 if (asilar.isEmpty) {

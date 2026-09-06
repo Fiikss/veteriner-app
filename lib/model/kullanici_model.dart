@@ -1,6 +1,6 @@
-
 class Kullanici{
 String id;
+String klinikID;
 String adSoyad;
 String email;
 String telefon;
@@ -12,20 +12,23 @@ Kullanici({
   required this.email,
   required this.telefon,
   required this.rol,
+  this.klinikID = '',
 });
 
 
 static Kullanici fromMap(Map<String, dynamic> map, String dokumanId){
     return Kullanici(
-    id: dokumanId, 
-    adSoyad: map['adSoyad' ] ?? '', 
-    email: map['email' ]?? '', 
-    telefon: map['telefon'] ?? '', 
+    id: dokumanId,
+    klinikID: map['klinikID'] ?? '',
+    adSoyad: map['adSoyad' ] ?? '',
+    email: map['email' ]?? '',
+    telefon: map['telefon'] ?? '',
     rol: map['rol'] ?? 'musteri');
 }
 
 Map <String, dynamic> toMap(){
     return{
+      'klinikID': klinikID,
       'adSoyad': adSoyad,
       'email': email,
       'telefon': telefon,

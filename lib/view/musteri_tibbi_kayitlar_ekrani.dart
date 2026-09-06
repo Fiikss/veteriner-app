@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:veteriner_app/model/tibbikayit_model.dart';
 import 'package:veteriner_app/servis/tibbikayit_servis.dart';
 
@@ -29,6 +30,7 @@ class MusteriTibbiKayitlarEkrani extends StatelessWidget {
       body: StreamBuilder<List<TibbiKayit>>(
         stream: TibbikayitServis().hayvanTibbiKayit(hayvanID),
         builder: (context, snapshot) {
+          if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
           final kayitlar = snapshot.data!;
           if (kayitlar.isEmpty) {

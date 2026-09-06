@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 import 'package:veteriner_app/view/asistan_ana_sayfa.dart';
 import 'package:veteriner_app/view/hekim_ana_sayfa.dart';
 import 'package:veteriner_app/view/kayit_ekrani.dart';
@@ -121,21 +121,28 @@ class _GirisState extends State<Giris> {
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: sifre);
 
-      final uid = FirebaseAuth.instance.currentUser!.uid;
-      final doc = await FirebaseFirestore.instance.collection('Kullanicilar').doc(uid).get();
-      final rol = doc.data()?['rol'] ?? 'musteri';
+      // Rol ve klinik kimliği bundan sonra tek yerden okunur.
+      final kullanici = await Oturum.baslat();
+      final rol = kullanici.rol;
 
       if (rol == 'musteri' && !FirebaseAuth.instance.currentUser!.emailVerified) {
-        await FirebaseAuth.instance.signOut();
+        await _oturumuKapat();
         if (!mounted) return;
         _hataGoster('Lütfen e-postanızı doğrulayın.');
         return;
       }
 
       if (rol != secilenRol) {
-        await FirebaseAuth.instance.signOut();
+        await _oturumuKapat();
         if (!mounted) return;
         _hataGoster('Bu hesap ${roller[secilenRol]!['label']} hesabı değil.');
+        return;
+      }
+
+      if (kullanici.klinikID.isEmpty) {
+        await _oturumuKapat();
+        if (!mounted) return;
+        _hataGoster('Bu hesap bir kliniğe bağlı değil. Klinikle iletişime geçin.');
         return;
       }
 
@@ -160,7 +167,17 @@ class _GirisState extends State<Giris> {
         'network-request-failed': 'İnternet bağlantısı kontrol edin.',
       };
       _hataGoster(hatalar[e.code] ?? 'Giriş başarısız. Lütfen tekrar deneyin.');
+    } catch (e) {
+      await _oturumuKapat();
+      if (!mounted) return;
+      _hataGoster('Hesap bilgileri okunamadı. Lütfen tekrar deneyin.');
     }
+  }
+
+  /// Firebase oturumu ile birlikte bellekteki klinik bilgisini de temizler.
+  Future<void> _oturumuKapat() async {
+    Oturum.temizle();
+    await FirebaseAuth.instance.signOut();
   }
 
   @override

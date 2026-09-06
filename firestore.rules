@@ -1,0 +1,202 @@
+rules_version = '2';
+
+// VET-02 - Veteriner klinigi guvenlik kurallari
+//
+// Temel kural: her kayit bir klinige aittir ve kimse kendi kliniginin
+// disina bakamaz. Musteri yalnizca kendi hayvanini, kendi randevusunu ve
+// kendi hayvaninin tibbi gecmisini gorur.
+//
+// Rol ve klinik bilgisi su an kullanicinin Kullanicilar dokumanindan
+// okunuyor (asagidaki kullanici() fonksiyonu). Bu her kural degerlendirmesinde
+// bir ek dokuman okumasi demek. VET-03 ile roller custom claim'e tasindiginda
+// kullanici() gitmeli, yerine su ikisi gelmeli:
+//     function rol()    { return request.auth.token.rol; }
+//     function klinik() { return request.auth.token.klinikID; }
+// Geri kalan kurallar aynen kalir.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function girisli() {
+      return request.auth != null;
+    }
+
+    function kullanici() {
+      return get(/databases/$(database)/documents/Kullanicilar/$(request.auth.uid)).data;
+    }
+
+    function rol() {
+      return kullanici().rol;
+    }
+
+    function klinik() {
+      return kullanici().klinikID;
+    }
+
+    function personel() {
+      return girisli() && (rol() == 'hekim' || rol() == 'asistan');
+    }
+
+    function hekim() {
+      return girisli() && rol() == 'hekim';
+    }
+
+    // Kaydin bizim klinige ait olup olmadigi.
+    function bizim(veri) {
+      return girisli() && veri.klinikID == klinik();
+    }
+
+    // Guncellemede yalnizca su alanlarin degismesine izin ver.
+    function sadeceAlanlar(alanlar) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(alanlar);
+    }
+
+    // Klinik kimligi hicbir guncellemede degistirilemez.
+    function klinikSabit() {
+      return request.resource.data.klinikID == resource.data.klinikID;
+    }
+
+
+    // --- Klinikler -----------------------------------------------------
+    // Kayit ekrani, kullanici giris yapmadan once klinik listesini cekiyor.
+    // Bu yuzden okuma aciktir; yazma yalnizca sunucu tarafindadir.
+    match /Klinikler/{klinikID} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+
+    // --- Kullanicilar --------------------------------------------------
+    match /Kullanicilar/{kullaniciID} {
+      // Kendi kaydini herkes okur (Oturum.baslat bunu okur).
+      // Personel, yalnizca kendi kliniginin kullanicilarini okur.
+      allow read: if girisli() && (
+        request.auth.uid == kullaniciID ||
+        (personel() && resource.data.klinikID == klinik())
+      );
+
+      // Kayit ekrani: kisi kendi musteri kaydini olusturur.
+      allow create: if girisli()
+        && request.auth.uid == kullaniciID
+        && request.resource.data.rol == 'musteri'
+        && request.resource.data.klinikID is string
+        && request.resource.data.klinikID != '';
+
+      // GECICI: personel ekleme su an istemciden yapiliyor.
+      // VET-03'te Cloud Function'a tasinacak, bu blok o zaman silinecek.
+      allow create: if personel()
+        && request.resource.data.klinikID == klinik()
+        && (request.resource.data.rol == 'hekim' || request.resource.data.rol == 'asistan');
+
+      // Profil guncellemesi: rol ve klinik degistirilemez.
+      allow update: if girisli()
+        && request.auth.uid == kullaniciID
+        && request.resource.data.rol == resource.data.rol
+        && request.resource.data.klinikID == resource.data.klinikID;
+
+      // GECICI: personel silme de VET-03'te Cloud Function'a tasinacak.
+      // Not: bu yalnizca Firestore kaydini siler, giris hesabini kapatmaz.
+      allow delete: if personel()
+        && resource.data.klinikID == klinik()
+        && (resource.data.rol == 'hekim' || resource.data.rol == 'asistan');
+    }
+
+
+    // --- Hayvanlar -----------------------------------------------------
+    match /Hayvanlar/{hayvanID} {
+      allow read: if bizim(resource.data)
+        && (personel() || resource.data.sahipID == request.auth.uid);
+
+      allow create: if bizim(request.resource.data)
+        && (personel() || request.resource.data.sahipID == request.auth.uid);
+
+      allow update: if bizim(resource.data)
+        && (personel() || resource.data.sahipID == request.auth.uid)
+        && klinikSabit()
+        && request.resource.data.sahipID == resource.data.sahipID;
+
+      allow delete: if bizim(resource.data)
+        && (personel() || resource.data.sahipID == request.auth.uid);
+    }
+
+
+    // --- Randevular ----------------------------------------------------
+    match /Randevular/{randevuID} {
+      allow read: if bizim(resource.data)
+        && (personel() || resource.data.musteriID == request.auth.uid);
+
+      // Musteri kendi adina randevu olusturur; odeme alanlarini belirleyemez.
+      allow create: if bizim(request.resource.data) && (
+        personel() || (
+          request.resource.data.musteriID == request.auth.uid
+          && request.resource.data.durum == 'Bekliyor'
+          && request.resource.data.odeme == 0
+          && request.resource.data.odemeDurumu == 'Bekliyor'
+        )
+      );
+
+      // Personel randevunun her alanini gunceller.
+      // Musteri yalnizca durumu degistirebilir (iptal / onay).
+      allow update: if bizim(resource.data) && klinikSabit() && (
+        personel() || (
+          resource.data.musteriID == request.auth.uid
+          && sadeceAlanlar(['durum'])
+        )
+      );
+
+      allow delete: if bizim(resource.data)
+        && (personel() || resource.data.musteriID == request.auth.uid);
+    }
+
+
+    // --- Slotlar -------------------------------------------------------
+    match /Slotlar/{slotID} {
+      // Musteri bos saatleri gormek zorunda, bu yuzden okuma klinik geneli.
+      allow read: if bizim(resource.data);
+
+      allow create: if personel() && bizim(request.resource.data);
+
+      // Randevu alirken musteri slotu doldurur; baska hicbir alana dokunamaz.
+      // VET-04'te bu yazma transaction icine girecek, kural aynen gecerli kalir.
+      allow update: if bizim(resource.data) && klinikSabit() && (
+        personel() || sadeceAlanlar(['dolu'])
+      );
+
+      allow delete: if personel() && bizim(resource.data);
+    }
+
+
+    // --- Asilar --------------------------------------------------------
+    match /Asilar/{asiID} {
+      allow read: if bizim(resource.data)
+        && (personel() || resource.data.sahipID == request.auth.uid);
+
+      allow create: if personel() && bizim(request.resource.data);
+
+      allow update: if personel() && bizim(resource.data) && klinikSabit();
+
+      allow delete: if false;
+    }
+
+
+    // --- Tibbi kayitlar ------------------------------------------------
+    // Teshis ve tedaviyi yalnizca hekim yazar; asistan goremez bile degil,
+    // gorur ama degistiremez. Sahibi kendi hayvaninin gecmisini okur.
+    match /TibbiKayitlar/{kayitID} {
+      allow read: if bizim(resource.data)
+        && (personel() || resource.data.sahipID == request.auth.uid);
+
+      allow create: if hekim() && bizim(request.resource.data);
+
+      allow update: if hekim() && bizim(resource.data) && klinikSabit();
+
+      allow delete: if false;
+    }
+
+
+    // --- Geri kalan her sey --------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

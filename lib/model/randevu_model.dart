@@ -2,11 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Randevu{
   String id;
+  String klinikID;
   String musteriID;
   String hayvanID;
-  String HekimID;
+  String hekimID;
   String sikayet;
-  String randevu_tur;
+  String randevuTur;
   String durum;
   double odeme;
   String odemeDurumu;
@@ -18,28 +19,31 @@ class Randevu{
     required this.id,
     required this.musteriID,
     required this.hayvanID,
-    required this.HekimID,
+    required this.hekimID,
     required this.sikayet,
-    required this.randevu_tur,
+    required this.randevuTur,
     required this.durum,
     required this.odeme,
     required this.odemeDurumu,
     required this.tarih,
     required this.slotID,
     required this.saat,
+    this.klinikID = '',
   });
 
   static Randevu fromMap(Map<String, dynamic> map, String dokumanId){
     return Randevu(
-    id: dokumanId, 
-    musteriID: map['musteriID'] ?? '', 
-    hayvanID: map['hayvanID'] ?? '', 
-    HekimID: map['HekimID'] ?? '',  
-    sikayet: map['sikayet'] ?? '', 
-    randevu_tur: map['randevu_tur'] ?? 'Muayene', 
-    durum: map['durum'] ?? 'Bekliyor', 
-    odeme: (map['odeme'] ?? 0.0).toDouble(), 
-    odemeDurumu: map['odemeDurumu'] ?? 'Bekliyor', 
+    id: dokumanId,
+    klinikID: map['klinikID'] ?? '',
+    musteriID: map['musteriID'] ?? '',
+    hayvanID: map['hayvanID'] ?? '',
+    // Eski alan adlari (HekimID, randevu_tur) goc oncesi kayitlar icin okunur.
+    hekimID: map['hekimID'] ?? map['HekimID'] ?? '',
+    sikayet: map['sikayet'] ?? '',
+    randevuTur: map['randevuTur'] ?? map['randevu_tur'] ?? 'Muayene',
+    durum: map['durum'] ?? 'Bekliyor',
+    odeme: (map['odeme'] ?? 0.0).toDouble(),
+    odemeDurumu: map['odemeDurumu'] ?? 'Bekliyor',
     tarih: (map['tarih'] as Timestamp).toDate(),
     slotID: map['slotID'] ?? '',
     saat: map['saat'] ?? '',
@@ -49,12 +53,13 @@ class Randevu{
 
   Map<String, dynamic> toMap(){
     return {
+      'klinikID': klinikID,
       'musteriID':musteriID,
       'hayvanID': hayvanID,
-      'HekimID': HekimID,
+      'hekimID': hekimID,
       'durum': durum,
       'sikayet': sikayet,
-      'randevu_tur': randevu_tur,
+      'randevuTur': randevuTur,
       'odeme': odeme,
       'odemeDurumu': odemeDurumu,
       'tarih' :tarih,
@@ -67,4 +72,3 @@ class Randevu{
 
 
 }
-

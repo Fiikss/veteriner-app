@@ -28,7 +28,7 @@ class RandevuDetayEkrani extends StatelessWidget {
                 child: Column(
                   children: [
                     _satirOlustur(Icons.report_problem_outlined, 'Şikayet', randevu.sikayet),
-                    _satirOlustur(Icons.category_outlined, 'Tür', randevu.randevu_tur),
+                    _satirOlustur(Icons.category_outlined, 'Tür', randevu.randevuTur),
                     _satirOlustur(Icons.calendar_today, 'Tarih', '${randevu.tarih.day}.${randevu.tarih.month}.${randevu.tarih.year}'),
                     _satirOlustur(Icons.access_time, 'Saat', randevu.saat),
                     _satirOlustur(Icons.info_outline, 'Durum', randevu.durum),

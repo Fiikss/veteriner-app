@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TibbiKayit{
   String id;
-  String HekimID;
+  String klinikID;
+  String hekimID;
   String hayvanID;
+  String sahipID;
   String kategori;
   String teshis;
   String tedavi;
@@ -14,23 +16,28 @@ class TibbiKayit{
 
 TibbiKayit({
   required this.id,
-  required this.HekimID,
+  required this.hekimID,
   required this.hayvanID,
   required this.ilaclar,
   required this.kategori,
   required this.tedavi,
   required this.tarih,
   required this.teshis,
+  this.klinikID = '',
+  this.sahipID = '',
   });
 
   static TibbiKayit fromMap(Map<String, dynamic> map, String dokumanId){
     return TibbiKayit(
       id: dokumanId,
+      klinikID: map['klinikID'] ?? '',
       hayvanID: map['hayvanID'] ?? '',
-      HekimID: map['HekimID'] ?? '',
+      sahipID: map['sahipID'] ?? '',
+      // Eski alan adi (HekimID) goc oncesi kayitlar icin okunur.
+      hekimID: map['hekimID'] ?? map['HekimID'] ?? '',
       kategori: map['kategori'] ?? 'Genel Muayene',
       teshis: map['teshis'] ?? '',
-      ilaclar: map['ilaclar'] ?? '',  
+      ilaclar: map['ilaclar'] ?? '',
       tedavi: map['tedavi'] ?? '',
       tarih: (map['tarih'] as Timestamp).toDate(),
     );
@@ -38,8 +45,10 @@ TibbiKayit({
 
   Map<String, dynamic>toMap(){
     return {
+      'klinikID': klinikID,
       'hayvanID': hayvanID,
-      'HekimID' : HekimID,
+      'sahipID': sahipID,
+      'hekimID' : hekimID,
       'kategori': kategori,
       'teshis': teshis,
       'tedavi': tedavi,

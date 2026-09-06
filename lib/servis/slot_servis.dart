@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:veteriner_app/model/slot_model.dart';
+import 'package:veteriner_app/servis/oturum_servis.dart';
 
 
 class SlotServis {
@@ -7,16 +8,18 @@ class SlotServis {
 
 
 Future<void> slotEkle(Slot slot) async{
-  await _firestore 
+  final veri = slot.toMap()..['klinikID'] = Oturum.klinikID;
+  await _firestore
   .collection('Slotlar')
   .doc(slot.id)
-  .set(slot.toMap());
+  .set(veri);
 
 }
 
   Stream <List<Slot>> bosSlotlar (){
     return _firestore
     .collection('Slotlar')
+    .where('klinikID', isEqualTo: Oturum.klinikID)
     .where('dolu', isEqualTo:  false)
     .snapshots()
     .map((snapshot) => snapshot.docs .map((doc) => Slot.fromMap(doc.data(), doc.id))
@@ -24,7 +27,7 @@ Future<void> slotEkle(Slot slot) async{
     );
 
   }
-  
+
   Future<void> slotDoldur(String slotID) async{
     await _firestore
     .collection('Slotlar')
@@ -42,6 +45,7 @@ Future<void> slotEkle(Slot slot) async{
 Stream<List<Slot>> hekimSlotlari(String hekimID) {
   return _firestore
       .collection('Slotlar')
+      .where('klinikID', isEqualTo: Oturum.klinikID)
       .where('hekimID', isEqualTo: hekimID)
       .where('dolu', isEqualTo: false)
       .snapshots()

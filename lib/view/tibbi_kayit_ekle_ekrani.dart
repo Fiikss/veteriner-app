@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:veteriner_app/view/akis_hatasi.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:veteriner_app/model/tibbikayit_model.dart';
 import 'package:veteriner_app/servis/tibbikayit_servis.dart';
@@ -46,7 +47,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
   Future<void> _kaydet() async {
     final kayit = TibbiKayit(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
-      HekimID: FirebaseAuth.instance.currentUser!.uid,
+      hekimID: FirebaseAuth.instance.currentUser!.uid,
       hayvanID: widget.hayvanID,
       ilaclar: ilacController.text,
       kategori: kategori,
@@ -141,6 +142,7 @@ class _TibbiKayitEkleEkraniState extends State<TibbiKayitEkleEkrani> {
             StreamBuilder<List<TibbiKayit>>(
               stream: _servis.hayvanTibbiKayit(widget.hayvanID),
               builder: (context, snapshot) {
+                if (snapshot.hasError) return AkisHatasi(hata: snapshot.error);
                 if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
                 final kayitlar = snapshot.data!.where((k) => k.kategori != 'Aşı').toList();
                 if (kayitlar.isEmpty) return const Text('Henüz kayıt yok.', style: TextStyle(color: Colors.grey));
