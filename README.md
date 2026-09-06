@@ -1,55 +1,70 @@
-Veteriner Kliniği Randevu Uygulaması
+# 🐾 Veteriner Klinik Yönetim Uygulaması
 
-Evcil hayvan sahiplerinin veteriner kliniklerinden çevrimiçi randevu almasını sağlayan mobil uygulama.
-Haliç Üniversitesi Bilgisayar Programcılığı bitirme projesi olarak geliştirilmiş ve akademik tez ile belgelenmiştir.
+Veteriner klinikleri için randevu, hasta kaydı ve aşı takibini tek uygulamada
+toplayan çok platformlu (Android / iOS / web) bir klinik yönetim uygulaması.
 
-## Hakkında
+Haliç Üniversitesi Bilgisayar Programcılığı **bitirme projesi** olarak geliştirildi ve
+akademik tez ile belgelendi; mezuniyetten sonra tek klinikten çok klinikli bir yapıya
+taşınarak geliştirilmeye devam ediyor.
 
-Veteriner kliniklerinde randevu süreçleri çoğunlukla telefonla ve manuel olarak yürütülüyor; bu da yoğun saatlerde hem klinik hem de hayvan sahibi için zaman kaybına yol açıyor. Bu proje, randevu alma sürecini dijitalleştirerek kullanıcının kendi telefonundan uygun saati seçip randevu oluşturabilmesini amaçlıyor.
+## Problem
+
+Veteriner kliniklerinde randevu, hasta geçmişi ve aşı takibi büyük ölçüde telefon,
+defter ve Excel üzerinden yürütülüyor. Bu, yoğun saatlerde çift randevuya, kaçırılan
+aşı tarihlerine ve hasta geçmişine ulaşamamaya yol açıyor. Uygulama bu üç süreci
+tek yerde topluyor.
+
+## Roller
+
+Uygulama üç ayrı kullanıcı rolü ile çalışır; her rol açılışta kendi ana ekranına düşer
+ve yalnızca kendi yetkisindeki verileri görür.
+
+| Rol | Neler yapabilir |
+|---|---|
+| **Müşteri** (hayvan sahibi) | Hayvanlarını kaydeder, uygun saatlerden randevu alır, randevularını ve hayvanının tıbbi kayıtlarını / aşılarını görüntüler |
+| **Hekim** | Kendi randevu listesini görür, muayene sonrası tıbbi kayıt ve aşı girer, yaklaşan aşıları takip eder |
+| **Asistan** | Randevu saatlerini (slot) açar, randevuları yönetir, kullanıcı ve hayvan kayıtlarını düzenler |
 
 ## Özellikler
 
-- **Kullanıcı kaydı ve girişi** — Firebase üzerinden kimlik doğrulama
-- **Randevu oluşturma** — tarih ve saat seçerek yeni randevu alma
-- **Randevularım** — mevcut randevuları listeleme
-- **Randevu iptali** — alınan randevuyu iptal etme
-- **Evcil hayvanın özellikleri** — Sahip olunan evcil hayvanın yaşını, ırkını, türünü görebilme
-- **Yaklaşan Aşı** — Evcil hayvanınıza bir aşı alındığınızda bunun tarihini görebilme
-- **Veteriner Hekim Slot Sistemi** — Slot sistemi sayesinde hekim kendine uygun saatleri açarak evcil hayvan sahiplerinni randevu almasını sağlar.
-- **Çoklu platform** — Flutter'ın tek kod tabanı sayesinde Android, iOS ve web desteği
+- **Rol bazlı kimlik doğrulama ve yetkilendirme** — Firebase Authentication; her rol için ayrı giriş akışı ve ana ekran
+- **Çok klinikli (multi-tenant) yapı** — her kayıt bir kliniğe bağlıdır; bir klinik yalnızca kendi verisini görür
+- **Randevu yönetimi** — asistanın açtığı uygun saatler (slot) üzerinden randevu oluşturma, listeleme, detay ve iptal
+- **Hayvan kayıtları** — hayvan ekleme, detay ve profil fotoğrafı
+- **Tıbbi kayıtlar** — muayene geçmişinin hayvan bazında tutulması ve listelenmesi
+- **Aşı takibi** — yapılan aşıların kaydı ve yaklaşan aşıların ayrı ekranda listelenmesi
+- **Bildirim paneli** — kullanıcıya yaklaşan randevu ve aşı hatırlatmalarının gösterilmesi
+- **Kullanıcı yönetimi** — klinik personelinin kullanıcı ve rol düzenlemesi
+- **Firestore güvenlik kuralları** — yetkilendirme yalnızca arayüzde değil, veritabanı kuralları ile de zorunlu kılınır
+- **Tek kod tabanı** — Flutter ile Android, iOS ve web
 
 ## Kullanılan Teknolojiler
 
 | Katman | Teknoloji |
 |---|---|
-| Arayüz / Uygulama | Flutter, Dart |
-| Veri ve kimlik doğrulama | Firebase |
-| Geliştirme ortamı | Visual Studio Code |
+| Arayüz / uygulama | Flutter, Dart |
+| Kimlik doğrulama | Firebase Authentication |
+| Veritabanı | Cloud Firestore (güvenlik kuralları ve indeksler depoda) |
+| Dosya saklama | Firebase Storage (hayvan fotoğrafları) |
+| Yardımcı betikler | Node.js (firebase-admin) |
+| Geliştirme ortamı | Visual Studio Code, Git |
 
-## Kurulum
+## Proje Yapısı
 
-Projeyi kendi bilgisayarınızda çalıştırmak için:
-
-```bash
-# Depoyu klonlayın
-git clone https://github.com/Fiikss/veteriner-app.git
-cd veteriner-app
-
-# Bağımlılıkları yükleyin
-flutter pub get
-
-# Uygulamayı çalıştırın
-flutter run
+```
+lib/
+  model/     # Veri modelleri (kullanıcı, hayvan, randevu, slot, tıbbi kayıt, aşı, klinik)
+  servis/    # Firestore ve Auth erişim katmanı (oturum, randevu, aşı, tıbbi kayıt, klinik)
+  view/      # Ekranlar — rol bazlı ana sayfalar, randevu, tıbbi kayıt, aşı, yönetim
+firestore.rules          # Veritabanı yetkilendirme kuralları
+firestore.indexes.json   # Sorgu indeksleri
+tools/klinik_gocu.js     # Eski kayıtları klinik yapısına taşıyan veri göç betiği
 ```
 
-> **Not:** Uygulamanın çalışabilmesi için kendi Firebase projenizi oluşturup
-> `google-services.json` (Android) ve `GoogleService-Info.plist` (iOS) dosyalarını
-> ilgili klasörlere eklemeniz gerekir.
+Mimari üç katmana ayrılmıştır: ekranlar (`view`) doğrudan Firestore'a erişmez,
+veri erişimi `servis` katmanı üzerinden yapılır ve `model` sınıfları ile taşınır.
 
 ## Ekran Görüntüleri
-
-<!-- Uygulamayı çalıştırıp 3-4 ekranın görüntüsünü alın, repoya bir screenshots/ klasörü açıp yükleyin
-     ve aşağıdaki satırları düzenleyin. Bu bölüm, projeye bakan kişinin ilk dikkatini çeken yerdir. -->
 
 <p align="center">
   <img src="screenshots/giris.png" width="230">
@@ -57,19 +72,22 @@ flutter run
   <img src="screenshots/randevularim.png" width="230">
 </p>
 
-## Proje Yapısı
+## Kurulum
 
+```bash
+git clone https://github.com/Fiikss/veteriner-app.git
+cd veteriner-app
+flutter pub get
+flutter run
 ```
-lib/          # Uygulama kodları (ekranlar, modeller, servisler)
-android/      # Android platform dosyaları
-ios/          # iOS platform dosyaları
-web/          # Web platform dosyaları
-test/         # Test dosyaları
-```
+
+> Uygulamanın çalışabilmesi için kendi Firebase projenizi oluşturup
+> `google-services.json` (Android) ve `GoogleService-Info.plist` (iOS) dosyalarını
+> ilgili klasörlere eklemeniz gerekir. Firestore kurallarını yüklemek için:
+> `firebase deploy --only firestore:rules`
 
 ## Geliştirici
 
 **Melikegül Keser**
 Bilgisayar Programcılığı — Haliç Üniversitesi
 [LinkedIn](https://www.linkedin.com/in/melikeg%C3%BCl-k-94aa87330/) · melikeglkeser@gmail.com
-
