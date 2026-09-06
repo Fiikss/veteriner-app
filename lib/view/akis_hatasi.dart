@@ -1,10 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-/// Bir Firestore akisi hata verdiginde spinner yerine gosterilir.
-///
-/// Sonsuz donen bir cark ne kullaniciya ne gelistiriciye bir sey soyler;
-/// klinikte "program acilmiyor" diye telefon actiran sey tam olarak budur.
+/// Firestore akisi hata verdiginde sonsuz donen cark yerine bu ekran cikar.
 class AkisHatasi extends StatelessWidget {
   final Object? hata;
   const AkisHatasi({super.key, this.hata});
@@ -39,8 +36,7 @@ class AkisHatasi extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFB71C1C)),
             ),
             const SizedBox(height: 6),
-            // Teknik ayrinti: dizin hatalarinda Firebase'in verdigi olusturma
-            // baglantisi burada cikar, kopyalanabilir olmasi icin SelectableText.
+            // Firebase'in dizin olusturma baglantisi burada cikar; kopyalanabilsin diye SelectableText.
             SelectableText(
               hata?.toString() ?? '',
               textAlign: TextAlign.center,

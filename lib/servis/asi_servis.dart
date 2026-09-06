@@ -30,8 +30,7 @@ class AsiServis {
     .where('klinikID', isEqualTo: Oturum.klinikID)
     .where('hayvanID', isEqualTo: hayvanID);
 
-    // Guvenlik kurallari sorguyu filtrelemez: sahiplik iddiasi sorgunun
-    // kendisinde olmazsa musterinin okumasi tamamen reddedilir.
+    // Sahiplik sorgunun icinde olmali, yoksa guvenlik kurali okumayi reddeder.
     if (!Oturum.personel) {
       sorgu = sorgu.where('sahipID', isEqualTo: Oturum.kullaniciID);
     }

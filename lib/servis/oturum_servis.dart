@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:veteriner_app/model/kullanici_model.dart';
 
-/// Aktif oturumun kullanici, rol ve klinik bilgisini tek yerden verir.
-///
-/// Girisin hemen ardindan [baslat] cagrilir, cikista [temizle].
-/// Servisler klinik kimligini buradan okur; her ekranda tekrar okumak
-/// bir sorgunun filtresiz kalmasina ve klinikler arasi veri sizmasina yol acar.
+/// Aktif oturumun kullanici, rol ve klinik bilgisini tutar.
+/// Giriste [baslat], cikista [temizle] cagrilir.
+/// Servisler klinik kimligini hep buradan okur.
 class Oturum {
   Oturum._();
 
@@ -39,7 +37,7 @@ class Oturum {
     return id;
   }
 
-  /// Firestore'daki kullanici kaydini okuyup oturumu doldurur.
+  /// Kullanici kaydini okuyup oturumu doldurur.
   static Future<Kullanici> baslat() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {

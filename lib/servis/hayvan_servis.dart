@@ -6,7 +6,7 @@ class HayvanServis{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
    Future <void> hayvanEkle(Hayvan hayvan) async {
-    // Klinik kimligi tek noktada damgalanir; cagiran ekranin sorumlulugu degil.
+    // Klinik kimligi tek yerde ekleniyor.
     final veri = hayvan.toMap()..['klinikID'] = Oturum.klinikID;
     await _firestore.collection('Hayvanlar')
     .doc(hayvan.id)

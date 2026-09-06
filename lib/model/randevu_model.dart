@@ -37,7 +37,7 @@ class Randevu{
     klinikID: map['klinikID'] ?? '',
     musteriID: map['musteriID'] ?? '',
     hayvanID: map['hayvanID'] ?? '',
-    // Eski alan adlari (HekimID, randevu_tur) goc oncesi kayitlar icin okunur.
+    // Eski kayitlarda alan adlari farkliydi; ikisi de okunuyor.
     hekimID: map['hekimID'] ?? map['HekimID'] ?? '',
     sikayet: map['sikayet'] ?? '',
     randevuTur: map['randevuTur'] ?? map['randevu_tur'] ?? 'Muayene',

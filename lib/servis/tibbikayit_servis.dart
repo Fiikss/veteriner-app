@@ -28,7 +28,7 @@ Stream <List<TibbiKayit>> hayvanTibbiKayit (String hayvanID){
   .where('klinikID', isEqualTo: Oturum.klinikID)
   .where('hayvanID', isEqualTo: hayvanID);
 
-  // Musteri kendi hayvaninin gecmisini okur; sahiplik sorguda olmali.
+  // Musteri sadece kendi hayvanini gorur; sahiplik sorguda olmali.
   if (!Oturum.personel) {
     sorgu = sorgu.where('sahipID', isEqualTo: Oturum.kullaniciID);
   }

@@ -14,10 +14,7 @@ await Firebase.initializeApp( //bekleme islemi yapar
 options:  DefaultFirebaseOptions.currentPlatform,
 );
 
-// Firestore'un web SDK'sinda bilinen bir kusur var: WebChannel akisi
-// "INTERNAL ASSERTION FAILED: Unexpected state" ile patlayinca butun
-// dinleyiciler dusuyor ve her ekran sonsuz donmeye basliyor.
-// Uzun yoklama (long polling) o yolu devre disi birakir.
+// Web'de Firestore akislari kopabiliyor; uzun yoklama bunu onler.
 if (kIsWeb) {
   FirebaseFirestore.instance.settings = const Settings(
     webExperimentalForceLongPolling: true,

@@ -62,9 +62,8 @@ class BildirimPaneli extends StatelessWidget {
         .where('klinikID', isEqualTo: Oturum.klinikID);
 
     if (musteriID != null) {
-      // Once hayvan listesi cekilip whereIn ile sorulmasi iki sorun uretiyordu:
-      // whereIn 30 degerle sinirli, ve sorgu sahiplik iddiasi tasimadigi icin
-      // guvenlik kurallari onu reddederdi. Dogrudan sahipID ile sormak ikisini de cozer.
+      // Dogrudan sahipID ile soruluyor: whereIn 30 kayitla sinirli ve
+      // sahiplik tasimayan sorguyu guvenlik kurali reddediyor.
       sorgu = sorgu.where('sahipID', isEqualTo: musteriID);
     } else {
       sorgu = sorgu
@@ -72,7 +71,7 @@ class BildirimPaneli extends StatelessWidget {
           .where('sonrakiAsiTarihi', isLessThanOrEqualTo: Timestamp.fromDate(ucaysonra));
     }
 
-    // Tarih araligi zaten _asilarIcerik icinde de suzuluyor.
+    // Tarih araligi _asilarIcerik icinde de suzuluyor.
     return StreamBuilder<QuerySnapshot>(
       stream: sorgu.snapshots(),
       builder: (context, snapshot) => _asilarIcerik(snapshot, bugun, ucaysonra),

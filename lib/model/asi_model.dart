@@ -4,15 +4,14 @@ class Asi {
 String id;
 String klinikID;
 String hayvanID;
-// Hayvanin sahibi. Guvenlik kurallarinin ek sorgu atmadan
-// "bu kaydi sahibi okuyabilir" diyebilmesi icin kopyalanir.
+// Sahibin kimligi burada da tutulur ki guvenlik kurali ek sorgu atmasin.
 String sahipID;
 String hayvanAdi;
 String asiAdi;
 DateTime yapilmaTarihi;
 DateTime sonrakiAsiTarihi;
 String asiDurumu;
-// Sunucu tarafli hatirlatma iki kere mesaj atmasin diye (VET-07).
+// Ayni hatirlatma iki kez gitmesin diye isaretlenir.
 bool hatirlatildi;
 
 Asi({
